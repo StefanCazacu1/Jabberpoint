@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TextItem.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jabberpoint</a> &gt; <a href="index.source.html" class="el_package">jabberpoint</a> &gt; <span class="el_source">TextItem.java</span></div><h1>TextItem.java</h1><pre class="source lang-java linenums">package jabberpoint;
+import java.awt.Rectangle;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.font.TextLayout;
+import java.awt.font.TextAttribute;
+import java.awt.font.LineBreakMeasurer;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.ImageObserver;
+import java.text.AttributedString;
+import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
+
+/** &lt;p&gt;Een tekst item.&lt;/p&gt;
+ * &lt;p&gt;Een TextItem heeft tekenfunctionaliteit.&lt;/p&gt;
+ * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman
+ * @version 1.1 2002/12/17 Gert Florijn
+ * @version 1.2 2003/11/19 Sylvia Stuurman
+ * @version 1.3 2004/08/17 Sylvia Stuurman
+ * @version 1.4 2007/07/16 Sylvia Stuurman
+ * @version 1.5 2010/03/03 Sylvia Stuurman
+ * @version 1.6 2014/05/16 Sylvia Stuurman
+ */
+
+public class TextItem extends SlideItem {
+	private String text;
+	
+	private static final String EMPTYTEXT = &quot;No Text Given&quot;;
+
+// een textitem van level level, met als tekst string
+	public TextItem(int level, String string) {
+<span class="nc" id="L35">		super(level);</span>
+<span class="nc" id="L36">		text = string;</span>
+<span class="nc" id="L37">	}</span>
+
+// een leeg textitem
+	public TextItem() {
+<span class="nc" id="L41">		this(0, EMPTYTEXT);</span>
+<span class="nc" id="L42">	}</span>
+
+// Geef de tekst
+	public String getText() {
+<span class="nc bnc" id="L46" title="All 2 branches missed.">		return text == null ? &quot;&quot; : text;</span>
+	}
+
+// geef de AttributedString voor het item
+	public AttributedString getAttributedString(Style style, float scale) {
+<span class="nc" id="L51">		AttributedString attrStr = new AttributedString(getText());</span>
+<span class="nc" id="L52">		attrStr.addAttribute(TextAttribute.FONT, style.getFont(scale), 0, text.length());</span>
+<span class="nc" id="L53">		return attrStr;</span>
+	}
+
+// geef de bounding box van het item
+	public Rectangle getBoundingBox(Graphics g, ImageObserver observer, 
+			float scale, Style myStyle) {
+<span class="nc" id="L59">		List&lt;TextLayout&gt; layouts = getLayouts(g, myStyle, scale);</span>
+<span class="nc" id="L60">		int xsize = 0, ysize = (int) (myStyle.leading * scale);</span>
+<span class="nc" id="L61">		Iterator&lt;TextLayout&gt; iterator = layouts.iterator();</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">		while (iterator.hasNext()) {</span>
+<span class="nc" id="L63">			TextLayout layout = iterator.next();</span>
+<span class="nc" id="L64">			Rectangle2D bounds = layout.getBounds();</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">			if (bounds.getWidth() &gt; xsize) {</span>
+<span class="nc" id="L66">				xsize = (int) bounds.getWidth();</span>
+			}
+<span class="nc bnc" id="L68" title="All 2 branches missed.">			if (bounds.getHeight() &gt; 0) {</span>
+<span class="nc" id="L69">				ysize += bounds.getHeight();</span>
+			}
+<span class="nc" id="L71">			ysize += layout.getLeading() + layout.getDescent();</span>
+		}
+<span class="nc" id="L73">		return new Rectangle((int) (myStyle.indent*scale), 0, xsize, ysize );</span>
+	}
+
+// teken het item
+	public void draw(int x, int y, float scale, Graphics g, 
+			Style myStyle, ImageObserver o) {
+<span class="nc bnc" id="L79" title="All 4 branches missed.">		if (text == null || text.length() == 0) {</span>
+<span class="nc" id="L80">			return;</span>
+		}
+<span class="nc" id="L82">		List&lt;TextLayout&gt; layouts = getLayouts(g, myStyle, scale);</span>
+<span class="nc" id="L83">		Point pen = new Point(x + (int)(myStyle.indent * scale), </span>
+<span class="nc" id="L84">				y + (int) (myStyle.leading * scale));</span>
+<span class="nc" id="L85">		Graphics2D g2d = (Graphics2D)g;</span>
+<span class="nc" id="L86">		g2d.setColor(myStyle.color);</span>
+<span class="nc" id="L87">		Iterator&lt;TextLayout&gt; it = layouts.iterator();</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">		while (it.hasNext()) {</span>
+<span class="nc" id="L89">			TextLayout layout = it.next();</span>
+<span class="nc" id="L90">			pen.y += layout.getAscent();</span>
+<span class="nc" id="L91">			layout.draw(g2d, pen.x, pen.y);</span>
+<span class="nc" id="L92">			pen.y += layout.getDescent();</span>
+		}
+<span class="nc" id="L94">	  }</span>
+
+	private List&lt;TextLayout&gt; getLayouts(Graphics g, Style s, float scale) {
+<span class="nc" id="L97">		List&lt;TextLayout&gt; layouts = new ArrayList&lt;TextLayout&gt;();</span>
+<span class="nc" id="L98">		AttributedString attrStr = getAttributedString(s, scale);</span>
+<span class="nc" id="L99">    	Graphics2D g2d = (Graphics2D) g;</span>
+<span class="nc" id="L100">    	FontRenderContext frc = g2d.getFontRenderContext();</span>
+<span class="nc" id="L101">    	LineBreakMeasurer measurer = new LineBreakMeasurer(attrStr.getIterator(), frc);</span>
+<span class="nc" id="L102">    	float wrappingWidth = (Slide.WIDTH - s.indent) * scale;</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">    	while (measurer.getPosition() &lt; getText().length()) {</span>
+<span class="nc" id="L104">    		TextLayout layout = measurer.nextLayout(wrappingWidth);</span>
+<span class="nc" id="L105">    		layouts.add(layout);</span>
+    	}
+<span class="nc" id="L107">    	return layouts;</span>
+	}
+
+	public String toString() {
+<span class="nc" id="L111">		return &quot;TextItem[&quot; + getLevel()+&quot;,&quot;+getText()+&quot;]&quot;;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

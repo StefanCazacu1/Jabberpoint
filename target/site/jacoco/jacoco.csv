@@ -1,0 +1,25 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+jabberpoint,jabberpoint,DemoPresentation,133,0,0,0,35,0,3,0,3,0
+jabberpoint,jabberpoint,KeyController,21,0,4,0,11,0,5,0,2,0
+jabberpoint,jabberpoint,Accessor,7,0,0,0,3,0,2,0,2,0
+jabberpoint,jabberpoint,TextItem,245,0,16,0,46,0,16,0,8,0
+jabberpoint,jabberpoint,AboutBox,9,0,0,0,6,0,2,0,2,0
+jabberpoint,jabberpoint,JabberPoint,41,0,2,0,14,0,3,0,2,0
+jabberpoint,jabberpoint,SlideViewerFrame.new WindowAdapter() {...},9,0,0,0,3,0,2,0,2,0
+jabberpoint,jabberpoint,BitmapItem,113,0,0,0,20,0,6,0,6,0
+jabberpoint,jabberpoint,MenuController.new ActionListener() {...},11,0,0,0,3,0,2,0,2,0
+jabberpoint,jabberpoint,MenuController.new ActionListener() {...},20,0,0,0,5,0,2,0,2,0
+jabberpoint,jabberpoint,MenuController.new ActionListener() {...},11,0,0,0,3,0,2,0,2,0
+jabberpoint,jabberpoint,SlideViewerFrame,55,0,0,0,13,0,2,0,2,0
+jabberpoint,jabberpoint,MenuController,160,0,0,0,28,0,2,0,2,0
+jabberpoint,jabberpoint,MenuController.new ActionListener() {...},41,0,0,0,10,0,2,0,2,0
+jabberpoint,jabberpoint,SlideViewerComponent,119,0,6,0,32,0,8,0,5,0
+jabberpoint,jabberpoint,MenuController.new ActionListener() {...},11,0,0,0,3,0,2,0,2,0
+jabberpoint,jabberpoint,MenuController.new ActionListener() {...},12,0,0,0,3,0,2,0,2,0
+jabberpoint,jabberpoint,XMLAccessor,274,0,18,0,74,0,14,0,5,0
+jabberpoint,jabberpoint,MenuController.new ActionListener() {...},28,0,0,0,7,0,2,0,2,0
+jabberpoint,jabberpoint,MenuController.new ActionListener() {...},15,0,0,0,4,0,2,0,2,0
+jabberpoint,jabberpoint,Style,110,0,2,0,18,0,6,0,5,0
+jabberpoint,jabberpoint,Slide,120,8,2,0,23,3,10,1,9,1
+jabberpoint,jabberpoint,SlideItem,16,0,0,0,7,0,3,0,3,0
+jabberpoint,jabberpoint,Presentation,52,75,6,4,17,22,12,8,7,8
