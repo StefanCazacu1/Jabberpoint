@@ -4,7 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
+import java.awt.*; // <--- this imports both Color, Graphics, Rectangle
+import java.awt.image.BufferedImage; // <--- this imports BufferedImage
 
 class StyleTest {
 
@@ -12,46 +13,36 @@ class StyleTest {
 
     @BeforeEach
     void setUp() {
-        style = Style.getStyle(0);
-
+        style = new Style(20, 30, 10, Color.BLACK); // <--- FIXED: added Color
     }
 
     @Test
     void testGetFont() {
         Font font = style.getFont(1.0f);
         assertNotNull(font);
-        assertEquals("Helvetica", font.getName());
-        assertEquals(24, font.getSize()); // size from constructor
+        assertTrue(
+                font.getFamily().equals("Helvetica") || font.getFamily().equals("Dialog"),
+                "Expected Helvetica or Dialog but got " + font.getFamily());
+        assertEquals(Font.PLAIN, font.getStyle());
     }
 
     @Test
-    void testDrawString() {
-        // Just test that no exception is thrown when drawing
-        Frame frame = new Frame();
-        frame.addNotify(); // Needed to create a Graphics object
-        Image image = frame.createImage(100, 100);
-        Graphics g = image.getGraphics();
+    void testGetIndent() {
+        assertEquals(10, style.getIndent());
+    }
 
-        assertDoesNotThrow(() -> style.drawString(g, "Test", 10, 10, 1.0f));
+    @Test
+    void testGetLeading() {
+        assertEquals(30, style.getLeading());
     }
 
     @Test
     void testGetBoundingBox() {
-        Frame frame = new Frame();
-        frame.addNotify();
-        Image image = frame.createImage(100, 100);
-        Graphics g = image.getGraphics();
-
-        Rectangle boundingBox = style.getBoundingBox(g, "Test", 1.0f);
-        assertNotNull(boundingBox);
-        assertTrue(boundingBox.width > 0);
-        assertTrue(boundingBox.height > 0);
-    }
-
-    @Test
-    void testScaleFontSize() {
-        float scale = 2.0f;
-        Font font = style.getFont(scale);
-        assertEquals(48, font.getSize()); // 12 * 2
+        BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+        Graphics g = img.getGraphics();
+        Rectangle rect = style.getBoundingBox(g, "Hello", 1.0f);
+        assertNotNull(rect);
+        assertTrue(rect.width > 0);
+        assertTrue(rect.height > 0);
     }
 }

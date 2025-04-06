@@ -42,7 +42,7 @@ public class Style {
 	}
 
 	public int getIndent() {
-<span class="nc" id="L45">		return indent;</span>
+<span class="fc" id="L45">		return indent;</span>
 	}
 
 	public int getLeading() {
@@ -63,12 +63,12 @@ public class Style {
 	}
 
 	public void drawString(Graphics g, String text, int x, int y, float scale) {
-<span class="pc bpc" id="L66" title="2 of 4 branches missed.">		if (text == null || text.isEmpty())</span>
+<span class="nc bnc" id="L66" title="All 4 branches missed.">		if (text == null || text.isEmpty())</span>
 <span class="nc" id="L67">			return;</span>
-<span class="fc" id="L68">		Font font = getFont(scale);</span>
-<span class="fc" id="L69">		g.setFont(font);</span>
-<span class="fc" id="L70">		g.setColor(color); // 🆕 Set the color when drawing</span>
-<span class="fc" id="L71">		g.drawString(text, x + (indent * Math.round(scale)), y);</span>
-<span class="fc" id="L72">	}</span>
+<span class="nc" id="L68">		Font font = getFont(scale);</span>
+<span class="nc" id="L69">		g.setFont(font);</span>
+<span class="nc" id="L70">		g.setColor(color); // 🆕 Set the color when drawing</span>
+<span class="nc" id="L71">		g.drawString(text, x + (indent * Math.round(scale)), y);</span>
+<span class="nc" id="L72">	}</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
