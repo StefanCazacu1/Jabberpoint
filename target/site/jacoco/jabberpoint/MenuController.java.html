@@ -23,11 +23,11 @@ public class MenuController extends MenuBar {
 
 <span class="fc" id="L24">		Menu fileMenu = new Menu(&quot;File&quot;);</span>
 <span class="fc" id="L25">		MenuItem openItem = new MenuItem(&quot;Open&quot;);</span>
-<span class="fc" id="L26">		openItem.addActionListener(e -&gt; openFile());</span>
+<span class="pc" id="L26">		openItem.addActionListener(e -&gt; openFile());</span>
 <span class="fc" id="L27">		fileMenu.add(openItem);</span>
 
 <span class="fc" id="L29">		MenuItem saveItem = new MenuItem(&quot;Save&quot;);</span>
-<span class="fc" id="L30">		saveItem.addActionListener(e -&gt; saveFile());</span>
+<span class="pc" id="L30">		saveItem.addActionListener(e -&gt; saveFile());</span>
 <span class="fc" id="L31">		fileMenu.add(saveItem);</span>
 
 <span class="fc" id="L33">		MenuItem exitItem = new MenuItem(&quot;Exit&quot;);</span>
@@ -51,9 +51,9 @@ public class MenuController extends MenuBar {
 <span class="fc" id="L51">	}</span>
 
 	private void openFile() {
-<span class="fc" id="L54">		FileDialog dialog = new FileDialog(parent, &quot;Open File&quot;, FileDialog.LOAD);</span>
-<span class="fc" id="L55">		dialog.setVisible(true);</span>
-<span class="pc bpc" id="L56" title="1 of 2 branches missed.">		if (dialog.getFile() != null) {</span>
+<span class="nc" id="L54">		FileDialog dialog = new FileDialog(parent, &quot;Open File&quot;, FileDialog.LOAD);</span>
+<span class="nc" id="L55">		dialog.setVisible(true);</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">		if (dialog.getFile() != null) {</span>
 <span class="nc" id="L57">			String filename = dialog.getDirectory() + dialog.getFile();</span>
 			try {
 <span class="nc" id="L59">				presentation.load(filename);</span>
@@ -61,12 +61,12 @@ public class MenuController extends MenuBar {
 <span class="nc" id="L61">				JOptionPane.showMessageDialog(parent, &quot;Error loading file!&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
 <span class="nc" id="L62">			}</span>
 		}
-<span class="fc" id="L64">	}</span>
+<span class="nc" id="L64">	}</span>
 
 	private void saveFile() {
-<span class="fc" id="L67">		FileDialog dialog = new FileDialog(parent, &quot;Save File&quot;, FileDialog.SAVE);</span>
-<span class="fc" id="L68">		dialog.setVisible(true);</span>
-<span class="pc bpc" id="L69" title="1 of 2 branches missed.">		if (dialog.getFile() != null) {</span>
+<span class="nc" id="L67">		FileDialog dialog = new FileDialog(parent, &quot;Save File&quot;, FileDialog.SAVE);</span>
+<span class="nc" id="L68">		dialog.setVisible(true);</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">		if (dialog.getFile() != null) {</span>
 <span class="nc" id="L70">			String filename = dialog.getDirectory() + dialog.getFile();</span>
 			try {
 <span class="nc" id="L72">				presentation.save(filename);</span>
@@ -74,6 +74,6 @@ public class MenuController extends MenuBar {
 <span class="nc" id="L74">				JOptionPane.showMessageDialog(parent, &quot;Error saving file!&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
 <span class="nc" id="L75">			}</span>
 		}
-<span class="fc" id="L77">	}</span>
+<span class="nc" id="L77">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

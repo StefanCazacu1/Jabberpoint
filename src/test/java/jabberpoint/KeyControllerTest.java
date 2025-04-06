@@ -1,10 +1,11 @@
 package jabberpoint;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
 
 import java.awt.event.KeyEvent;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class KeyControllerTest {
 
@@ -40,6 +41,4 @@ class KeyControllerTest {
         keyController.keyPressed(event);
         verify(presentation, times(1)).setSlideNumber(0);
     }
-
-    // ⚠️ Do NOT test ESCAPE key if it calls System.exit()
 }

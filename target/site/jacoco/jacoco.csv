@@ -7,12 +7,12 @@ jabberpoint,jabberpoint,AboutBox,3,6,0,0,1,2,1,1,1,1
 jabberpoint,jabberpoint,JabberPoint,35,0,2,0,11,0,3,0,2,0
 jabberpoint,jabberpoint,SlideViewerFrame.new WindowAdapter() {...},3,6,0,0,2,1,1,1,1,1
 jabberpoint,jabberpoint,BitmapItem,0,93,0,4,0,20,0,7,0,5
-jabberpoint,jabberpoint,SlideViewerFrame,0,54,0,0,0,13,0,2,0,2
-jabberpoint,jabberpoint,MenuController,39,149,2,2,10,34,3,8,1,8
-jabberpoint,jabberpoint,SlideViewerComponent,12,21,1,1,3,8,2,3,1,3
+jabberpoint,jabberpoint,SlideViewerFrame,3,54,0,0,1,13,1,2,1,2
+jabberpoint,jabberpoint,MenuController,75,113,4,0,18,26,7,4,5,4
+jabberpoint,jabberpoint,SlideViewerComponent,15,18,1,1,4,7,3,2,2,2
 jabberpoint,jabberpoint,XMLAccessor,11,231,5,15,2,51,5,8,0,3
 jabberpoint,jabberpoint,Style,36,124,6,2,8,24,5,8,1,8
 jabberpoint,jabberpoint,Slide,0,128,0,8,0,31,0,15,0,11
 jabberpoint,jabberpoint,JsonAccessor,1,202,7,17,0,43,7,8,0,3
 jabberpoint,jabberpoint,SlideItem,0,23,0,0,0,10,0,5,0,5
-jabberpoint,jabberpoint,Presentation,45,175,8,14,10,50,8,21,0,18
+jabberpoint,jabberpoint,Presentation,47,173,9,13,11,49,9,20,0,18

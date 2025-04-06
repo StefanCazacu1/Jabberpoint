@@ -42,4 +42,8 @@ public class SlideViewerFrame extends Frame {
 	public SlideViewerComponent getSlideViewerComponent() {
 		return slideViewerComponent;
 	}
+
+	public Presentation getPresentation() {
+		return this.presentation;
+	}
 }
