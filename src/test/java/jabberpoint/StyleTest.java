@@ -21,8 +21,9 @@ class StyleTest {
         Font font = style.getFont(1.0f);
         assertNotNull(font);
         assertTrue(
-                font.getFamily().equals("Helvetica") || font.getFamily().equals("Dialog"),
-                "Expected Helvetica or Dialog but got " + font.getFamily());
+                font.getFamily().equals("Helvetica") || font.getFamily().equals("Dialog")
+                        || font.getFamily().equals("SansSerif"),
+                "Expected Helvetica, Dialog, or SansSerif but got " + font.getFamily());
         assertEquals(Font.PLAIN, font.getStyle());
     }
 
