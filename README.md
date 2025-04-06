@@ -140,10 +140,11 @@ Red: Uncovered code.
 
 Yellow: Partially covered code.
 
-File Structure
---------------
+## File Structure
+
 The project follows a typical Maven directory structure:
 
+```
 jabberpoint/
 ├── src/
 │   ├── main/
@@ -163,6 +164,8 @@ jabberpoint/
 │   │   ├── jacoco/
 │   │   │   └── index.html  <-- Code coverage report
 ├── pom.xml  <-- Maven configuration file
+```
+
 
 
 Conclusion
