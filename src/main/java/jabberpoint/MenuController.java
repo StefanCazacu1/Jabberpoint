@@ -9,6 +9,10 @@ public class MenuController extends MenuBar {
 	private final Frame parent;
 	private final Presentation presentation;
 
+	public MenuItem nextItem; 
+	public MenuItem prevItem; 
+	public MenuItem aboutItem;
+
 	public static final String OPEN = "Open";
 	public static final String NEW = "New";
 	public static final String SAVE = "Save";
@@ -50,7 +54,7 @@ public class MenuController extends MenuBar {
 		add(viewMenu);
 	}
 
-	private void openFile() {
+	public void openFile() {
 		FileDialog dialog = new FileDialog(parent, "Open File", FileDialog.LOAD);
 		dialog.setVisible(true);
 		if (dialog.getFile() != null) {
@@ -63,7 +67,7 @@ public class MenuController extends MenuBar {
 		}
 	}
 
-	private void saveFile() {
+	public void saveFile() {
 		FileDialog dialog = new FileDialog(parent, "Save File", FileDialog.SAVE);
 		dialog.setVisible(true);
 		if (dialog.getFile() != null) {

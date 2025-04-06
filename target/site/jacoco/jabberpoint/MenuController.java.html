@@ -9,6 +9,10 @@ public class MenuController extends MenuBar {
 	private final Frame parent;
 	private final Presentation presentation;
 
+	public MenuItem nextItem; 
+	public MenuItem prevItem; 
+	public MenuItem aboutItem;
+
 	public static final String OPEN = &quot;Open&quot;;
 	public static final String NEW = &quot;New&quot;;
 	public static final String SAVE = &quot;Save&quot;;
@@ -17,63 +21,63 @@ public class MenuController extends MenuBar {
 	public static final String PREV = &quot;Prev&quot;;
 	public static final String ABOUT = &quot;About&quot;;
 
-<span class="fc" id="L20">	public MenuController(Frame parent, Presentation presentation) {</span>
-<span class="fc" id="L21">		this.parent = parent;</span>
-<span class="fc" id="L22">		this.presentation = presentation;</span>
+<span class="fc" id="L24">	public MenuController(Frame parent, Presentation presentation) {</span>
+<span class="fc" id="L25">		this.parent = parent;</span>
+<span class="fc" id="L26">		this.presentation = presentation;</span>
 
-<span class="fc" id="L24">		Menu fileMenu = new Menu(&quot;File&quot;);</span>
-<span class="fc" id="L25">		MenuItem openItem = new MenuItem(&quot;Open&quot;);</span>
-<span class="fc" id="L26">		openItem.addActionListener(e -&gt; openFile());</span>
-<span class="fc" id="L27">		fileMenu.add(openItem);</span>
+<span class="fc" id="L28">		Menu fileMenu = new Menu(&quot;File&quot;);</span>
+<span class="fc" id="L29">		MenuItem openItem = new MenuItem(&quot;Open&quot;);</span>
+<span class="fc" id="L30">		openItem.addActionListener(e -&gt; openFile());</span>
+<span class="fc" id="L31">		fileMenu.add(openItem);</span>
 
-<span class="fc" id="L29">		MenuItem saveItem = new MenuItem(&quot;Save&quot;);</span>
-<span class="fc" id="L30">		saveItem.addActionListener(e -&gt; saveFile());</span>
-<span class="fc" id="L31">		fileMenu.add(saveItem);</span>
+<span class="fc" id="L33">		MenuItem saveItem = new MenuItem(&quot;Save&quot;);</span>
+<span class="fc" id="L34">		saveItem.addActionListener(e -&gt; saveFile());</span>
+<span class="fc" id="L35">		fileMenu.add(saveItem);</span>
 
-<span class="fc" id="L33">		MenuItem exitItem = new MenuItem(&quot;Exit&quot;);</span>
-<span class="pc" id="L34">		exitItem.addActionListener(e -&gt; System.exit(0));</span>
-<span class="fc" id="L35">		fileMenu.add(exitItem);</span>
-<span class="fc" id="L36">		add(fileMenu);</span>
+<span class="fc" id="L37">		MenuItem exitItem = new MenuItem(&quot;Exit&quot;);</span>
+<span class="pc" id="L38">		exitItem.addActionListener(e -&gt; System.exit(0));</span>
+<span class="fc" id="L39">		fileMenu.add(exitItem);</span>
+<span class="fc" id="L40">		add(fileMenu);</span>
 
-<span class="fc" id="L38">		Menu viewMenu = new Menu(&quot;View&quot;);</span>
-<span class="fc" id="L39">		MenuItem nextItem = new MenuItem(&quot;Next Slide&quot;);</span>
-<span class="fc" id="L40">		nextItem.addActionListener(e -&gt; presentation.nextSlide());</span>
-<span class="fc" id="L41">		viewMenu.add(nextItem);</span>
+<span class="fc" id="L42">		Menu viewMenu = new Menu(&quot;View&quot;);</span>
+<span class="fc" id="L43">		MenuItem nextItem = new MenuItem(&quot;Next Slide&quot;);</span>
+<span class="fc" id="L44">		nextItem.addActionListener(e -&gt; presentation.nextSlide());</span>
+<span class="fc" id="L45">		viewMenu.add(nextItem);</span>
 
-<span class="fc" id="L43">		MenuItem prevItem = new MenuItem(&quot;Previous Slide&quot;);</span>
-<span class="fc" id="L44">		prevItem.addActionListener(e -&gt; presentation.prevSlide());</span>
-<span class="fc" id="L45">		viewMenu.add(prevItem);</span>
+<span class="fc" id="L47">		MenuItem prevItem = new MenuItem(&quot;Previous Slide&quot;);</span>
+<span class="fc" id="L48">		prevItem.addActionListener(e -&gt; presentation.prevSlide());</span>
+<span class="fc" id="L49">		viewMenu.add(prevItem);</span>
 
-<span class="fc" id="L47">		MenuItem aboutItem = new MenuItem(&quot;About&quot;);</span>
-<span class="fc" id="L48">		aboutItem.addActionListener(e -&gt; AboutBox.show(parent));</span>
-<span class="fc" id="L49">		viewMenu.add(aboutItem);</span>
-<span class="fc" id="L50">		add(viewMenu);</span>
-<span class="fc" id="L51">	}</span>
+<span class="fc" id="L51">		MenuItem aboutItem = new MenuItem(&quot;About&quot;);</span>
+<span class="fc" id="L52">		aboutItem.addActionListener(e -&gt; AboutBox.show(parent));</span>
+<span class="fc" id="L53">		viewMenu.add(aboutItem);</span>
+<span class="fc" id="L54">		add(viewMenu);</span>
+<span class="fc" id="L55">	}</span>
 
-	private void openFile() {
-<span class="fc" id="L54">		FileDialog dialog = new FileDialog(parent, &quot;Open File&quot;, FileDialog.LOAD);</span>
-<span class="fc" id="L55">		dialog.setVisible(true);</span>
-<span class="pc bpc" id="L56" title="1 of 2 branches missed.">		if (dialog.getFile() != null) {</span>
-<span class="nc" id="L57">			String filename = dialog.getDirectory() + dialog.getFile();</span>
+	public void openFile() {
+<span class="fc" id="L58">		FileDialog dialog = new FileDialog(parent, &quot;Open File&quot;, FileDialog.LOAD);</span>
+<span class="fc" id="L59">		dialog.setVisible(true);</span>
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">		if (dialog.getFile() != null) {</span>
+<span class="nc" id="L61">			String filename = dialog.getDirectory() + dialog.getFile();</span>
 			try {
-<span class="nc" id="L59">				presentation.load(filename);</span>
-<span class="nc" id="L60">			} catch (IOException e) {</span>
-<span class="nc" id="L61">				JOptionPane.showMessageDialog(parent, &quot;Error loading file!&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
-<span class="nc" id="L62">			}</span>
+<span class="nc" id="L63">				presentation.load(filename);</span>
+<span class="nc" id="L64">			} catch (IOException e) {</span>
+<span class="nc" id="L65">				JOptionPane.showMessageDialog(parent, &quot;Error loading file!&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L66">			}</span>
 		}
-<span class="fc" id="L64">	}</span>
+<span class="fc" id="L68">	}</span>
 
-	private void saveFile() {
-<span class="fc" id="L67">		FileDialog dialog = new FileDialog(parent, &quot;Save File&quot;, FileDialog.SAVE);</span>
-<span class="fc" id="L68">		dialog.setVisible(true);</span>
-<span class="pc bpc" id="L69" title="1 of 2 branches missed.">		if (dialog.getFile() != null) {</span>
-<span class="nc" id="L70">			String filename = dialog.getDirectory() + dialog.getFile();</span>
+	public void saveFile() {
+<span class="fc" id="L71">		FileDialog dialog = new FileDialog(parent, &quot;Save File&quot;, FileDialog.SAVE);</span>
+<span class="fc" id="L72">		dialog.setVisible(true);</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">		if (dialog.getFile() != null) {</span>
+<span class="nc" id="L74">			String filename = dialog.getDirectory() + dialog.getFile();</span>
 			try {
-<span class="nc" id="L72">				presentation.save(filename);</span>
-<span class="nc" id="L73">			} catch (IOException e) {</span>
-<span class="nc" id="L74">				JOptionPane.showMessageDialog(parent, &quot;Error saving file!&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
-<span class="nc" id="L75">			}</span>
+<span class="nc" id="L76">				presentation.save(filename);</span>
+<span class="nc" id="L77">			} catch (IOException e) {</span>
+<span class="nc" id="L78">				JOptionPane.showMessageDialog(parent, &quot;Error saving file!&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L79">			}</span>
 		}
-<span class="fc" id="L77">	}</span>
+<span class="fc" id="L81">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

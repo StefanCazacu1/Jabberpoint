@@ -6,6 +6,7 @@ jabberpoint\PresentationTest$MockSlideViewerComponent.class
 jabberpoint\SlideViewerFrameTest.class
 jabberpoint\XMLAccessorTest.class
 jabberpoint\KeyControllerTest.class
+jabberpoint\DemoPresentationTest.class
 jabberpoint\SlideTest.class
 jabberpoint\MenuControllerTest.class
 jabberpoint\TextItemTest.class

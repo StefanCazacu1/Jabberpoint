@@ -22,14 +22,14 @@ public class SlideViewerComponent extends JPanel implements Observer {
 
 	@Override
 	public void update() {
-<span class="nc" id="L25">		repaint();</span>
-<span class="nc" id="L26">	}</span>
+<span class="fc" id="L25">		repaint();</span>
+<span class="fc" id="L26">	}</span>
 
 	@Override
 	protected void paintComponent(Graphics g) {
 <span class="fc" id="L30">		super.paintComponent(g);</span>
-<span class="pc bpc" id="L31" title="1 of 2 branches missed.">		if (presentation.getCurrentSlide() != null) {</span>
-<span class="nc" id="L32">			presentation.getCurrentSlide().draw(g, this, 0, 0, 1.0f);</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">		if (presentation.getCurrentSlide() != null) {</span>
+<span class="fc" id="L32">			presentation.getCurrentSlide().draw(g, this, 0, 0, 1.0f);</span>
 		}
 <span class="fc" id="L34">	}</span>
 
