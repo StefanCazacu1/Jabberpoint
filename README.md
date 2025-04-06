@@ -88,6 +88,7 @@ bash
 Copy
 Edit
 open target/site/jacoco/index.html
+
 6. Static Code Analysis
 Maven also runs Checkstyle to ensure that the code follows a consistent style. You can view the Checkstyle results in the Maven build output. It will indicate any coding standard violations.
 
