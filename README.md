@@ -27,6 +27,8 @@ Code Coverage Reporting
 
 File Structure
 
+GitHub Actions
+
 Conclusion
 
 ## Technologies & Frameworks Used
@@ -49,14 +51,14 @@ JaCoCo: Code coverage tool used to generate reports.
 Checkstyle: Ensures the code follows coding standards.
 
 ## How to Set Up the Project
-Prerequisites
+## Prerequisites
 Before you begin, ensure you have the following installed on your local machine:
 
 Java 17 or later.
 
 Maven for managing dependencies and building the project.
 
-Clone the Repository
+## Clone the Repository
 Clone the project repository to your local machine:
 
 bash
@@ -64,7 +66,7 @@ Copy
 Edit
 git clone https://github.com/yourusername/jabberpoint.git
 cd jabberpoint
-Build the Project
+## Build the Project
 Once the repository is cloned, build the project using Maven:
 
 bash
@@ -81,7 +83,7 @@ Run all unit tests.
 
 Package the project for deployment.
 
-Run the Application
+## Run the Application
 To run the application, use the following Maven command:
 
 bash
@@ -90,7 +92,7 @@ Edit
 mvn exec:java
 This will execute the main() method in the jabberpoint.JabberPoint class and start the slide-show application.
 
-Run Unit Tests
+## Run Unit Tests
 To run the unit tests, execute the following:
 
 bash
@@ -99,7 +101,7 @@ Edit
 mvn test
 This will run all the tests located in src/test/java, ensuring that your application behaves as expected.
 
-View Code Coverage
+## View Code Coverage
 After running the tests, JaCoCo generates a code coverage report. To view it:
 
 Open target/site/jacoco/index.html in your browser.
@@ -112,8 +114,9 @@ bash
 Copy
 Edit
 open target/site/jacoco/index.html
-Testing Details
-Unit Tests
+
+## Testing Details
+## Unit Tests
 The project contains unit tests for the following components:
 
 Presentation: Ensures that the slides are correctly managed, navigated, and saved/loaded in both JSON and XML formats.
@@ -132,7 +135,7 @@ SlideTest.java: Ensures slide behavior and item management.
 
 PresentationTest.java: Verifies overall presentation functionality.
 
-Code Coverage Reporting
+## Code Coverage Reporting
 After running the tests, JaCoCo generates a code coverage report at target/site/jacoco. This report shows the percentage of lines and methods covered by tests. Aim for at least 70% line coverage as per the project requirements.
 
 Green: Covered code.
