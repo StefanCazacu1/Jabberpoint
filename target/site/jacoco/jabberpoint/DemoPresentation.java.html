@@ -1,54 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DemoPresentation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jabberpoint</a> &gt; <a href="index.source.html" class="el_package">jabberpoint</a> &gt; <span class="el_source">DemoPresentation.java</span></div><h1>DemoPresentation.java</h1><pre class="source lang-java linenums">package jabberpoint;
 
-/**
- * A built-in demo presentation.
- * (DemoPresentation extends Accessor)
- */
-<span class="nc" id="L7">class DemoPresentation extends Accessor {</span>
+<span class="nc" id="L3">class DemoPresentation extends Accessor {</span>
 
-	@Override
 	public void loadFile(Presentation presentation, String unusedFilename) {
-<span class="nc" id="L11">		presentation.setTitle(&quot;Demo Presentation&quot;);</span>
+<span class="nc" id="L6">		presentation.setTitle(&quot;Demo Presentation&quot;);</span>
 		Slide slide;
 
-<span class="nc" id="L14">		slide = new Slide();</span>
-<span class="nc" id="L15">		slide.setTitle(&quot;JabberPoint&quot;);</span>
-<span class="nc" id="L16">		slide.append(new TextItem(1, &quot;Het Java Presentatie Tool&quot;));</span>
-<span class="nc" id="L17">		slide.append(new TextItem(2, &quot;Copyright (c) 1996-2000: Ian Darwin&quot;));</span>
-<span class="nc" id="L18">		slide.append(new TextItem(2, &quot;Copyright (c) 2000-now:&quot;));</span>
-<span class="nc" id="L19">		slide.append(new TextItem(2, &quot;Gert Florijn en Sylvia Stuurman&quot;));</span>
-<span class="nc" id="L20">		slide.append(new TextItem(4, &quot;JabberPoint aanroepen zonder bestandsnaam&quot;));</span>
-<span class="nc" id="L21">		slide.append(new TextItem(4, &quot;laat deze presentatie zien&quot;));</span>
-<span class="nc" id="L22">		slide.append(new TextItem(1, &quot;Navigeren:&quot;));</span>
-<span class="nc" id="L23">		slide.append(new TextItem(3, &quot;Volgende slide: PgDn of Enter&quot;));</span>
-<span class="nc" id="L24">		slide.append(new TextItem(3, &quot;Vorige slide: PgUp of up-arrow&quot;));</span>
-<span class="nc" id="L25">		slide.append(new TextItem(3, &quot;Stoppen: q or Q&quot;));</span>
-<span class="nc" id="L26">		presentation.append(slide);</span>
+<span class="nc" id="L9">		slide = new Slide();</span>
+<span class="nc" id="L10">		slide.setTitle(&quot;JabberPoint&quot;);</span>
+<span class="nc" id="L11">		slide.addItem(new TextItem(1, &quot;Het Java Presentatie Tool&quot;));</span>
+<span class="nc" id="L12">		slide.addItem(new TextItem(2, &quot;Copyright (c) 1996-2000: Ian Darwin&quot;));</span>
+<span class="nc" id="L13">		slide.addItem(new TextItem(2, &quot;Copyright (c) 2000-now:&quot;));</span>
+<span class="nc" id="L14">		slide.addItem(new TextItem(2, &quot;Gert Florijn en Sylvia Stuurman&quot;));</span>
+<span class="nc" id="L15">		slide.addItem(new TextItem(4, &quot;JabberPoint aanroepen zonder bestandsnaam&quot;));</span>
+<span class="nc" id="L16">		slide.addItem(new TextItem(4, &quot;laat deze presentatie zien&quot;));</span>
+<span class="nc" id="L17">		slide.addItem(new TextItem(1, &quot;Navigeren:&quot;));</span>
+<span class="nc" id="L18">		slide.addItem(new TextItem(3, &quot;Volgende slide: PgDn of Enter&quot;));</span>
+<span class="nc" id="L19">		slide.addItem(new TextItem(3, &quot;Vorige slide: PgUp of up-arrow&quot;));</span>
+<span class="nc" id="L20">		slide.addItem(new TextItem(3, &quot;Stoppen: q or Q&quot;));</span>
+<span class="nc" id="L21">		presentation.append(slide);</span>
 
-<span class="nc" id="L28">		slide = new Slide();</span>
-<span class="nc" id="L29">		slide.setTitle(&quot;Demonstratie van levels en stijlen&quot;);</span>
-<span class="nc" id="L30">		slide.append(new TextItem(1, &quot;Level 1&quot;));</span>
-<span class="nc" id="L31">		slide.append(new TextItem(2, &quot;Level 2&quot;));</span>
-<span class="nc" id="L32">		slide.append(new TextItem(1, &quot;Nogmaals level 1&quot;));</span>
-<span class="nc" id="L33">		slide.append(new TextItem(1, &quot;Level 1 heeft stijl nummer 1&quot;));</span>
-<span class="nc" id="L34">		slide.append(new TextItem(2, &quot;Level 2 heeft stijl nummer 2&quot;));</span>
-<span class="nc" id="L35">		slide.append(new TextItem(3, &quot;Zo ziet level 3 er uit&quot;));</span>
-<span class="nc" id="L36">		slide.append(new TextItem(4, &quot;En dit is level 4&quot;));</span>
-<span class="nc" id="L37">		presentation.append(slide);</span>
+<span class="nc" id="L23">		slide = new Slide();</span>
+<span class="nc" id="L24">		slide.setTitle(&quot;Demonstratie van levels en stijlen&quot;);</span>
+<span class="nc" id="L25">		slide.addItem(new TextItem(1, &quot;Level 1&quot;));</span>
+<span class="nc" id="L26">		slide.addItem(new TextItem(2, &quot;Level 2&quot;));</span>
+<span class="nc" id="L27">		slide.addItem(new TextItem(1, &quot;Nogmaals level 1&quot;));</span>
+<span class="nc" id="L28">		slide.addItem(new TextItem(1, &quot;Level 1 heeft stijl nummer 1&quot;));</span>
+<span class="nc" id="L29">		slide.addItem(new TextItem(2, &quot;Level 2 heeft stijl nummer 2&quot;));</span>
+<span class="nc" id="L30">		slide.addItem(new TextItem(3, &quot;Zo ziet level 3 er uit&quot;));</span>
+<span class="nc" id="L31">		slide.addItem(new TextItem(4, &quot;En dit is level 4&quot;));</span>
+<span class="nc" id="L32">		presentation.append(slide);</span>
 
-<span class="nc" id="L39">		slide = new Slide();</span>
-<span class="nc" id="L40">		slide.setTitle(&quot;De derde slide&quot;);</span>
-<span class="nc" id="L41">		slide.append(new TextItem(1, &quot;Om een nieuwe presentatie te openen,&quot;));</span>
-<span class="nc" id="L42">		slide.append(new TextItem(2, &quot;gebruik File-&gt;Open uit het menu.&quot;));</span>
-<span class="nc" id="L43">		slide.append(new TextItem(1, &quot; &quot;));</span>
-<span class="nc" id="L44">		slide.append(new TextItem(1, &quot;Dit is het einde van de presentatie.&quot;));</span>
-<span class="nc" id="L45">		slide.append(new BitmapItem(1, &quot;JabberPoint.jpg&quot;));</span>
-<span class="nc" id="L46">		presentation.append(slide);</span>
-<span class="nc" id="L47">	}</span>
+<span class="nc" id="L34">		slide = new Slide();</span>
+<span class="nc" id="L35">		slide.setTitle(&quot;De derde slide&quot;);</span>
+<span class="nc" id="L36">		slide.addItem(new TextItem(1, &quot;Om een nieuwe presentatie te openen,&quot;));</span>
+<span class="nc" id="L37">		slide.addItem(new TextItem(2, &quot;gebruik File-&gt;Open uit het menu.&quot;));</span>
+<span class="nc" id="L38">		slide.addItem(new TextItem(1, &quot; &quot;));</span>
+<span class="nc" id="L39">		slide.addItem(new TextItem(1, &quot;Dit is het einde van de presentatie.&quot;));</span>
+<span class="nc" id="L40">		slide.addItem(new BitmapItem(1, &quot;JabberPoint.jpg&quot;));</span>
+<span class="nc" id="L41">		presentation.append(slide);</span>
+<span class="nc" id="L42">	}</span>
 
-	@Override
 	public void saveFile(Presentation presentation, String unusedFilename) {
-<span class="nc" id="L51">		throw new IllegalStateException(&quot;Save As-&gt;Demo! aangeroepen&quot;);</span>
+<span class="nc" id="L45">		throw new IllegalStateException(&quot;Save As-&gt;Demo! aangeroepen&quot;);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

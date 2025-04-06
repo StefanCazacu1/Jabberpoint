@@ -1,2 +1,7 @@
 jabberpoint\PresentationTest.class
+jabberpoint\StyleTest.class
+jabberpoint\TextItemTest.class
+jabberpoint\SlideItemTest$DummySlideItem.class
+jabberpoint\SlideItemTest.class
 jabberpoint\SlideTest.class
+jabberpoint\BitmapItemTest.class

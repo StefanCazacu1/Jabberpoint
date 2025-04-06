@@ -1,22 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SlideItem.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jabberpoint</a> &gt; <a href="index.source.html" class="el_package">jabberpoint</a> &gt; <span class="el_source">SlideItem.java</span></div><h1>SlideItem.java</h1><pre class="source lang-java linenums">package jabberpoint;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.ImageObserver;
 
 public abstract class SlideItem {
-	private int level;
-
-<span class="fc" id="L10">	public SlideItem(int level) {</span>
-<span class="fc" id="L11">		this.level = level;</span>
-<span class="fc" id="L12">	}</span>
+	protected int level;
+<span class="fc" id="L10">	private Color color = Color.BLACK; // Default color is black</span>
+	
+<span class="fc" id="L12">	public SlideItem(int level) {</span>
+<span class="fc" id="L13">		this.level = level;</span>
+<span class="fc" id="L14">	}</span>
 
 	public int getLevel() {
-<span class="nc" id="L15">		return level;</span>
+<span class="fc" id="L17">		return level;</span>
 	}
 
-	public abstract void draw(int x, int y, float scale, Graphics g, Style style, ImageObserver observer);
+	public void setLevel(int lev) {
+<span class="fc" id="L21">		level = lev;</span>
+<span class="fc" id="L22">	}</span>
 
-	public abstract Rectangle getBoundingBox(Graphics g, ImageObserver observer, float scale, Style style);
+	public abstract void draw(Graphics g, ImageObserver observer, int x, int y, float scale);
+
+	public abstract Rectangle getBoundingBox(Graphics g, ImageObserver observer, float scale);
+	
+	public Color getColor() {
+<span class="fc" id="L29">		return color;</span>
+	}
+	public void setColor(Color color) {
+<span class="fc" id="L32">		this.color = color;</span>
+<span class="fc" id="L33">	}</span>
+	
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
