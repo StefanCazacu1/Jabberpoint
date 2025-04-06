@@ -5,6 +5,7 @@ Overview
 JabberPoint is a simple slide-show application implemented in Java. This project aims to demonstrate principles of software quality, design patterns, and unit testing. The goal is to improve the existing codebase, making it more maintainable, extensible, and flexible using SOLID principles and Design Patterns like Composite, Observer, and Strategy.
 
 Technologies & Frameworks Used
+
 Java 17: The programming language used to build the project.
 
 Maven: A build automation tool used to manage dependencies, build the project, and run tests.
@@ -24,20 +25,29 @@ JaCoCo: Used for code coverage reporting to ensure test effectiveness.
 Checkstyle: Ensures that the code adheres to coding standards.
 
 How to Set Up the Project
+
 Prerequisites
+
 Java 17: Install Java 17 or later on your system.
 
 Maven: Install Maven to manage dependencies and build the project.
 
 1. Clone the Repository
+2. 
 First, clone the repository from GitHub to your local machine.
 
 bash
+
 Copy
+
 Edit
+
 git clone https://github.com/yourusername/jabberpoint.git
+
 cd jabberpoint
+
 2. Build the Project
+3. 
 Once the repository is cloned, navigate to the project folder and build the project using Maven:
 
 bash
