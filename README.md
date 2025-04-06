@@ -1,5 +1,7 @@
 JabberPoint Project - README
+
 Overview
+
 JabberPoint is a simple slide-show application implemented in Java. This project aims to demonstrate principles of software quality, design patterns, and unit testing. The goal is to improve the existing codebase, making it more maintainable, extensible, and flexible using SOLID principles and Design Patterns like Composite, Observer, and Strategy.
 
 Technologies & Frameworks Used
