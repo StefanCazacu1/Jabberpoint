@@ -10,7 +10,7 @@ public class AboutBoxTest {
 
     @Test
     void testShowWithNullParent() {
-        // Mocking the static method of JOptionPane
+        // Mocking the static method of JOptionPane /
         try (MockedStatic<JOptionPane> mocked = mockStatic(JOptionPane.class)) {
             // Call the AboutBox.show() method with null parent
             AboutBox.show(null);
