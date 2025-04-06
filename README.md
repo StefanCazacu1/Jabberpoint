@@ -33,22 +33,15 @@ Java 17: Install Java 17 or later on your system.
 Maven: Install Maven to manage dependencies and build the project.
 
 1. Clone the Repository
-2. 
-First, clone the repository from GitHub to your local machine.
-
-bash
-
-Copy
-
-Edit
+2. First, clone the repository from GitHub to your local machine.
+bash  Copy  Edit
 
 git clone https://github.com/yourusername/jabberpoint.git
 
 cd jabberpoint
 
 2. Build the Project
-3. 
-Once the repository is cloned, navigate to the project folder and build the project using Maven:
+3. Once the repository is cloned, navigate to the project folder and build the project using Maven:
 
 bash
 Copy
