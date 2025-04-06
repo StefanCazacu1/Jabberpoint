@@ -141,11 +141,9 @@ Red: Uncovered code.
 Yellow: Partially covered code.
 
 File Structure
+--------------
 The project follows a typical Maven directory structure:
 
-css
-Copy
-Edit
 jabberpoint/
 ├── src/
 │   ├── main/
@@ -165,6 +163,7 @@ jabberpoint/
 │   │   ├── jacoco/
 │   │   │   └── index.html  <-- Code coverage report
 ├── pom.xml  <-- Maven configuration file
+
 
 Conclusion
 This project demonstrates how to apply design patterns and SOLID principles to create a maintainable and extensible slide-show application. With comprehensive unit tests and code coverage reporting integrated into the Maven build process, the project ensures that all code is tested and of high quality.
