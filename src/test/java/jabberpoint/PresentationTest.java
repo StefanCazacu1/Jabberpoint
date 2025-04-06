@@ -6,27 +6,34 @@ import org.junit.jupiter.api.Test;
 class PresentationTest {
 
     @Test
-    void testAddSlide() {
+    void presentationShouldStartEmpty() {
         Presentation presentation = new Presentation();
-        Slide slide = new Slide();
-        presentation.append(slide);
-
-        assertEquals(1, presentation.getSize());
-        assertSame(slide, presentation.getSlide(0));
+        assertEquals(0, presentation.getSize());
     }
 
     @Test
-    void testSlideNavigation() {
+    void addSlideAndNavigate() {
         Presentation presentation = new Presentation();
         Slide slide1 = new Slide();
         Slide slide2 = new Slide();
         presentation.append(slide1);
         presentation.append(slide2);
 
+        assertEquals(2, presentation.getSize());
+
         presentation.setSlideNumber(0);
         assertEquals(slide1, presentation.getCurrentSlide());
 
         presentation.nextSlide();
         assertEquals(slide2, presentation.getCurrentSlide());
+
+        presentation.prevSlide();
+        assertEquals(slide1, presentation.getCurrentSlide());
+    }
+
+    @Test
+    void getSlideOutOfBoundsReturnsNull() {
+        Presentation presentation = new Presentation();
+        assertNull(presentation.getSlide(5));
     }
 }

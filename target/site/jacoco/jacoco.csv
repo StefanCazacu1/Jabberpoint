@@ -2,24 +2,24 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 jabberpoint,jabberpoint,DemoPresentation,196,0,0,0,35,0,3,0,3,0
 jabberpoint,jabberpoint,KeyController,21,0,4,0,11,0,5,0,2,0
 jabberpoint,jabberpoint,Accessor,7,0,0,0,3,0,2,0,2,0
-jabberpoint,jabberpoint,TextItem,94,7,4,0,14,3,5,1,3,1
+jabberpoint,jabberpoint,TextItem,0,88,0,4,0,24,0,8,0,6
 jabberpoint,jabberpoint,AboutBox,9,0,0,0,3,0,2,0,2,0
 jabberpoint,jabberpoint,JabberPoint,42,0,2,0,11,0,3,0,2,0
 jabberpoint,jabberpoint,SlideViewerFrame.new WindowAdapter() {...},9,0,0,0,3,0,2,0,2,0
-jabberpoint,jabberpoint,BitmapItem,90,0,6,0,19,0,8,0,5,0
+jabberpoint,jabberpoint,BitmapItem,0,93,0,4,0,20,0,7,0,5
 jabberpoint,jabberpoint,MenuController.new ActionListener() {...},11,0,0,0,3,0,2,0,2,0
 jabberpoint,jabberpoint,MenuController.new ActionListener() {...},20,0,0,0,5,0,2,0,2,0
 jabberpoint,jabberpoint,MenuController.new ActionListener() {...},11,0,0,0,3,0,2,0,2,0
 jabberpoint,jabberpoint,SlideViewerFrame,55,0,0,0,13,0,2,0,2,0
 jabberpoint,jabberpoint,MenuController,160,0,0,0,28,0,2,0,2,0
 jabberpoint,jabberpoint,MenuController.new ActionListener() {...},41,0,0,0,10,0,2,0,2,0
-jabberpoint,jabberpoint,SlideViewerComponent,109,0,6,0,29,0,8,0,5,0
+jabberpoint,jabberpoint,SlideViewerComponent,109,0,4,0,24,0,7,0,5,0
 jabberpoint,jabberpoint,MenuController.new ActionListener() {...},11,0,0,0,3,0,2,0,2,0
 jabberpoint,jabberpoint,MenuController.new ActionListener() {...},12,0,0,0,3,0,2,0,2,0
-jabberpoint,jabberpoint,XMLAccessor,264,0,18,0,67,0,14,0,5,0
+jabberpoint,jabberpoint,XMLAccessor,240,0,18,0,59,0,14,0,5,0
 jabberpoint,jabberpoint,MenuController.new ActionListener() {...},28,0,0,0,7,0,2,0,2,0
 jabberpoint,jabberpoint,MenuController.new ActionListener() {...},15,0,0,0,4,0,2,0,2,0
-jabberpoint,jabberpoint,Style,122,0,2,0,22,0,8,0,7,0
-jabberpoint,jabberpoint,Slide,40,31,2,0,8,10,3,6,2,6
-jabberpoint,jabberpoint,SlideItem,3,6,0,0,1,3,1,1,1,1
-jabberpoint,jabberpoint,Presentation,52,75,6,4,17,22,12,8,7,8
+jabberpoint,jabberpoint,Style,36,124,6,2,8,24,5,8,1,8
+jabberpoint,jabberpoint,Slide,0,125,0,8,0,30,0,14,0,10
+jabberpoint,jabberpoint,SlideItem,0,23,0,0,0,10,0,5,0,5
+jabberpoint,jabberpoint,Presentation,40,87,4,6,13,26,10,10,6,9

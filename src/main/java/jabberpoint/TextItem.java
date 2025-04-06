@@ -1,12 +1,7 @@
 package jabberpoint;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.ImageObserver;
-import java.awt.font.TextLayout;
-import java.awt.Graphics2D;
-import java.awt.Color;
-import java.awt.Point;
 
 public class TextItem extends SlideItem {
 	private String text;
@@ -20,25 +15,34 @@ public class TextItem extends SlideItem {
 		return text;
 	}
 
-	@Override
-	public void draw(int x, int y, float scale, Graphics g, Style style, ImageObserver observer) {
-		if (text == null || text.isEmpty()) {
-			return;
-		}
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.setFont(style.getFont(scale));
-		g2d.setColor(style.getColor());
+	public void setText(String text) { // 🆕 Add this
+		this.text = text;
+	}
 
-		Point pen = new Point(x + (int) (style.getIndent() * scale), y + (int) (style.getLeading() * scale));
-		TextLayout layout = new TextLayout(text, style.getFont(scale), g2d.getFontRenderContext());
-		layout.draw(g2d, pen.x, pen.y);
+	public void setLevel(int level) { // 🆕 Add this
+		super.level = level;
 	}
 
 	@Override
-	public Rectangle getBoundingBox(Graphics g, ImageObserver observer, float scale, Style style) {
-		Graphics2D g2d = (Graphics2D) g;
-		TextLayout layout = new TextLayout(text, style.getFont(scale), g2d.getFontRenderContext());
-		Rectangle bounds = layout.getPixelBounds(null, 0, 0);
-		return new Rectangle(0, 0, bounds.width, bounds.height);
+	public void draw(Graphics g, ImageObserver observer, int x, int y, float scale) {
+		if (g == null)
+			return;
+		Style style = Style.getStyle(getLevel());
+		Font font = style.getFont(scale);
+		g.setFont(font);
+		g.setColor(style.getColor());
+		g.drawString(text, x, y + (int) (style.getLeading() * scale));
+	}
+
+	@Override
+	public Rectangle getBoundingBox(Graphics g, ImageObserver observer, float scale) {
+		if (g == null)
+			return new Rectangle(0, 0, 0, 0);
+		Style style = Style.getStyle(getLevel());
+		Font font = style.getFont(scale);
+		FontMetrics metrics = g.getFontMetrics(font);
+		int width = metrics.stringWidth(text);
+		int height = metrics.getHeight();
+		return new Rectangle(0, 0, width, height);
 	}
 }

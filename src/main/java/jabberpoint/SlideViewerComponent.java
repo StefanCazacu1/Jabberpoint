@@ -1,16 +1,13 @@
 package jabberpoint;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.image.ImageObserver;
+import java.awt.Rectangle;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-/**
- * SlideViewerComponent is a graphical component to show Slides.
- */
 public class SlideViewerComponent extends JComponent {
 	private static final long serialVersionUID = 227L;
 
@@ -22,34 +19,34 @@ public class SlideViewerComponent extends JComponent {
 	private static final int XPOS = 1100;
 	private static final int YPOS = 20;
 
-	private Slide slide; // current slide
-	private Font labelFont = null; // font for labels
-	private Presentation presentation = null; // the presentation
-	private JFrame frame = null;
+	private static final int WIDTH = 1200; // define it manually
+	private static final int HEIGHT = 800;
 
-	public SlideViewerComponent(Presentation pres, JFrame frame) {
+	private Slide slide;
+	private Font labelFont;
+	private Presentation presentation;
+	private JFrame frame;
+
+	public SlideViewerComponent(Presentation presentation, JFrame frame) {
 		setBackground(BGCOLOR);
-		presentation = pres;
 		labelFont = new Font(FONTNAME, FONTSTYLE, FONTHEIGHT);
+		this.presentation = presentation;
 		this.frame = frame;
 	}
 
 	public Dimension getPreferredSize() {
-		return new Dimension(Slide.WIDTH, Slide.HEIGHT);
+		return new Dimension(WIDTH, HEIGHT);
 	}
 
-	public void update(Presentation presentation, Slide data) {
-		if (data == null) {
-			repaint();
-			return;
-		}
+	public void update(Presentation presentation, Slide slide) {
 		this.presentation = presentation;
-		this.slide = data;
+		this.slide = slide;
 		repaint();
 		frame.setTitle(presentation.getTitle());
 	}
 
-	public void paintComponent(Graphics g) {
+	@Override
+	protected void paintComponent(Graphics g) {
 		g.setColor(BGCOLOR);
 		g.fillRect(0, 0, getSize().width, getSize().height);
 		if (presentation.getSlideNumber() < 0 || slide == null) {
@@ -58,6 +55,8 @@ public class SlideViewerComponent extends JComponent {
 		g.setFont(labelFont);
 		g.setColor(COLOR);
 		g.drawString("Slide " + (1 + presentation.getSlideNumber()) + " of " + presentation.getSize(), XPOS, YPOS);
-		slide.draw(g, this, 0, YPOS, 1.0f);
+
+		Rectangle area = new Rectangle(0, YPOS, getWidth(), getHeight() - YPOS);
+		slide.draw(g, this, area.x, area.y, 1.0f);
 	}
 }

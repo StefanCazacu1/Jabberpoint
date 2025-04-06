@@ -1,64 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SlideViewerComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jabberpoint</a> &gt; <a href="index.source.html" class="el_package">jabberpoint</a> &gt; <span class="el_source">SlideViewerComponent.java</span></div><h1>SlideViewerComponent.java</h1><pre class="source lang-java linenums">package jabberpoint;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.image.ImageObserver;
+import java.awt.Rectangle;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-/**
- * SlideViewerComponent is a graphical component to show Slides.
- */
 public class SlideViewerComponent extends JComponent {
 	private static final long serialVersionUID = 227L;
 
-<span class="nc" id="L17">	private static final Color BGCOLOR = Color.white;</span>
-<span class="nc" id="L18">	private static final Color COLOR = Color.black;</span>
+<span class="nc" id="L14">	private static final Color BGCOLOR = Color.white;</span>
+<span class="nc" id="L15">	private static final Color COLOR = Color.black;</span>
 	private static final String FONTNAME = &quot;Dialog&quot;;
 	private static final int FONTSTYLE = Font.BOLD;
 	private static final int FONTHEIGHT = 10;
 	private static final int XPOS = 1100;
 	private static final int YPOS = 20;
 
-	private Slide slide; // current slide
-<span class="nc" id="L26">	private Font labelFont = null; // font for labels</span>
-<span class="nc" id="L27">	private Presentation presentation = null; // the presentation</span>
-<span class="nc" id="L28">	private JFrame frame = null;</span>
+	private static final int WIDTH = 1200; // define it manually
+	private static final int HEIGHT = 800;
 
-<span class="nc" id="L30">	public SlideViewerComponent(Presentation pres, JFrame frame) {</span>
+	private Slide slide;
+	private Font labelFont;
+	private Presentation presentation;
+	private JFrame frame;
+
+<span class="nc" id="L30">	public SlideViewerComponent(Presentation presentation, JFrame frame) {</span>
 <span class="nc" id="L31">		setBackground(BGCOLOR);</span>
-<span class="nc" id="L32">		presentation = pres;</span>
-<span class="nc" id="L33">		labelFont = new Font(FONTNAME, FONTSTYLE, FONTHEIGHT);</span>
+<span class="nc" id="L32">		labelFont = new Font(FONTNAME, FONTSTYLE, FONTHEIGHT);</span>
+<span class="nc" id="L33">		this.presentation = presentation;</span>
 <span class="nc" id="L34">		this.frame = frame;</span>
 <span class="nc" id="L35">	}</span>
 
 	public Dimension getPreferredSize() {
-<span class="nc" id="L38">		return new Dimension(Slide.WIDTH, Slide.HEIGHT);</span>
+<span class="nc" id="L38">		return new Dimension(WIDTH, HEIGHT);</span>
 	}
 
-	public void update(Presentation presentation, Slide data) {
-<span class="nc bnc" id="L42" title="All 2 branches missed.">		if (data == null) {</span>
-<span class="nc" id="L43">			repaint();</span>
-<span class="nc" id="L44">			return;</span>
-		}
-<span class="nc" id="L46">		this.presentation = presentation;</span>
-<span class="nc" id="L47">		this.slide = data;</span>
-<span class="nc" id="L48">		repaint();</span>
-<span class="nc" id="L49">		frame.setTitle(presentation.getTitle());</span>
-<span class="nc" id="L50">	}</span>
+	public void update(Presentation presentation, Slide slide) {
+<span class="nc" id="L42">		this.presentation = presentation;</span>
+<span class="nc" id="L43">		this.slide = slide;</span>
+<span class="nc" id="L44">		repaint();</span>
+<span class="nc" id="L45">		frame.setTitle(presentation.getTitle());</span>
+<span class="nc" id="L46">	}</span>
 
-	public void paintComponent(Graphics g) {
-<span class="nc" id="L53">		g.setColor(BGCOLOR);</span>
-<span class="nc" id="L54">		g.fillRect(0, 0, getSize().width, getSize().height);</span>
-<span class="nc bnc" id="L55" title="All 4 branches missed.">		if (presentation.getSlideNumber() &lt; 0 || slide == null) {</span>
-<span class="nc" id="L56">			return;</span>
+	@Override
+	protected void paintComponent(Graphics g) {
+<span class="nc" id="L50">		g.setColor(BGCOLOR);</span>
+<span class="nc" id="L51">		g.fillRect(0, 0, getSize().width, getSize().height);</span>
+<span class="nc bnc" id="L52" title="All 4 branches missed.">		if (presentation.getSlideNumber() &lt; 0 || slide == null) {</span>
+<span class="nc" id="L53">			return;</span>
 		}
-<span class="nc" id="L58">		g.setFont(labelFont);</span>
-<span class="nc" id="L59">		g.setColor(COLOR);</span>
-<span class="nc" id="L60">		g.drawString(&quot;Slide &quot; + (1 + presentation.getSlideNumber()) + &quot; of &quot; + presentation.getSize(), XPOS, YPOS);</span>
-<span class="nc" id="L61">		slide.draw(g, this, 0, YPOS, 1.0f);</span>
-<span class="nc" id="L62">	}</span>
+<span class="nc" id="L55">		g.setFont(labelFont);</span>
+<span class="nc" id="L56">		g.setColor(COLOR);</span>
+<span class="nc" id="L57">		g.drawString(&quot;Slide &quot; + (1 + presentation.getSlideNumber()) + &quot; of &quot; + presentation.getSize(), XPOS, YPOS);</span>
+
+<span class="nc" id="L59">		Rectangle area = new Rectangle(0, YPOS, getWidth(), getHeight() - YPOS);</span>
+<span class="nc" id="L60">		slide.draw(g, this, area.x, area.y, 1.0f);</span>
+<span class="nc" id="L61">	}</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

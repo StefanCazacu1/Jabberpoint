@@ -2,57 +2,72 @@ package jabberpoint;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.io.Serializable;
-import java.util.HashMap;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
-public class Style implements Serializable {
-	private static final long serialVersionUID = 227L;
-
-	private static final HashMap<Integer, Style> styles = new HashMap<>();
-
-	private final int indent;
-	private final Color color;
-	private final Font font;
-	private final int fontSize;
-	private final int leading;
+public class Style {
+	private static Style[] styles;
 
 	static {
-		styles.put(0, new Style(0, Color.red, 48, 20)); // Title
-		styles.put(1, new Style(20, Color.blue, 40, 10)); // First level
-		styles.put(2, new Style(50, Color.black, 36, 10)); // Second level
-		styles.put(3, new Style(70, Color.black, 30, 10)); // Third level
-		styles.put(4, new Style(90, Color.black, 24, 10)); // Fourth level
+		styles = new Style[5];
+		styles[0] = new Style(24, 20, 10, Color.red); // Level 0
+		styles[1] = new Style(20, 18, 10, Color.blue); // Level 1
+		styles[2] = new Style(16, 16, 10, Color.black); // Level 2
+		styles[3] = new Style(14, 14, 10, Color.gray); // Level 3
+		styles[4] = new Style(12, 12, 10, Color.darkGray); // Level 4
 	}
 
-	public Style(int indent, Color color, int fontSize, int leading) {
-		this.indent = indent;
-		this.color = color;
+	private int fontSize;
+	private int leading;
+	private int indent;
+	private Color color; // 🆕 ADD THIS
+
+	// 🆕 Updated constructor
+	public Style(int fontSize, int leading, int indent, Color color) {
 		this.fontSize = fontSize;
 		this.leading = leading;
-		this.font = new Font("Helvetica", Font.BOLD, fontSize);
+		this.indent = indent;
+		this.color = color;
 	}
 
 	public static Style getStyle(int level) {
-		Style s = styles.get(level);
-		if (s == null) {
-			return styles.get(4); // fallback
+		if (level >= 0 && level < styles.length) {
+			return styles[level];
 		}
-		return s;
+		return styles[styles.length - 1]; // Return last style if level too big
+	}
+
+	public Font getFont(float scale) {
+		return new Font("Helvetica", Font.PLAIN, Math.round(fontSize * scale));
 	}
 
 	public int getIndent() {
 		return indent;
 	}
 
+	public int getLeading() {
+		return leading;
+	}
+
+	// 🆕 ADD this method
 	public Color getColor() {
 		return color;
 	}
 
-	public Font getFont(float scale) {
-		return font.deriveFont(fontSize * scale);
+	public Rectangle getBoundingBox(Graphics g, String text, float scale) {
+		Font font = getFont(scale);
+		g.setFont(font);
+		int width = g.getFontMetrics().stringWidth(text);
+		int height = g.getFontMetrics().getHeight();
+		return new Rectangle(0, 0, width, height);
 	}
 
-	public int getLeading() {
-		return leading;
+	public void drawString(Graphics g, String text, int x, int y, float scale) {
+		if (text == null || text.isEmpty())
+			return;
+		Font font = getFont(scale);
+		g.setFont(font);
+		g.setColor(color); // 🆕 Set the color when drawing
+		g.drawString(text, x + (indent * Math.round(scale)), y);
 	}
 }

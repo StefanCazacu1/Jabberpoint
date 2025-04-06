@@ -2,58 +2,73 @@
 
 import java.awt.Color;
 import java.awt.Font;
-import java.io.Serializable;
-import java.util.HashMap;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
-public class Style implements Serializable {
-	private static final long serialVersionUID = 227L;
-
-<span class="nc" id="L11">	private static final HashMap&lt;Integer, Style&gt; styles = new HashMap&lt;&gt;();</span>
-
-	private final int indent;
-	private final Color color;
-	private final Font font;
-	private final int fontSize;
-	private final int leading;
+public class Style {
+	private static Style[] styles;
 
 	static {
-<span class="nc" id="L20">		styles.put(0, new Style(0, Color.red, 48, 20)); // Title</span>
-<span class="nc" id="L21">		styles.put(1, new Style(20, Color.blue, 40, 10)); // First level</span>
-<span class="nc" id="L22">		styles.put(2, new Style(50, Color.black, 36, 10)); // Second level</span>
-<span class="nc" id="L23">		styles.put(3, new Style(70, Color.black, 30, 10)); // Third level</span>
-<span class="nc" id="L24">		styles.put(4, new Style(90, Color.black, 24, 10)); // Fourth level</span>
-<span class="nc" id="L25">	}</span>
+<span class="fc" id="L12">		styles = new Style[5];</span>
+<span class="fc" id="L13">		styles[0] = new Style(24, 20, 10, Color.red); // Level 0</span>
+<span class="fc" id="L14">		styles[1] = new Style(20, 18, 10, Color.blue); // Level 1</span>
+<span class="fc" id="L15">		styles[2] = new Style(16, 16, 10, Color.black); // Level 2</span>
+<span class="fc" id="L16">		styles[3] = new Style(14, 14, 10, Color.gray); // Level 3</span>
+<span class="fc" id="L17">		styles[4] = new Style(12, 12, 10, Color.darkGray); // Level 4</span>
+<span class="fc" id="L18">	}</span>
 
-<span class="nc" id="L27">	public Style(int indent, Color color, int fontSize, int leading) {</span>
-<span class="nc" id="L28">		this.indent = indent;</span>
-<span class="nc" id="L29">		this.color = color;</span>
-<span class="nc" id="L30">		this.fontSize = fontSize;</span>
-<span class="nc" id="L31">		this.leading = leading;</span>
-<span class="nc" id="L32">		this.font = new Font(&quot;Helvetica&quot;, Font.BOLD, fontSize);</span>
-<span class="nc" id="L33">	}</span>
+	private int fontSize;
+	private int leading;
+	private int indent;
+	private Color color; // 🆕 ADD THIS
+
+	// 🆕 Updated constructor
+<span class="fc" id="L26">	public Style(int fontSize, int leading, int indent, Color color) {</span>
+<span class="fc" id="L27">		this.fontSize = fontSize;</span>
+<span class="fc" id="L28">		this.leading = leading;</span>
+<span class="fc" id="L29">		this.indent = indent;</span>
+<span class="fc" id="L30">		this.color = color;</span>
+<span class="fc" id="L31">	}</span>
 
 	public static Style getStyle(int level) {
-<span class="nc" id="L36">		Style s = styles.get(level);</span>
-<span class="nc bnc" id="L37" title="All 2 branches missed.">		if (s == null) {</span>
-<span class="nc" id="L38">			return styles.get(4); // fallback</span>
+<span class="pc bpc" id="L34" title="2 of 4 branches missed.">		if (level &gt;= 0 &amp;&amp; level &lt; styles.length) {</span>
+<span class="fc" id="L35">			return styles[level];</span>
 		}
-<span class="nc" id="L40">		return s;</span>
-	}
-
-	public int getIndent() {
-<span class="nc" id="L44">		return indent;</span>
-	}
-
-	public Color getColor() {
-<span class="nc" id="L48">		return color;</span>
+<span class="nc" id="L37">		return styles[styles.length - 1]; // Return last style if level too big</span>
 	}
 
 	public Font getFont(float scale) {
-<span class="nc" id="L52">		return font.deriveFont(fontSize * scale);</span>
+<span class="fc" id="L41">		return new Font(&quot;Helvetica&quot;, Font.PLAIN, Math.round(fontSize * scale));</span>
+	}
+
+	public int getIndent() {
+<span class="fc" id="L45">		return indent;</span>
 	}
 
 	public int getLeading() {
-<span class="nc" id="L56">		return leading;</span>
+<span class="fc" id="L49">		return leading;</span>
 	}
+
+	// 🆕 ADD this method
+	public Color getColor() {
+<span class="fc" id="L54">		return color;</span>
+	}
+
+	public Rectangle getBoundingBox(Graphics g, String text, float scale) {
+<span class="fc" id="L58">		Font font = getFont(scale);</span>
+<span class="fc" id="L59">		g.setFont(font);</span>
+<span class="fc" id="L60">		int width = g.getFontMetrics().stringWidth(text);</span>
+<span class="fc" id="L61">		int height = g.getFontMetrics().getHeight();</span>
+<span class="fc" id="L62">		return new Rectangle(0, 0, width, height);</span>
+	}
+
+	public void drawString(Graphics g, String text, int x, int y, float scale) {
+<span class="nc bnc" id="L66" title="All 4 branches missed.">		if (text == null || text.isEmpty())</span>
+<span class="nc" id="L67">			return;</span>
+<span class="nc" id="L68">		Font font = getFont(scale);</span>
+<span class="nc" id="L69">		g.setFont(font);</span>
+<span class="nc" id="L70">		g.setColor(color); // 🆕 Set the color when drawing</span>
+<span class="nc" id="L71">		g.drawString(text, x + (indent * Math.round(scale)), y);</span>
+<span class="nc" id="L72">	}</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

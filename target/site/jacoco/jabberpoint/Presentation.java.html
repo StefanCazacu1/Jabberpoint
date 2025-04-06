@@ -61,10 +61,10 @@ public class Presentation {
 
 	// ga naar de vorige slide tenzij je aan het begin van de presentatie bent
 	public void prevSlide() {
-<span class="nc bnc" id="L64" title="All 2 branches missed.">		if (currentSlideNumber &gt; 0) {</span>
-<span class="nc" id="L65">			setSlideNumber(currentSlideNumber - 1);</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">		if (currentSlideNumber &gt; 0) {</span>
+<span class="fc" id="L65">			setSlideNumber(currentSlideNumber - 1);</span>
 	    }
-<span class="nc" id="L67">	}</span>
+<span class="fc" id="L67">	}</span>
 
 	// Ga naar de volgende slide tenzij je aan het einde van de presentatie bent.
 	public void nextSlide() {
@@ -86,8 +86,8 @@ public class Presentation {
 
 	// Geef een slide met een bepaald slidenummer
 	public Slide getSlide(int number) {
-<span class="pc bpc" id="L89" title="2 of 4 branches missed.">		if (number &lt; 0 || number &gt;= getSize()){</span>
-<span class="nc" id="L90">			return null;</span>
+<span class="pc bpc" id="L89" title="1 of 4 branches missed.">		if (number &lt; 0 || number &gt;= getSize()){</span>
+<span class="fc" id="L90">			return null;</span>
 	    }
 <span class="fc" id="L92">			return (Slide)showList.get(number);</span>
 	}
@@ -101,4 +101,4 @@ public class Presentation {
 <span class="nc" id="L101">		System.exit(n);</span>
 <span class="nc" id="L102">	}</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

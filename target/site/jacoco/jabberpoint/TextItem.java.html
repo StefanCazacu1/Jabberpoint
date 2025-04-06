@@ -1,45 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TextItem.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jabberpoint</a> &gt; <a href="index.source.html" class="el_package">jabberpoint</a> &gt; <span class="el_source">TextItem.java</span></div><h1>TextItem.java</h1><pre class="source lang-java linenums">package jabberpoint;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.ImageObserver;
-import java.awt.font.TextLayout;
-import java.awt.Graphics2D;
-import java.awt.Color;
-import java.awt.Point;
 
 public class TextItem extends SlideItem {
 	private String text;
 
 	public TextItem(int level, String text) {
-<span class="fc" id="L15">		super(level);</span>
-<span class="fc" id="L16">		this.text = text;</span>
-<span class="fc" id="L17">	}</span>
+<span class="fc" id="L10">		super(level);</span>
+<span class="fc" id="L11">		this.text = text;</span>
+<span class="fc" id="L12">	}</span>
 
 	public String getText() {
-<span class="nc" id="L20">		return text;</span>
+<span class="fc" id="L15">		return text;</span>
 	}
 
-	@Override
-	public void draw(int x, int y, float scale, Graphics g, Style style, ImageObserver observer) {
-<span class="nc bnc" id="L25" title="All 4 branches missed.">		if (text == null || text.isEmpty()) {</span>
-<span class="nc" id="L26">			return;</span>
-		}
-<span class="nc" id="L28">		Graphics2D g2d = (Graphics2D) g;</span>
-<span class="nc" id="L29">		g2d.setFont(style.getFont(scale));</span>
-<span class="nc" id="L30">		g2d.setColor(style.getColor());</span>
+	public void setText(String text) { // 🆕 Add this
+<span class="fc" id="L19">		this.text = text;</span>
+<span class="fc" id="L20">	}</span>
 
-<span class="nc" id="L32">		Point pen = new Point(x + (int) (style.getIndent() * scale), y + (int) (style.getLeading() * scale));</span>
-<span class="nc" id="L33">		TextLayout layout = new TextLayout(text, style.getFont(scale), g2d.getFontRenderContext());</span>
-<span class="nc" id="L34">		layout.draw(g2d, pen.x, pen.y);</span>
-<span class="nc" id="L35">	}</span>
+	public void setLevel(int level) { // 🆕 Add this
+<span class="fc" id="L23">		super.level = level;</span>
+<span class="fc" id="L24">	}</span>
 
 	@Override
-	public Rectangle getBoundingBox(Graphics g, ImageObserver observer, float scale, Style style) {
-<span class="nc" id="L39">		Graphics2D g2d = (Graphics2D) g;</span>
-<span class="nc" id="L40">		TextLayout layout = new TextLayout(text, style.getFont(scale), g2d.getFontRenderContext());</span>
-<span class="nc" id="L41">		Rectangle bounds = layout.getPixelBounds(null, 0, 0);</span>
-<span class="nc" id="L42">		return new Rectangle(0, 0, bounds.width, bounds.height);</span>
+	public void draw(Graphics g, ImageObserver observer, int x, int y, float scale) {
+<span class="fc bfc" id="L28" title="All 2 branches covered.">		if (g == null)</span>
+<span class="fc" id="L29">			return;</span>
+<span class="fc" id="L30">		Style style = Style.getStyle(getLevel());</span>
+<span class="fc" id="L31">		Font font = style.getFont(scale);</span>
+<span class="fc" id="L32">		g.setFont(font);</span>
+<span class="fc" id="L33">		g.setColor(style.getColor());</span>
+<span class="fc" id="L34">		g.drawString(text, x, y + (int) (style.getLeading() * scale));</span>
+<span class="fc" id="L35">	}</span>
+
+	@Override
+	public Rectangle getBoundingBox(Graphics g, ImageObserver observer, float scale) {
+<span class="fc bfc" id="L39" title="All 2 branches covered.">		if (g == null)</span>
+<span class="fc" id="L40">			return new Rectangle(0, 0, 0, 0);</span>
+<span class="fc" id="L41">		Style style = Style.getStyle(getLevel());</span>
+<span class="fc" id="L42">		Font font = style.getFont(scale);</span>
+<span class="fc" id="L43">		FontMetrics metrics = g.getFontMetrics(font);</span>
+<span class="fc" id="L44">		int width = metrics.stringWidth(text);</span>
+<span class="fc" id="L45">		int height = metrics.getHeight();</span>
+<span class="fc" id="L46">		return new Rectangle(0, 0, width, height);</span>
 	}
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
