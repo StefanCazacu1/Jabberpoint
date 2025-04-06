@@ -1,7 +1,15 @@
+jabberpoint\JsonAccessorTest.class
 jabberpoint\PresentationTest.class
+jabberpoint\SlideViewerComponentTest.class
 jabberpoint\StyleTest.class
+jabberpoint\PresentationTest$MockSlideViewerComponent.class
+jabberpoint\SlideViewerFrameTest.class
+jabberpoint\XMLAccessorTest.class
+jabberpoint\KeyControllerTest.class
+jabberpoint\SlideTest.class
+jabberpoint\MenuControllerTest.class
 jabberpoint\TextItemTest.class
 jabberpoint\SlideItemTest$DummySlideItem.class
+jabberpoint\AboutBoxTest.class
 jabberpoint\SlideItemTest.class
-jabberpoint\SlideTest.class
 jabberpoint\BitmapItemTest.class

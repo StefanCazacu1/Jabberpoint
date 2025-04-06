@@ -45,4 +45,10 @@ public class TextItem extends SlideItem {
 		int height = metrics.getHeight();
 		return new Rectangle(0, 0, width, height);
 	}
+
+	@Override
+	public String toString() {
+		return this.text; // <-- return the real text!
+	}
+
 }

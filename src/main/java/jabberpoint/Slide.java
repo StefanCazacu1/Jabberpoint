@@ -3,6 +3,7 @@ package jabberpoint;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.ImageObserver;
+import java.util.List;
 import java.util.Vector;
 
 public class Slide {
@@ -74,4 +75,9 @@ public class Slide {
 		}
 		return new Rectangle(0, 0, width, height);
 	}
+
+	public List<SlideItem> getSlideItems() {
+    return items;
+}
+
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<presentation>
+    <title>My First JabberPoint Presentation</title>
+
+    <slide>
+        <item kind="text" level="0">Welcome to JabberPoint!</item>
+        <item kind="text" level="1">This is your first slide</item>
+    </slide>
+
+    <slide>
+        <item kind="text" level="0">Second Slide</item>
+        <item kind="text" level="1">You can add multiple items here</item>
+        <item kind="text" level="2">Even subpoints!</item>
+    </slide>
+
+    <slide>
+        <item kind="text" level="0">End of Presentation</item>
+        <item kind="text" level="1">Thank you!</item>
+    </slide>
+</presentation>

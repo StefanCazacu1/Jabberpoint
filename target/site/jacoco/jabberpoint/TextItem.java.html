@@ -45,5 +45,11 @@ public class TextItem extends SlideItem {
 <span class="fc" id="L45">		int height = metrics.getHeight();</span>
 <span class="fc" id="L46">		return new Rectangle(0, 0, width, height);</span>
 	}
+
+	@Override
+	public String toString() {
+<span class="fc" id="L51">		return this.text; // &lt;-- return the real text!</span>
+	}
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

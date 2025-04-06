@@ -1,0 +1,33 @@
+{
+    "title": "Test Presentation",
+    "slides": [
+        {
+            "items": [
+                {
+                    "kind": "text",
+                    "level": 1,
+                    "content": "Welcome to JabberPoint!"
+                },
+                {
+                    "kind": "text",
+                    "level": 2,
+                    "content": "This is a JSON slide."
+                }
+            ]
+        },
+        {
+            "items": [
+                {
+                    "kind": "text",
+                    "level": 1,
+                    "content": "Second Slide"
+                },
+                {
+                    "kind": "text",
+                    "level": 2,
+                    "content": "More text here."
+                }
+            ]
+        }
+    ]
+}

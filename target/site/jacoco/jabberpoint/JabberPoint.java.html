@@ -1,41 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JabberPoint.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jabberpoint</a> &gt; <a href="index.source.html" class="el_package">jabberpoint</a> &gt; <span class="el_source">JabberPoint.java</span></div><h1>JabberPoint.java</h1><pre class="source lang-java linenums">package jabberpoint;
 
-import javax.swing.JOptionPane;
 import java.io.IOException;
 
-/**
- * JabberPoint Main Program
- * 
- * This program is distributed under the terms of the accompanying
- * COPYRIGHT.txt file (which is NOT the GNU General Public License).
- * Please read it. Your use of the software constitutes acceptance
- * of the terms in the COPYRIGHT.txt file.
- * 
- * @version 1.6 2014/05/16 Sylvia Stuurman
- */
-<span class="nc" id="L16">public class JabberPoint {</span>
-	protected static final String IOERR = &quot;IO Error: &quot;;
-	protected static final String JABERR = &quot;Jabberpoint Error &quot;;
-	protected static final String JABVERSION = &quot;Jabberpoint 1.6 - OU version&quot;;
+<span class="nc" id="L5">public class JabberPoint {</span>
 
-	/** The Main Program */
-	public static void main(String argv[]) {
-<span class="nc" id="L23">		Presentation presentation = new Presentation();</span>
-<span class="nc" id="L24">		new SlideViewerFrame(JABVERSION, presentation);</span>
+	public static final String IO_ERR = &quot;IO Error: &quot;;
+	public static final String LOAD_ERR = &quot;Error while loading presentation: &quot;;
+
+	public static void main(String[] argv) {
+<span class="nc" id="L11">		Presentation presentation = new Presentation();</span>
+<span class="nc" id="L12">		new SlideViewerFrame(&quot;JabberPoint 2.0&quot;, presentation);</span>
+
 		try {
-<span class="nc bnc" id="L26" title="All 2 branches missed.">			if (argv.length == 0) { // demo presentation</span>
-<span class="nc" id="L27">				Accessor.getDemoAccessor().loadFile(presentation, &quot;&quot;);</span>
+<span class="nc bnc" id="L15" title="All 2 branches missed.">			if (argv.length == 0) {</span>
+				// If no file provided, load demo presentation
+<span class="nc" id="L17">				DemoPresentation.loadDemoPresentation(presentation);</span>
 			} else {
-<span class="nc" id="L29">				new XMLAccessor().loadFile(presentation, argv[0]);</span>
+				// If a file is provided, load it
+<span class="nc" id="L20">				presentation.load(argv[0]);</span>
 			}
-<span class="nc" id="L31">			presentation.setSlideNumber(0);</span>
-<span class="nc" id="L32">		} catch (IOException ex) {</span>
-<span class="nc" id="L33">			JOptionPane.showMessageDialog(</span>
-					null,
-					IOERR + ex,
-					JABERR,
-					JOptionPane.ERROR_MESSAGE);
-<span class="nc" id="L38">		}</span>
-<span class="nc" id="L39">	}</span>
+<span class="nc" id="L22">		} catch (IOException ex) {</span>
+<span class="nc" id="L23">			System.err.println(IO_ERR + ex.getMessage());</span>
+<span class="nc" id="L24">		}</span>
+<span class="nc" id="L25">		presentation.setSlideNumber(0);</span>
+<span class="nc" id="L26">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

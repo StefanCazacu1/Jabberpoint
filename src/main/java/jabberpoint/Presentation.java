@@ -1,103 +1,124 @@
 package jabberpoint;
+
+import java.io.IOException;
 import java.util.ArrayList;
-
-
-/**
- * <p>Presentation houdt de slides in de presentatie bij.</p>
- * <p>Er is slechts ��n instantie van deze klasse aanwezig.</p>
- * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman
- * @version 1.1 2002/12/17 Gert Florijn
- * @version 1.2 2003/11/19 Sylvia Stuurman
- * @version 1.3 2004/08/17 Sylvia Stuurman
- * @version 1.4 2007/07/16 Sylvia Stuurman
- * @version 1.5 2010/03/03 Sylvia Stuurman
- * @version 1.6 2014/05/16 Sylvia Stuurman
- */
+import java.util.List;
 
 public class Presentation {
-	private String showTitle; // de titel van de presentatie
-	private ArrayList<Slide> showList = null; // een ArrayList met de Slides
-	private int currentSlideNumber = 0; // het slidenummer van de huidige Slide
-	private SlideViewerComponent slideViewComponent = null; // de viewcomponent voor de Slides
+	private String title;
+	private List<Slide> slides;
+	private int currentSlideNumber;
+	private List<Observer> observers;
+	private Accessor accessor;
 
 	public Presentation() {
-		slideViewComponent = null;
+		slides = new ArrayList<>();
+		observers = new ArrayList<>();
+		accessor = new Accessor();
 		clear();
 	}
 
-	public Presentation(SlideViewerComponent slideViewerComponent) {
-		this.slideViewComponent = slideViewerComponent;
-		clear();
+	public void clear() {
+		slides.clear();
+		setTitle("");
+		setSlideNumber(-1);
+		notifyObservers();
+	}
+
+	public void addObserver(Observer observer) {
+		observers.add(observer);
+	}
+
+	public void removeObserver(Observer observer) {
+		observers.remove(observer);
+	}
+
+	private void notifyObservers() {
+		for (Observer observer : observers) {
+			observer.update();
+		}
 	}
 
 	public int getSize() {
-		return showList.size();
+		return slides.size();
 	}
 
 	public String getTitle() {
-		return showTitle;
+		return title;
 	}
 
-	public void setTitle(String nt) {
-		showTitle = nt;
+	public void setTitle(String title) {
+		this.title = title;
+		notifyObservers();
 	}
 
-	public void setShowView(SlideViewerComponent slideViewerComponent) {
-		this.slideViewComponent = slideViewerComponent;
+	public void addSlide(Slide slide) {
+		slides.add(slide);
+		notifyObservers();
 	}
 
-	// geef het nummer van de huidige slide
+	public Slide getSlide(int number) {
+		if (number < 0 || number >= getSize()) {
+			return null;
+		}
+		return slides.get(number);
+	}
+
 	public int getSlideNumber() {
 		return currentSlideNumber;
 	}
 
-	// verander het huidige-slide-nummer en laat het aan het window weten.
 	public void setSlideNumber(int number) {
-		currentSlideNumber = number;
-		if (slideViewComponent != null) {
-			slideViewComponent.update(this, getCurrentSlide());
+		this.currentSlideNumber = number;
+		notifyObservers();
+	}
+
+	public Slide getCurrentSlide() {
+		if (currentSlideNumber < 0 || currentSlideNumber >= slides.size()) {
+			return null;
 		}
+		return slides.get(currentSlideNumber);
 	}
 
-	// ga naar de vorige slide tenzij je aan het begin van de presentatie bent
-	public void prevSlide() {
-		if (currentSlideNumber > 0) {
-			setSlideNumber(currentSlideNumber - 1);
-	    }
-	}
-
-	// Ga naar de volgende slide tenzij je aan het einde van de presentatie bent.
 	public void nextSlide() {
-		if (currentSlideNumber < (showList.size()-1)) {
+		if (currentSlideNumber < slides.size() - 1) {
 			setSlideNumber(currentSlideNumber + 1);
 		}
 	}
 
-	// Verwijder de presentatie, om klaar te zijn voor de volgende
-	void clear() {
-		showList = new ArrayList<Slide>();
-		setSlideNumber(-1);
+	public void prevSlide() {
+		if (currentSlideNumber > 0) {
+			setSlideNumber(currentSlideNumber - 1);
+		}
 	}
 
-	// Voeg een slide toe aan de presentatie
-	public void append(Slide slide) {
-		showList.add(slide);
+	public void load(String filename) throws IOException {
+		if (filename.endsWith(".xml")) {
+			accessor.setStrategy(new XMLAccessor());
+		} else if (filename.endsWith(".json")) {
+			accessor.setStrategy(new JsonAccessor());
+		} else {
+			throw new IOException("Unsupported file type");
+		}
+		accessor.load(this, filename);
+		setSlideNumber(0);
+		notifyObservers();
 	}
 
-	// Geef een slide met een bepaald slidenummer
-	public Slide getSlide(int number) {
-		if (number < 0 || number >= getSize()){
-			return null;
-	    }
-			return (Slide)showList.get(number);
+	public void save(String filename) throws IOException {
+		if (filename.endsWith(".xml")) {
+			accessor.setStrategy(new XMLAccessor());
+		} else if (filename.endsWith(".json")) {
+			accessor.setStrategy(new JsonAccessor());
+		} else {
+			throw new IOException("Unsupported file type");
+		}
+		accessor.save(this, filename);
 	}
 
-	// Geef de huidige Slide
-	public Slide getCurrentSlide() {
-		return getSlide(currentSlideNumber);
+	// ADD this to Presentation.java
+	public List<Slide> getSlides() {
+		return slides;
 	}
 
-	public void exit(int n) {
-		System.exit(n);
-	}
 }

@@ -1,48 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SlideViewerFrame.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jabberpoint</a> &gt; <a href="index.source.html" class="el_package">jabberpoint</a> &gt; <span class="el_source">SlideViewerFrame.java</span></div><h1>SlideViewerFrame.java</h1><pre class="source lang-java linenums">package jabberpoint;
-import java.awt.Dimension;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowAdapter;
-import javax.swing.JFrame;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
- * &lt;p&gt;Het applicatiewindow voor een slideviewcomponent&lt;/p&gt;
- * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman
- * @version 1.1 2002/12/17 Gert Florijn
- * @version 1.2 2003/11/19 Sylvia Stuurman
- * @version 1.3 2004/08/17 Sylvia Stuurman
- * @version 1.4 2007/07/16 Sylvia Stuurman
- * @version 1.5 2010/03/03 Sylvia Stuurman
- * @version 1.6 2014/05/16 Sylvia Stuurman
-*/
+ * The main application window (Frame) that shows the presentation.
+ */
+public class SlideViewerFrame extends Frame {
+	private static final String JABTITLE = &quot;JabberPoint 1.0 - OU&quot;;
 
-public class SlideViewerFrame extends JFrame {
-	private static final long serialVersionUID = 3227L;
-	
-	private static final String JABTITLE = &quot;Jabberpoint 1.6 - OU&quot;;
-	public final static int WIDTH = 1200;
-	public final static int HEIGHT = 800;
-	
+	private final Presentation presentation;
+	private final SlideViewerComponent slideViewerComponent;
+
 	public SlideViewerFrame(String title, Presentation presentation) {
-<span class="nc" id="L26">		super(title);</span>
-<span class="nc" id="L27">		SlideViewerComponent slideViewerComponent = new SlideViewerComponent(presentation, this);</span>
-<span class="nc" id="L28">		presentation.setShowView(slideViewerComponent);</span>
-<span class="nc" id="L29">		setupWindow(slideViewerComponent, presentation);</span>
-<span class="nc" id="L30">	}</span>
+<span class="fc" id="L16">		super(title);</span>
+<span class="fc" id="L17">		this.presentation = presentation;</span>
 
-// De GUI opzetten
-	public void setupWindow(SlideViewerComponent 
-			slideViewerComponent, Presentation presentation) {
-<span class="nc" id="L35">		setTitle(JABTITLE);</span>
-<span class="nc" id="L36">		addWindowListener(new WindowAdapter() {</span>
-				public void windowClosing(WindowEvent e) {
-<span class="nc" id="L38">					System.exit(0);</span>
-<span class="nc" id="L39">				}</span>
-			});
-<span class="nc" id="L41">		getContentPane().add(slideViewerComponent);</span>
-<span class="nc" id="L42">		addKeyListener(new KeyController(presentation)); // een controller toevoegen</span>
-<span class="nc" id="L43">		setMenuBar(new MenuController(this, presentation));	// nog een controller toevoegen</span>
-<span class="nc" id="L44">		setSize(new Dimension(WIDTH, HEIGHT)); // Dezelfde maten als Slide hanteert.</span>
-<span class="nc" id="L45">		setVisible(true);</span>
-<span class="nc" id="L46">	}</span>
+		// Add the SlideViewerComponent which observes Presentation
+<span class="fc" id="L20">		slideViewerComponent = new SlideViewerComponent(presentation);</span>
+<span class="fc" id="L21">		presentation.addObserver(slideViewerComponent);</span>
+
+		// Add key controller and menu controller
+<span class="fc" id="L24">		addKeyListener(new KeyController(presentation));</span>
+<span class="fc" id="L25">		setMenuBar(new MenuController(this, presentation));</span>
+
+<span class="fc" id="L27">		setTitle(JABTITLE);</span>
+<span class="fc" id="L28">		setSize(1024, 768);</span>
+<span class="fc" id="L29">		setVisible(true);</span>
+
+		// When closing the window, exit the application
+<span class="fc" id="L32">		addWindowListener(new java.awt.event.WindowAdapter() {</span>
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+<span class="nc" id="L35">				System.exit(0);</span>
+<span class="nc" id="L36">			}</span>
+		});
+
+<span class="fc" id="L39">		add(slideViewerComponent, BorderLayout.CENTER);</span>
+<span class="fc" id="L40">	}</span>
+
+	public SlideViewerComponent getSlideViewerComponent() {
+<span class="fc" id="L43">		return slideViewerComponent;</span>
+	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

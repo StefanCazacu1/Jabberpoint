@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JsonAccessor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jabberpoint</a> &gt; <a href="index.source.html" class="el_package">jabberpoint</a> &gt; <span class="el_source">JsonAccessor.java</span></div><h1>JsonAccessor.java</h1><pre class="source lang-java linenums">package jabberpoint;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import java.io.File;
+import java.io.IOException;
+
+<span class="fc" id="L11">public class JsonAccessor implements AccessorStrategy {</span>
+
+    @Override
+    public void loadFile(Presentation presentation, String filename) throws IOException {
+<span class="fc" id="L15">        presentation.clear();</span>
+<span class="fc" id="L16">        ObjectMapper mapper = new ObjectMapper();</span>
+<span class="fc" id="L17">        JsonNode root = mapper.readTree(new File(filename));</span>
+
+        // Load the title
+<span class="fc" id="L20">        JsonNode titleNode = root.get(&quot;title&quot;);</span>
+<span class="pc bpc" id="L21" title="1 of 2 branches missed.">        if (titleNode != null) {</span>
+<span class="fc" id="L22">            presentation.setTitle(titleNode.asText());</span>
+        }
+
+        // Load the slides
+<span class="fc" id="L26">        JsonNode slidesNode = root.get(&quot;slides&quot;);</span>
+<span class="pc bpc" id="L27" title="2 of 4 branches missed.">        if (slidesNode != null &amp;&amp; slidesNode.isArray()) {</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">            for (JsonNode slideNode : slidesNode) {</span>
+<span class="fc" id="L29">                Slide slide = new Slide();</span>
+
+<span class="fc" id="L31">                JsonNode itemsNode = slideNode.get(&quot;items&quot;);</span>
+<span class="pc bpc" id="L32" title="2 of 4 branches missed.">                if (itemsNode != null &amp;&amp; itemsNode.isArray()) {</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">                    for (JsonNode itemNode : itemsNode) {</span>
+<span class="fc" id="L34">                        String kind = itemNode.get(&quot;kind&quot;).asText();</span>
+<span class="fc" id="L35">                        int level = itemNode.get(&quot;level&quot;).asInt();</span>
+<span class="fc" id="L36">                        String content = itemNode.get(&quot;content&quot;).asText();</span>
+
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">                        if (&quot;text&quot;.equals(kind)) {</span>
+<span class="fc" id="L39">                            slide.append(new TextItem(level, content));</span>
+                        }
+                        // You could also add image loading here in future
+<span class="fc" id="L42">                    }</span>
+                }
+<span class="fc" id="L44">                presentation.addSlide(slide);</span>
+<span class="fc" id="L45">            }</span>
+        }
+<span class="fc" id="L47">    }</span>
+
+    @Override
+    public void saveFile(Presentation presentation, String filename) throws IOException {
+<span class="fc" id="L51">        ObjectMapper mapper = new ObjectMapper();</span>
+<span class="fc" id="L52">        ObjectNode root = mapper.createObjectNode();</span>
+
+        // Save title
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        root.put(&quot;title&quot;, presentation.getTitle() != null ? presentation.getTitle() : &quot;&quot;);</span>
+
+        // Save slides
+<span class="fc" id="L58">        ArrayNode slidesArray = mapper.createArrayNode();</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        for (Slide slide : presentation.getSlides()) {</span>
+<span class="fc" id="L60">            ObjectNode slideNode = mapper.createObjectNode();</span>
+<span class="fc" id="L61">            ArrayNode itemsArray = mapper.createArrayNode();</span>
+
+<span class="fc bfc" id="L63" title="All 2 branches covered.">            for (SlideItem item : slide.getSlideItems()) {</span>
+<span class="fc" id="L64">                ObjectNode itemNode = mapper.createObjectNode();</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">                itemNode.put(&quot;kind&quot;, item instanceof TextItem ? &quot;text&quot; : &quot;unknown&quot;);</span>
+<span class="fc" id="L66">                itemNode.put(&quot;level&quot;, item.getLevel());</span>
+<span class="fc" id="L67">                itemNode.put(&quot;content&quot;, item.toString()); // or item.getText() if you have such method</span>
+<span class="fc" id="L68">                itemsArray.add(itemNode);</span>
+<span class="fc" id="L69">            }</span>
+
+<span class="fc" id="L71">            slideNode.set(&quot;items&quot;, itemsArray);</span>
+<span class="fc" id="L72">            slidesArray.add(slideNode);</span>
+<span class="fc" id="L73">        }</span>
+
+<span class="fc" id="L75">        root.set(&quot;slides&quot;, slidesArray);</span>
+
+<span class="fc" id="L77">        mapper.writerWithDefaultPrettyPrinter().writeValue(new File(filename), root);</span>
+<span class="fc" id="L78">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

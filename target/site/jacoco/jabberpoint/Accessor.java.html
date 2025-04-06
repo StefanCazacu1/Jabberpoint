@@ -1,33 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Accessor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jabberpoint</a> &gt; <a href="index.source.html" class="el_package">jabberpoint</a> &gt; <span class="el_source">Accessor.java</span></div><h1>Accessor.java</h1><pre class="source lang-java linenums">package jabberpoint;
+
 import java.io.IOException;
 
-/**
- * &lt;p&gt;Een Accessor maakt het mogelijk om gegevens voor een presentatie
- * te lezen of te schrijven.&lt;/p&gt;
- * &lt;p&gt;Niet-abstracte subklassen moeten de load en de save methode implementeren.&lt;/p&gt;
- * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman
- * @version 1.1 2002/12/17 Gert Florijn
- * @version 1.2 2003/11/19 Sylvia Stuurman
- * @version 1.3 2004/08/17 Sylvia Stuurman
- * @version 1.4 2007/07/16 Sylvia Stuurman
- * @version 1.5 2010/03/03 Sylvia Stuurman
- * @version 1.6 2014/05/16 Sylvia Stuurma
- */
+<span class="fc" id="L5">public class Accessor {</span>
+	private AccessorStrategy strategy;
 
-public abstract class Accessor {
-	public static final String DEMO_NAME = &quot;Demonstratie presentatie&quot;;
-	public static final String DEFAULT_EXTENSION = &quot;.xml&quot;;
+	public void setStrategy(AccessorStrategy strategy) {
+<span class="nc" id="L9">		this.strategy = strategy;</span>
+<span class="nc" id="L10">	}</span>
 
-	public static Accessor getDemoAccessor() {
-<span class="nc" id="L22">		return new DemoPresentation();</span>
-	}
+	public void load(Presentation presentation, String filename) throws IOException {
+<span class="nc bnc" id="L13" title="All 2 branches missed.">		if (strategy == null)</span>
+<span class="nc" id="L14">			throw new IllegalStateException(&quot;No AccessorStrategy set!&quot;);</span>
+<span class="nc" id="L15">		strategy.loadFile(presentation, filename);</span>
+<span class="nc" id="L16">	}</span>
 
-<span class="nc" id="L25">	public Accessor() {</span>
-<span class="nc" id="L26">	}</span>
-
-	abstract public void loadFile(Presentation p, String fn) throws IOException;
-
-	abstract public void saveFile(Presentation p, String fn) throws IOException;
-
+	public void save(Presentation presentation, String filename) throws IOException {
+<span class="nc bnc" id="L19" title="All 2 branches missed.">		if (strategy == null)</span>
+<span class="nc" id="L20">			throw new IllegalStateException(&quot;No AccessorStrategy set!&quot;);</span>
+<span class="nc" id="L21">		strategy.saveFile(presentation, filename);</span>
+<span class="nc" id="L22">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
