@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -42,3 +41,7 @@ jobs:
         name: coverage-report
         path: target/site/jacoco/index.html
 
+    - name: Deploy to Environment
+      run: echo "Deployment to 'Java CI with Maven' environment"
+      env:
+        ENVIRONMENT: 'Java CI with Maven'
