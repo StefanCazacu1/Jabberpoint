@@ -25,7 +25,7 @@ jobs:
       run: mvn clean install
 
     - name: Run tests
-      run: mvn test -Djava.awt.headless=true  # Added headless mode for tests
+      run: mvn test -Djava.awt.headless=true
 
     - name: Code Quality Check (Checkstyle)
       run: mvn checkstyle:check
