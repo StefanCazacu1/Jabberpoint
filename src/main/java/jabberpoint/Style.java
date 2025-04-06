@@ -10,19 +10,18 @@ public class Style {
 
 	static {
 		styles = new Style[5];
-		styles[0] = new Style(24, 20, 10, Color.red); // Level 0
-		styles[1] = new Style(20, 18, 10, Color.blue); // Level 1
-		styles[2] = new Style(16, 16, 10, Color.black); // Level 2
-		styles[3] = new Style(14, 14, 10, Color.gray); // Level 3
-		styles[4] = new Style(12, 12, 10, Color.darkGray); // Level 4
+		styles[0] = new Style(32, 20, 30, Color.red); // Level 0
+		styles[1] = new Style(28, 18, 30, Color.blue); // Level 1
+		styles[2] = new Style(24, 16, 30, Color.black); // Level 2
+		styles[3] = new Style(24, 14, 30, Color.gray); // Level 3
+		styles[4] = new Style(24, 12, 30, Color.darkGray); // Level 4
 	}
 
 	private int fontSize;
 	private int leading;
 	private int indent;
-	private Color color; // 🆕 ADD THIS
+	private Color color; 
 
-	// 🆕 Updated constructor
 	public Style(int fontSize, int leading, int indent, Color color) {
 		this.fontSize = fontSize;
 		this.leading = leading;
@@ -49,7 +48,6 @@ public class Style {
 		return leading;
 	}
 
-	// 🆕 ADD this method
 	public Color getColor() {
 		return color;
 	}
@@ -67,7 +65,7 @@ public class Style {
 			return;
 		Font font = getFont(scale);
 		g.setFont(font);
-		g.setColor(color); // 🆕 Set the color when drawing
+		g.setColor(color); 
 		g.drawString(text, x + (indent * Math.round(scale)), y);
 	}
 }

@@ -13,7 +13,7 @@ public class AboutBox {
 				"Sylvia Stuurman (version 1.2 and higher) for the Open" +
 				"University of the Netherlands, 2002 -- now." +
 				"Author's version available from http://www.darwinsys.com/",
-				"About JabberPoint",
+				"About JabberPoint\n",
 				JOptionPane.INFORMATION_MESSAGE
 		);
 	}

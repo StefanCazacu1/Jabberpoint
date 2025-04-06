@@ -41,5 +41,4 @@ class KeyControllerTest {
         verify(presentation, times(1)).setSlideNumber(0);
     }
 
-    // ⚠️ Do NOT test ESCAPE key if it calls System.exit()
 }

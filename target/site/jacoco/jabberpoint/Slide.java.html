@@ -49,35 +49,33 @@ public class Slide {
 <span class="fc" id="L49">		}</span>
 <span class="fc" id="L50">	}</span>
 
-	// --- 🆕 Added methods for Composite Pattern and tests ---
-
 	// Get the number of SlideItems
 	public int getSize() {
-<span class="fc" id="L56">		return items.size();</span>
+<span class="fc" id="L54">		return items.size();</span>
 	}
 
 	// Get a specific SlideItem by index
 	public SlideItem getSlideItem(int index) {
-<span class="fc bfc" id="L61" title="All 4 branches covered.">		if (index &gt;= 0 &amp;&amp; index &lt; items.size()) {</span>
-<span class="fc" id="L62">			return items.elementAt(index);</span>
+<span class="fc bfc" id="L59" title="All 4 branches covered.">		if (index &gt;= 0 &amp;&amp; index &lt; items.size()) {</span>
+<span class="fc" id="L60">			return items.elementAt(index);</span>
 		}
-<span class="fc" id="L64">		throw new IndexOutOfBoundsException(&quot;Invalid index: &quot; + index);</span>
+<span class="fc" id="L62">		throw new IndexOutOfBoundsException(&quot;Invalid index: &quot; + index);</span>
 	}
 
 	// Get the bounding box that wraps all SlideItems
 	public Rectangle getBoundingBox(Graphics g, ImageObserver observer, float scale) {
-<span class="fc" id="L69">		int width = 0;</span>
-<span class="fc" id="L70">		int height = 0;</span>
-<span class="fc bfc" id="L71" title="All 2 branches covered.">		for (SlideItem item : items) {</span>
-<span class="fc" id="L72">			Rectangle itemBox = item.getBoundingBox(g, observer, scale);</span>
-<span class="fc" id="L73">			width = Math.max(width, itemBox.width);</span>
-<span class="fc" id="L74">			height += itemBox.height;</span>
-<span class="fc" id="L75">		}</span>
-<span class="fc" id="L76">		return new Rectangle(0, 0, width, height);</span>
+<span class="fc" id="L67">		int width = 0;</span>
+<span class="fc" id="L68">		int height = 0;</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">		for (SlideItem item : items) {</span>
+<span class="fc" id="L70">			Rectangle itemBox = item.getBoundingBox(g, observer, scale);</span>
+<span class="fc" id="L71">			width = Math.max(width, itemBox.width);</span>
+<span class="fc" id="L72">			height += itemBox.height;</span>
+<span class="fc" id="L73">		}</span>
+<span class="fc" id="L74">		return new Rectangle(0, 0, width, height);</span>
 	}
 
 	public List&lt;SlideItem&gt; getSlideItems() {
-<span class="fc" id="L80">    return items;</span>
+<span class="fc" id="L78">    return items;</span>
 }
 
 }

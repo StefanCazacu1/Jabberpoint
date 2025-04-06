@@ -1,45 +1,55 @@
 package jabberpoint;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.contains;
-import static org.mockito.Mockito.mockStatic;
-
 
 import org.junit.jupiter.api.Test;
-
+import org.mockito.MockedStatic;
 import javax.swing.JOptionPane;
 import java.awt.Frame;
+import static org.mockito.Mockito.*;
 
-import org.mockito.MockedStatic;
-
-class AboutBoxTest {
+public class AboutBoxTest {
 
     @Test
-    void testShowDisplaysDialog() {
+    void testShowWithNullParent() {
+        // Mocking the static method of JOptionPane
         try (MockedStatic<JOptionPane> mocked = mockStatic(JOptionPane.class)) {
-            Frame dummyFrame = new Frame();
-            AboutBox.show(dummyFrame);
+            // Call the AboutBox.show() method with null parent
+            AboutBox.show(null);
 
-            // Verify that JOptionPane.showMessageDialog was called once
+            // Verify the showMessageDialog is called with the expected arguments
             mocked.verify(() -> JOptionPane.showMessageDialog(
-                    eq(dummyFrame),
-                    contains("JabberPoint is a primitive slide-show program"),
-                    eq("About JabberPoint"),
-                    eq(JOptionPane.INFORMATION_MESSAGE)));
+                    eq(null), // Parent is null
+                    argThat(message -> message instanceof String
+                            && ((String) message).contains("JabberPoint is a primitive slide-show program")), // Correct
+                                                                                                              // way to
+                                                                                                              // check
+                                                                                                              // String
+                    eq("About JabberPoint\n"), // Title
+                    eq(JOptionPane.INFORMATION_MESSAGE) // Message type should be INFORMATION
+            ));
         }
     }
 
     @Test
-    void testShowWithNullParent() {
+    void testShowWithFrameParent() {
+        // Mocking the static method of JOptionPane
         try (MockedStatic<JOptionPane> mocked = mockStatic(JOptionPane.class)) {
-            // Passing null as the parent
-            AboutBox.show(null);
+            // Create a dummy Frame as parent
+            Frame dummyFrame = new Frame();
 
-            // Verify that JOptionPane.showMessageDialog was still called
+            // Call the AboutBox.show() method with the frame parent
+            AboutBox.show(dummyFrame);
+
+            // Verify the showMessageDialog is called with the expected arguments
             mocked.verify(() -> JOptionPane.showMessageDialog(
-                    eq(null), // null parent
-                    contains("JabberPoint is a primitive slide-show program"),
-                    eq("About JabberPoint"),
-                    eq(JOptionPane.INFORMATION_MESSAGE)));
+                    eq(dummyFrame), // Frame as parent
+                    argThat(message -> message instanceof String
+                            && ((String) message).contains("JabberPoint is a primitive slide-show program")), // Correct
+                                                                                                              // way to
+                                                                                                              // check
+                                                                                                              // String
+                    eq("About JabberPoint\n"), // Title
+                    eq(JOptionPane.INFORMATION_MESSAGE) // Message type should be INFORMATION
+            ));
         }
     }
 }

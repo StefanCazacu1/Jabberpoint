@@ -49,8 +49,6 @@ public class Slide {
 		}
 	}
 
-	// --- 🆕 Added methods for Composite Pattern and tests ---
-
 	// Get the number of SlideItems
 	public int getSize() {
 		return items.size();

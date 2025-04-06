@@ -7,7 +7,7 @@ import java.awt.image.ImageObserver;
 
 public abstract class SlideItem {
 	protected int level;
-	private Color color = Color.BLACK; // Default color is black
+	private Color color = Color.BLACK; 
 	
 	public SlideItem(int level) {
 		this.level = level;

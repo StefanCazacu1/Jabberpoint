@@ -28,14 +28,11 @@ class XMLAccessorTest {
         slide.append(new TextItem(1, "Sample Text"));
         presentation.addSlide(slide);
 
-        // Act: Save it
         xmlAccessor.saveFile(presentation, tempFile);
 
-        // Load it back
         Presentation loadedPresentation = new Presentation();
         xmlAccessor.loadFile(loadedPresentation, tempFile);
 
-        // Assert: Check title and slide
         assertEquals("Test Title", loadedPresentation.getTitle());
         assertEquals(1, loadedPresentation.getSize());
         Slide loadedSlide = loadedPresentation.getSlide(0);

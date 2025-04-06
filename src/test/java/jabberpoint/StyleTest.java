@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*; // <--- this imports both Color, Graphics, Rectangle
-import java.awt.image.BufferedImage; // <--- this imports BufferedImage
+import java.awt.*;
+import java.awt.image.BufferedImage; 
 
 class StyleTest {
 
@@ -13,7 +13,7 @@ class StyleTest {
 
     @BeforeEach
     void setUp() {
-        style = new Style(20, 30, 10, Color.BLACK); // <--- FIXED: added Color
+        style = new Style(20, 30, 10, Color.BLACK); 
     }
 
     @Test
