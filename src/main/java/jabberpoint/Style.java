@@ -1,59 +1,58 @@
 package jabberpoint;
+
 import java.awt.Color;
 import java.awt.Font;
+import java.io.Serializable;
+import java.util.HashMap;
 
-/** <p>Style staat voor Indent, Color, Font and Leading.</p>
- * <p>De koppeling tussen style-nummer en item-level is nu direct:
- * in Slide wordt de style opgehaald voor een item
- * met als style-nummer het item-level.</p>
- * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman
- * @version 1.1 2002/12/17 Gert Florijn
- * @version 1.2 2003/11/19 Sylvia Stuurman
- * @version 1.3 2004/08/17 Sylvia Stuurman
- * @version 1.4 2007/07/16 Sylvia Stuurman
- * @version 1.5 2010/03/03 Sylvia Stuurman
- * @version 1.6 2014/05/16 Sylvia Stuurman
- */
+public class Style implements Serializable {
+	private static final long serialVersionUID = 227L;
 
-public class Style {
-	private static Style[] styles; // de styles
-	
-	private static final String FONTNAME = "Helvetica";
-	int indent;
-	Color color;
-	Font font;
-	int fontSize;
-	int leading;
+	private static final HashMap<Integer, Style> styles = new HashMap<>();
 
-	public static void createStyles() {
-		styles = new Style[5];    
-		// De styles zijn vast ingecodeerd.
-		styles[0] = new Style(0, Color.red,   48, 20);	// style voor item-level 0
-		styles[1] = new Style(20, Color.blue,  40, 10);	// style voor item-level 1
-		styles[2] = new Style(50, Color.black, 36, 10);	// style voor item-level 2
-		styles[3] = new Style(70, Color.black, 30, 10);	// style voor item-level 3
-		styles[4] = new Style(90, Color.black, 24, 10);	// style voor item-level 4
+	private final int indent;
+	private final Color color;
+	private final Font font;
+	private final int fontSize;
+	private final int leading;
+
+	static {
+		styles.put(0, new Style(0, Color.red, 48, 20)); // Title
+		styles.put(1, new Style(20, Color.blue, 40, 10)); // First level
+		styles.put(2, new Style(50, Color.black, 36, 10)); // Second level
+		styles.put(3, new Style(70, Color.black, 30, 10)); // Third level
+		styles.put(4, new Style(90, Color.black, 24, 10)); // Fourth level
+	}
+
+	public Style(int indent, Color color, int fontSize, int leading) {
+		this.indent = indent;
+		this.color = color;
+		this.fontSize = fontSize;
+		this.leading = leading;
+		this.font = new Font("Helvetica", Font.BOLD, fontSize);
 	}
 
 	public static Style getStyle(int level) {
-		if (level >= styles.length) {
-			level = styles.length - 1;
+		Style s = styles.get(level);
+		if (s == null) {
+			return styles.get(4); // fallback
 		}
-		return styles[level];
+		return s;
 	}
 
-	public Style(int indent, Color color, int points, int leading) {
-		this.indent = indent;
-		this.color = color;
-		font = new Font(FONTNAME, Font.BOLD, fontSize=points);
-		this.leading = leading;
+	public int getIndent() {
+		return indent;
 	}
 
-	public String toString() {
-		return "["+ indent + "," + color + "; " + fontSize + " on " + leading +"]";
+	public Color getColor() {
+		return color;
 	}
 
 	public Font getFont(float scale) {
 		return font.deriveFont(fontSize * scale);
+	}
+
+	public int getLeading() {
+		return leading;
 	}
 }

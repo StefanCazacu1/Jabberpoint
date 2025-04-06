@@ -1,84 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Slide.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jabberpoint</a> &gt; <a href="index.source.html" class="el_package">jabberpoint</a> &gt; <span class="el_source">Slide.java</span></div><h1>Slide.java</h1><pre class="source lang-java linenums">package jabberpoint;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.awt.image.ImageObserver;
-import java.util.Vector;
 
-/** &lt;p&gt;Een slide. Deze klasse heeft tekenfunctionaliteit.&lt;/p&gt;
- * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman
- * @version 1.1 2002/12/17 Gert Florijn
- * @version 1.2 2003/11/19 Sylvia Stuurman
- * @version 1.3 2004/08/17 Sylvia Stuurman
- * @version 1.4 2007/07/16 Sylvia Stuurman
- * @version 1.5 2010/03/03 Sylvia Stuurman
- * @version 1.6 2014/05/16 Sylvia Stuurman
- */
+import java.awt.Graphics;
+import java.awt.image.ImageObserver;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Slide {
-	public final static int WIDTH = 1200;
-	public final static int HEIGHT = 800;
-	protected String title; // de titel wordt apart bewaard
-	protected Vector&lt;SlideItem&gt; items; // de slide-items worden in een Vector bewaard
+	private String title;
+	private List&lt;SlideItem&gt; items;
 
-<span class="fc" id="L23">	public Slide() {</span>
-<span class="fc" id="L24">		items = new Vector&lt;SlideItem&gt;();</span>
+	public static final int WIDTH = 1200;
+	public static final int HEIGHT = 800;
+
+<span class="fc" id="L15">	public Slide() {</span>
+<span class="fc" id="L16">		this.items = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L17">	}</span>
+
+	public String getTitle() {
+<span class="fc" id="L20">		return title;</span>
+	}
+
+	public void setTitle(String title) {
+<span class="fc" id="L24">		this.title = title;</span>
 <span class="fc" id="L25">	}</span>
 
-	// Voeg een SlideItem toe
-	public void append(SlideItem anItem) {
-<span class="nc" id="L29">		items.addElement(anItem);</span>
-<span class="nc" id="L30">	}</span>
+	public void append(SlideItem item) {
+<span class="fc" id="L28">		items.add(item);</span>
+<span class="fc" id="L29">	}</span>
 
-	// geef de titel van de slide
-	public String getTitle() {
-<span class="nc" id="L34">		return title;</span>
+	public List&lt;SlideItem&gt; getItems() {
+<span class="nc" id="L32">		return items;</span>
 	}
 
-	// verander de titel van de slide
-	public void setTitle(String newTitle) {
-<span class="nc" id="L39">		title = newTitle;</span>
-<span class="nc" id="L40">	}</span>
-
-	// Maak een TextItem van String, en voeg het TextItem toe
-	public void append(int level, String message) {
-<span class="nc" id="L44">		append(new TextItem(level, message));</span>
-<span class="nc" id="L45">	}</span>
-
-	// geef het betreffende SlideItem
-	public SlideItem getSlideItem(int number) {
-<span class="nc" id="L49">		return (SlideItem)items.elementAt(number);</span>
-	}
-
-	// geef alle SlideItems in een Vector
-	public Vector&lt;SlideItem&gt; getSlideItems() {
-<span class="nc" id="L54">		return items;</span>
-	}
-
-	// geef de afmeting van de Slide
 	public int getSize() {
-<span class="nc" id="L59">		return items.size();</span>
+<span class="fc" id="L36">		return items.size();</span>
 	}
 
-	// teken de slide
-	public void draw(Graphics g, Rectangle area, ImageObserver view) {
-<span class="nc" id="L64">		float scale = getScale(area);</span>
-<span class="nc" id="L65">	    int y = area.y;</span>
-	// De titel wordt apart behandeld
-<span class="nc" id="L67">	    SlideItem slideItem = new TextItem(0, getTitle());</span>
-<span class="nc" id="L68">	    Style style = Style.getStyle(slideItem.getLevel());</span>
-<span class="nc" id="L69">	    slideItem.draw(area.x, y, scale, g, style, view);</span>
-<span class="nc" id="L70">	    y += slideItem.getBoundingBox(g, view, scale, style).height;</span>
-<span class="nc bnc" id="L71" title="All 2 branches missed.">	    for (int number=0; number&lt;getSize(); number++) {</span>
-<span class="nc" id="L72">	      slideItem = (SlideItem)getSlideItems().elementAt(number);</span>
-<span class="nc" id="L73">	      style = Style.getStyle(slideItem.getLevel());</span>
-<span class="nc" id="L74">	      slideItem.draw(area.x, y, scale, g, style, view);</span>
-<span class="nc" id="L75">	      y += slideItem.getBoundingBox(g, view, scale, style).height;</span>
-	    }
-<span class="nc" id="L77">	  }</span>
-
-	// geef de schaal om de slide te kunnen tekenen
-	private float getScale(Rectangle area) {
-<span class="nc" id="L81">		return Math.min(((float)area.width) / ((float)WIDTH), ((float)area.height) / ((float)HEIGHT));</span>
+	// 🆕 NEW: ADD THIS
+	public SlideItem getSlideItem(int index) {
+<span class="fc" id="L41">		return items.get(index);</span>
 	}
+
+	public void draw(Graphics g, ImageObserver observer, int x, int y, float scale) {
+<span class="nc" id="L45">		int cursorY = y;</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">		for (SlideItem item : items) {</span>
+<span class="nc" id="L47">			Style style = Style.getStyle(item.getLevel());</span>
+<span class="nc" id="L48">			item.draw(x, cursorY, scale, g, style, observer);</span>
+<span class="nc" id="L49">			cursorY += style.getLeading() * scale;</span>
+<span class="nc" id="L50">		}</span>
+<span class="nc" id="L51">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

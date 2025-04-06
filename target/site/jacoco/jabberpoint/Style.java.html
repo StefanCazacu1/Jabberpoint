@@ -1,60 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Style.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jabberpoint</a> &gt; <a href="index.source.html" class="el_package">jabberpoint</a> &gt; <span class="el_source">Style.java</span></div><h1>Style.java</h1><pre class="source lang-java linenums">package jabberpoint;
+
 import java.awt.Color;
 import java.awt.Font;
+import java.io.Serializable;
+import java.util.HashMap;
 
-/** &lt;p&gt;Style staat voor Indent, Color, Font and Leading.&lt;/p&gt;
- * &lt;p&gt;De koppeling tussen style-nummer en item-level is nu direct:
- * in Slide wordt de style opgehaald voor een item
- * met als style-nummer het item-level.&lt;/p&gt;
- * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman
- * @version 1.1 2002/12/17 Gert Florijn
- * @version 1.2 2003/11/19 Sylvia Stuurman
- * @version 1.3 2004/08/17 Sylvia Stuurman
- * @version 1.4 2007/07/16 Sylvia Stuurman
- * @version 1.5 2010/03/03 Sylvia Stuurman
- * @version 1.6 2014/05/16 Sylvia Stuurman
- */
+public class Style implements Serializable {
+	private static final long serialVersionUID = 227L;
 
-public class Style {
-	private static Style[] styles; // de styles
-	
-	private static final String FONTNAME = &quot;Helvetica&quot;;
-	int indent;
-	Color color;
-	Font font;
-	int fontSize;
-	int leading;
+<span class="nc" id="L11">	private static final HashMap&lt;Integer, Style&gt; styles = new HashMap&lt;&gt;();</span>
 
-	public static void createStyles() {
-<span class="nc" id="L29">		styles = new Style[5];    </span>
-		// De styles zijn vast ingecodeerd.
-<span class="nc" id="L31">		styles[0] = new Style(0, Color.red,   48, 20);	// style voor item-level 0</span>
-<span class="nc" id="L32">		styles[1] = new Style(20, Color.blue,  40, 10);	// style voor item-level 1</span>
-<span class="nc" id="L33">		styles[2] = new Style(50, Color.black, 36, 10);	// style voor item-level 2</span>
-<span class="nc" id="L34">		styles[3] = new Style(70, Color.black, 30, 10);	// style voor item-level 3</span>
-<span class="nc" id="L35">		styles[4] = new Style(90, Color.black, 24, 10);	// style voor item-level 4</span>
-<span class="nc" id="L36">	}</span>
+	private final int indent;
+	private final Color color;
+	private final Font font;
+	private final int fontSize;
+	private final int leading;
+
+	static {
+<span class="nc" id="L20">		styles.put(0, new Style(0, Color.red, 48, 20)); // Title</span>
+<span class="nc" id="L21">		styles.put(1, new Style(20, Color.blue, 40, 10)); // First level</span>
+<span class="nc" id="L22">		styles.put(2, new Style(50, Color.black, 36, 10)); // Second level</span>
+<span class="nc" id="L23">		styles.put(3, new Style(70, Color.black, 30, 10)); // Third level</span>
+<span class="nc" id="L24">		styles.put(4, new Style(90, Color.black, 24, 10)); // Fourth level</span>
+<span class="nc" id="L25">	}</span>
+
+<span class="nc" id="L27">	public Style(int indent, Color color, int fontSize, int leading) {</span>
+<span class="nc" id="L28">		this.indent = indent;</span>
+<span class="nc" id="L29">		this.color = color;</span>
+<span class="nc" id="L30">		this.fontSize = fontSize;</span>
+<span class="nc" id="L31">		this.leading = leading;</span>
+<span class="nc" id="L32">		this.font = new Font(&quot;Helvetica&quot;, Font.BOLD, fontSize);</span>
+<span class="nc" id="L33">	}</span>
 
 	public static Style getStyle(int level) {
-<span class="nc bnc" id="L39" title="All 2 branches missed.">		if (level &gt;= styles.length) {</span>
-<span class="nc" id="L40">			level = styles.length - 1;</span>
+<span class="nc" id="L36">		Style s = styles.get(level);</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">		if (s == null) {</span>
+<span class="nc" id="L38">			return styles.get(4); // fallback</span>
 		}
-<span class="nc" id="L42">		return styles[level];</span>
+<span class="nc" id="L40">		return s;</span>
 	}
 
-<span class="nc" id="L45">	public Style(int indent, Color color, int points, int leading) {</span>
-<span class="nc" id="L46">		this.indent = indent;</span>
-<span class="nc" id="L47">		this.color = color;</span>
-<span class="nc" id="L48">		font = new Font(FONTNAME, Font.BOLD, fontSize=points);</span>
-<span class="nc" id="L49">		this.leading = leading;</span>
-<span class="nc" id="L50">	}</span>
+	public int getIndent() {
+<span class="nc" id="L44">		return indent;</span>
+	}
 
-	public String toString() {
-<span class="nc" id="L53">		return &quot;[&quot;+ indent + &quot;,&quot; + color + &quot;; &quot; + fontSize + &quot; on &quot; + leading +&quot;]&quot;;</span>
+	public Color getColor() {
+<span class="nc" id="L48">		return color;</span>
 	}
 
 	public Font getFont(float scale) {
-<span class="nc" id="L57">		return font.deriveFont(fontSize * scale);</span>
+<span class="nc" id="L52">		return font.deriveFont(fontSize * scale);</span>
+	}
+
+	public int getLeading() {
+<span class="nc" id="L56">		return leading;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
