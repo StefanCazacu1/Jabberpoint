@@ -5,8 +5,6 @@ import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Test;
 
-import javax.swing.JMenuItem;
-
 class SlideViewerFrameTest {
 
     @Test
@@ -24,7 +22,5 @@ class SlideViewerFrameTest {
         SlideViewerFrame frame = new SlideViewerFrame("Test", presentation);
 
         presentation.setSlideNumber(5);
-        // We can't *assert* much more without a real GUI event,
-        // but no exceptions mean success.
     }
 }

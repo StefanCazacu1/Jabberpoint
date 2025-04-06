@@ -1,6 +1,5 @@
 package jabberpoint;
 
-import javax.swing.*;
 import java.awt.*;
 
 /**

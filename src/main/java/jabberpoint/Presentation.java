@@ -116,7 +116,6 @@ public class Presentation {
 		accessor.save(this, filename);
 	}
 
-	// ADD this to Presentation.java
 	public List<Slide> getSlides() {
 		return slides;
 	}

@@ -41,7 +41,7 @@ class MenuControllerTest {
         Menu viewMenu = menuController.getMenu(1); // "View" menu
         MenuItem nextItem = viewMenu.getItem(0); // "Next Slide"
         ActionListener[] listeners = nextItem.getActionListeners();
-        
+
         // Simulate click
         listeners[0].actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
 
@@ -54,7 +54,7 @@ class MenuControllerTest {
         Menu viewMenu = menuController.getMenu(1); // "View" menu
         MenuItem prevItem = viewMenu.getItem(1); // "Previous Slide"
         ActionListener[] listeners = prevItem.getActionListeners();
-        
+
         // Simulate click
         listeners[0].actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
 
@@ -67,11 +67,10 @@ class MenuControllerTest {
         Menu viewMenu = menuController.getMenu(1); // "View" menu
         MenuItem aboutItem = viewMenu.getItem(2); // "About"
         ActionListener[] listeners = aboutItem.getActionListeners();
-        
+
         // Simulate click (we can't easily verify JOptionPane so just check no crash)
-        assertDoesNotThrow(() -> 
-            listeners[0].actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null))
-        );
+        assertDoesNotThrow(
+                () -> listeners[0].actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null)));
     }
 
     @Test

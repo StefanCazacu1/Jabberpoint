@@ -15,11 +15,11 @@ public class TextItem extends SlideItem {
 		return text;
 	}
 
-	public void setText(String text) { // 🆕 Add this
+	public void setText(String text) { 
 		this.text = text;
 	}
 
-	public void setLevel(int level) { // 🆕 Add this
+	public void setLevel(int level) { 
 		super.level = level;
 	}
 
@@ -48,7 +48,7 @@ public class TextItem extends SlideItem {
 
 	@Override
 	public String toString() {
-		return this.text; // <-- return the real text!
+		return this.text; 
 	}
 
 }

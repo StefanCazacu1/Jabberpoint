@@ -57,7 +57,7 @@ public class JsonAccessorTest {
 
     @Test
     public void testSaveAndLoadEmptyPresentation() throws IOException {
-        presentation.setTitle(null); // No title
+        presentation.setTitle(null);
         File tempFile = File.createTempFile("empty_presentation", ".json");
 
         accessor.saveFile(presentation, tempFile.getAbsolutePath());
