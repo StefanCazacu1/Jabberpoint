@@ -1,8 +1,10 @@
 name: Acceptance Build
 
 on:
+  push:
+    branches: [ feature/refactor-code ]
   pull_request:
-    branches: [main, development]
+      branches: [ main, development ]
 
 jobs:
   build:
