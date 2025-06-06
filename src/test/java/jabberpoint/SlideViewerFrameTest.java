@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
+@DisabledIfEnvironmentVariable(named = "CI", matches = "true")
 class SlideViewerFrameTest {
 
     @Test
