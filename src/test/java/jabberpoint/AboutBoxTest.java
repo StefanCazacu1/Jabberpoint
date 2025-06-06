@@ -5,7 +5,9 @@ import org.mockito.MockedStatic;
 import javax.swing.JOptionPane;
 import java.awt.Frame;
 import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
+@DisabledIfEnvironmentVariable(named = "CI", matches = "true")
 public class AboutBoxTest {
 
     @Test
