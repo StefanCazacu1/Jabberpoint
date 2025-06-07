@@ -21,24 +21,30 @@ public final class Style {
 	/** Level 3 font size. */
 	public static final int LEVEL3_FONT_SIZE = 20;
 
-	/** Default color. */
+	/** Default color for level 0. */
 	public static final Color DEFAULT_COLOR = Color.BLACK;
+
 	/** Default indent value in pixels. */
 	public static final int DEFAULT_INDENT = 30;
 
-	/** Leading value for level 0 items. */
+	/** Default leading (line spacing) for level 0. */
 	public static final int DEFAULT_LEADING = 20;
-	/** Leading value for level 1 items. */
+
+	/** Leading (line spacing) for level 1. */
 	public static final int LEVEL1_LEADING = 18;
-	/** Leading value for level 2 items. */
+
+	/** Leading (line spacing) for level 2. */
 	public static final int LEVEL2_LEADING = 16;
-	/** Leading value for level 3 items. */
+
+	/** Leading (line spacing) for level 3. */
 	public static final int LEVEL3_LEADING = 14;
 
 	/** Color for level 1 items. */
 	public static final Color LEVEL1_COLOR = Color.BLUE;
+
 	/** Color for level 2 items. */
 	public static final Color LEVEL2_COLOR = Color.DARK_GRAY;
+
 	/** Color for level 3 items. */
 	public static final Color LEVEL3_COLOR = Color.GRAY;
 
@@ -138,7 +144,7 @@ public final class Style {
 	 *
 	 * @param g the Graphics context
 	 * @param text the string
-	 * @param scale the scale factor
+	 * @param scale the scale
 	 * @return the width of the string
 	 */
 	public int getBoundingBox(final Graphics g,
@@ -155,7 +161,7 @@ public final class Style {
 	 * @param text the string
 	 * @param x the x coordinate
 	 * @param y the y coordinate
-	 * @param scale the scale factor
+	 * @param scale the scale
 	 */
 	public void drawString(final Graphics g, final String text, final int x,
 			final int y, final float scale) {
