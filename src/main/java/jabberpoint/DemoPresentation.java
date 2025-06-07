@@ -2,7 +2,6 @@ package jabberpoint;
 
 /** Utility class providing a demo presentation with sample slides. */
 public final class DemoPresentation {
-
 	/** Prevents instantiation. */
 	private DemoPresentation() {
 		throw new UnsupportedOperationException("Utility class");
