@@ -102,7 +102,8 @@ public final class XMLAccessor implements AccessorStrategy {
                                 ((TextItem) item).getText());
                     } else if (item instanceof BitmapItem) {
                         itemElement.setAttribute("kind", "image");
-                        itemElement.setTextContent(((BitmapItem) item).getName());
+                        itemElement.setTextContent(
+                                ((BitmapItem) item).getName());
                     }
                     slideElement.appendChild(itemElement);
                 }
