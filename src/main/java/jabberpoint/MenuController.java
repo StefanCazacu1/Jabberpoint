@@ -62,34 +62,34 @@ public class MenuController extends MenuBar {
         Menu fileMenu = new Menu("File");
 
         MenuItem openItem = new MenuItem(OPEN);
-        openItem.addActionListener(e -> openFile());
+        openItem.addActionListener(e -> this.openFile());
         fileMenu.add(openItem);
 
         MenuItem saveItem = new MenuItem(SAVE);
-        saveItem.addActionListener(e -> saveFile());
+        saveItem.addActionListener(e -> this.saveFile());
         fileMenu.add(saveItem);
 
         MenuItem exitItem = new MenuItem(EXIT);
         exitItem.addActionListener(e -> System.exit(0));
         fileMenu.add(exitItem);
 
-        add(fileMenu);
+        this.add(fileMenu);
 
         Menu viewMenu = new Menu("View");
 
         nextItem = new MenuItem(NEXT);
-        nextItem.addActionListener(e -> presentation.nextSlide());
+        nextItem.addActionListener(e -> this.presentation.nextSlide());
         viewMenu.add(nextItem);
 
         prevItem = new MenuItem(PREV);
-        prevItem.addActionListener(e -> presentation.prevSlide());
+        prevItem.addActionListener(e -> this.presentation.prevSlide());
         viewMenu.add(prevItem);
 
         aboutItem = new MenuItem(ABOUT);
-        aboutItem.addActionListener(e -> AboutBox.show(parent));
+        aboutItem.addActionListener(e -> AboutBox.show(this.parent));
         viewMenu.add(aboutItem);
 
-        add(viewMenu);
+        this.add(viewMenu);
     }
 
     /**
@@ -102,10 +102,9 @@ public class MenuController extends MenuBar {
                 FileDialog.LOAD);
         dialog.setVisible(true);
         if (dialog.getFile() != null) {
-            String filename = dialog.getDirectory()
-                    + dialog.getFile();
+            String filename = dialog.getDirectory() + dialog.getFile();
             try {
-                presentation.load(filename);
+                this.presentation.load(filename);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(this.parent,
                         "Error loading file!",
@@ -127,7 +126,7 @@ public class MenuController extends MenuBar {
         if (dialog.getFile() != null) {
             String filename = dialog.getDirectory() + dialog.getFile();
             try {
-                presentation.save(filename);
+                this.presentation.save(filename);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(this.parent,
                         "Error saving file!",
