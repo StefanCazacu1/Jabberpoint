@@ -39,9 +39,7 @@ public final class Style {
     /** Leading (line spacing) for level 3. */
     public static final int LEVEL3_LEADING = 14;
 
-    /**
-     * Color for level 1 items.
-     */
+    /** Color for level 1 items. */
     public static final Color LEVEL1_COLOR = Color.BLUE;
 
     /**
