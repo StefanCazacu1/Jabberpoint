@@ -51,13 +51,13 @@ public class MenuController extends MenuBar {
     /**
      * Constructs the menu controller.
      *
-     * @param parent       the parent frame
-     * @param presentation the presentation instance to control
+     * @param parentParam       the parent frame
+     * @param presentationParam the presentation instance to control
      */
-    public MenuController(final Frame parent,
-            final Presentation presentation) {
-        this.parent = parent;
-        this.presentation = presentation;
+    public MenuController(final Frame parentParam,
+            final Presentation presentationParam) {
+        this.parent = parentParam;
+        this.presentation = presentationParam;
 
         Menu fileMenu = new Menu("File");
 
