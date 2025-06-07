@@ -37,30 +37,25 @@ public class TextItemTest {
 
     @Test
     void testDrawSetsFontColorAndDrawsString() {
-        TextItem textItem = new TextItem(1, "Hello"); // level 1 uses Style level 1 (Blue color, 28pt font, leading 18)
+        TextItem textItem = new TextItem(1, "Hello");
         Graphics g = mock(Graphics.class);
         ImageObserver obs = mock(ImageObserver.class);
 
         textItem.draw(g, obs, 10, 5, 1.0f);
 
-        // Accept any Font with size 28 (platform may use Dialog, Helvetica, etc.)
         verify(g).setFont(argThat(font -> font.getSize() == 28));
         verify(g).setColor(Color.blue);
-
-        // The y-coordinate for drawString should be y + (leading * scale) = 5 + 18 = 23
         verify(g).drawString("Hello", 10, 23);
     }
 
     @Test
     void testDrawAppliesScaleFactor() {
-        TextItem textItem = new TextItem(1, "Hi"); // level 1, base font size 28pt, leading 18
+        TextItem textItem = new TextItem(1, "Hi");
         Graphics g = mock(Graphics.class);
 
         textItem.draw(g, mock(ImageObserver.class), 0, 0, 2.0f);
 
-        // The font size should double (28pt base -> 56pt)
         verify(g).setFont(argThat(font -> font.getSize() == 56));
-        // The drawString y position should be 0 + 36 = 36 for leading=18 scaled by 2
         verify(g).drawString("Hi", 0, 36);
     }
 
@@ -122,8 +117,13 @@ public class TextItemTest {
         assertEquals(0, emptyBox.width);
         assertEquals(15, emptyBox.height);
 
+        // Test with null text: should NOT throw, just return width 0 and height 15
         TextItem nullTextItem = new TextItem(1, null);
-        when(fm.stringWidth(null)).thenThrow(new NullPointerException());
-        assertThrows(NullPointerException.class, () -> nullTextItem.getBoundingBox(g, null, 1.0f));
+        when(fm.stringWidth(null)).thenReturn(0);
+        when(fm.getHeight()).thenReturn(15);
+
+        Rectangle nullBox = nullTextItem.getBoundingBox(g, null, 1.0f);
+        assertEquals(0, nullBox.width);
+        assertEquals(15, nullBox.height);
     }
 }
