@@ -136,8 +136,8 @@ public class Presentation {
      * @return the current slide, or null if invalid index
      */
     public Slide getCurrentSlide() {
-        if (currentSlideNumber < 0 ||
-				currentSlideNumber >= slides.size()) {
+        if (currentSlideNumber < 0
+                || currentSlideNumber >= slides.size()) {
             return null;
         }
         return slides.get(currentSlideNumber);
