@@ -23,18 +23,23 @@ public final class Style {
 
 	/** Default color. */
 	public static final Color DEFAULT_COLOR = Color.BLACK;
-	/** Default indent. */
+	/** Default indent value in pixels. */
 	public static final int DEFAULT_INDENT = 30;
 
-	/** Leading values for different levels. */
+	/** Leading value for level 0 items. */
 	public static final int DEFAULT_LEADING = 20;
+	/** Leading value for level 1 items. */
 	public static final int LEVEL1_LEADING = 18;
+	/** Leading value for level 2 items. */
 	public static final int LEVEL2_LEADING = 16;
+	/** Leading value for level 3 items. */
 	public static final int LEVEL3_LEADING = 14;
 
-	/** Colors for different levels. */
+	/** Color for level 1 items. */
 	public static final Color LEVEL1_COLOR = Color.BLUE;
+	/** Color for level 2 items. */
 	public static final Color LEVEL2_COLOR = Color.DARK_GRAY;
+	/** Color for level 3 items. */
 	public static final Color LEVEL3_COLOR = Color.GRAY;
 
 	private final int fontSize;
@@ -45,17 +50,17 @@ public final class Style {
 	/**
 	 * Constructs a Style object.
 	 *
-	 * @param fontSize the font size
-	 * @param color the color
-	 * @param indent the indent
-	 * @param leading the leading
+	 * @param fontSizeParam the font size
+	 * @param colorParam the color
+	 * @param indentParam the indent
+	 * @param leadingParam the leading
 	 */
-	public Style(final int fontSize, final Color color,
-			final int indent, final int leading) {
-		this.fontSize = fontSize;
-		this.color = color;
-		this.indent = indent;
-		this.leading = leading;
+	public Style(final int fontSizeParam, final Color colorParam,
+			final int indentParam, final int leadingParam) {
+		this.fontSize = fontSizeParam;
+		this.color = colorParam;
+		this.indent = indentParam;
+		this.leading = leadingParam;
 	}
 
 	/**
@@ -67,13 +72,17 @@ public final class Style {
 	public static Style getStyle(final int level) {
 		switch (level) {
 			case 0:
-				return new Style(LEVEL0_FONT_SIZE, DEFAULT_COLOR, DEFAULT_INDENT, DEFAULT_LEADING);
+				return new Style(LEVEL0_FONT_SIZE, DEFAULT_COLOR,
+						DEFAULT_INDENT, DEFAULT_LEADING);
 			case 1:
-				return new Style(LEVEL1_FONT_SIZE, LEVEL1_COLOR, DEFAULT_INDENT, LEVEL1_LEADING);
+				return new Style(LEVEL1_FONT_SIZE, LEVEL1_COLOR,
+						DEFAULT_INDENT, LEVEL1_LEADING);
 			case 2:
-				return new Style(LEVEL2_FONT_SIZE, LEVEL2_COLOR, DEFAULT_INDENT, LEVEL2_LEADING);
+				return new Style(LEVEL2_FONT_SIZE, LEVEL2_COLOR,
+						DEFAULT_INDENT, LEVEL2_LEADING);
 			default:
-				return new Style(LEVEL3_FONT_SIZE, LEVEL3_COLOR, DEFAULT_INDENT, LEVEL3_LEADING);
+				return new Style(LEVEL3_FONT_SIZE, LEVEL3_COLOR,
+						DEFAULT_INDENT, LEVEL3_LEADING);
 		}
 	}
 
@@ -129,7 +138,7 @@ public final class Style {
 	 *
 	 * @param g the Graphics context
 	 * @param text the string
-	 * @param scale the scale
+	 * @param scale the scale factor
 	 * @return the width of the string
 	 */
 	public int getBoundingBox(final Graphics g,
@@ -146,7 +155,7 @@ public final class Style {
 	 * @param text the string
 	 * @param x the x coordinate
 	 * @param y the y coordinate
-	 * @param scale the scale
+	 * @param scale the scale factor
 	 */
 	public void drawString(final Graphics g, final String text, final int x,
 			final int y, final float scale) {
