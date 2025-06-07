@@ -50,7 +50,7 @@ public final class TextItem extends SlideItem {
 	 */
 	@Override
 	public void setLevel(final int level) {
-		super.level = level;
+		setLevel(level);
 	}
 
 	/**
