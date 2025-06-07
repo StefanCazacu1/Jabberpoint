@@ -7,50 +7,44 @@ import java.awt.Frame;
 import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
+/**
+ * Unit tests for the AboutBox class.
+ */
 @DisabledIfEnvironmentVariable(named = "CI", matches = "true")
 public class AboutBoxTest {
 
+    /**
+     * Tests AboutBox.show() with a null parent.
+     */
     @Test
     void testShowWithNullParent() {
-        // Mocking the static method of JOptionPane /
+        // Mock the static method of JOptionPane
         try (MockedStatic<JOptionPane> mocked = mockStatic(JOptionPane.class)) {
-            // Call the AboutBox.show() method with null parent
             AboutBox.show(null);
-
-            // Verify the showMessageDialog is called with the expected arguments
             mocked.verify(() -> JOptionPane.showMessageDialog(
-                    eq(null), // Parent is null
+                    eq(null),
                     argThat(message -> message instanceof String
-                            && ((String) message).contains("JabberPoint is a primitive slide-show program")), // Correct
-                                                                                                              // way to
-                                                                                                              // check
-                                                                                                              // String
-                    eq("About JabberPoint\n"), // Title
-                    eq(JOptionPane.INFORMATION_MESSAGE) // Message type should be INFORMATION
+                            && ((String) message).contains("JabberPoint is a primitive slide-show program")),
+                    eq("About JabberPoint\n"),
+                    eq(JOptionPane.INFORMATION_MESSAGE)
             ));
         }
     }
 
+    /**
+     * Tests AboutBox.show() with a Frame parent.
+     */
     @Test
     void testShowWithFrameParent() {
-        // Mocking the static method of JOptionPane
         try (MockedStatic<JOptionPane> mocked = mockStatic(JOptionPane.class)) {
-            // Create a dummy Frame as parent
             Frame dummyFrame = new Frame();
-
-            // Call the AboutBox.show() method with the frame parent
             AboutBox.show(dummyFrame);
-
-            // Verify the showMessageDialog is called with the expected arguments
             mocked.verify(() -> JOptionPane.showMessageDialog(
-                    eq(dummyFrame), // Frame as parent
+                    eq(dummyFrame),
                     argThat(message -> message instanceof String
-                            && ((String) message).contains("JabberPoint is a primitive slide-show program")), // Correct
-                                                                                                              // way to
-                                                                                                              // check
-                                                                                                              // String
-                    eq("About JabberPoint\n"), // Title
-                    eq(JOptionPane.INFORMATION_MESSAGE) // Message type should be INFORMATION
+                            && ((String) message).contains("JabberPoint is a primitive slide-show program")),
+                    eq("About JabberPoint\n"),
+                    eq(JOptionPane.INFORMATION_MESSAGE)
             ));
         }
     }

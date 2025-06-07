@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.*;
-
 import java.awt.image.BufferedImage;
 
 class SlideViewerComponentTest {
@@ -22,8 +21,8 @@ class SlideViewerComponentTest {
     @Test
     void testUpdatePresentation() {
         Presentation newPresentation = new Presentation();
-        viewerComponent = new SlideViewerComponent(newPresentation);
-        assertEquals(newPresentation, viewerComponent.getPresentation());
+        SlideViewerComponent newViewer = new SlideViewerComponent(newPresentation);
+        assertEquals(newPresentation, newViewer.getPresentation());
     }
 
     @Test
@@ -37,41 +36,35 @@ class SlideViewerComponentTest {
         Graphics graphics = image.getGraphics();
         viewerComponent.paintComponent(graphics);
         graphics.dispose();
-        // No exception = success
+        // No exceptions means success
     }
 
     @Test
     void testUpdate() {
-        // Add a slide to the presentation before setting the current slide
         Slide slide = new Slide();
-        presentation.addSlide(slide); // Add a slide
-        presentation.setSlideNumber(0); // Set the first slide as current
+        presentation.addSlide(slide);
+        presentation.setSlideNumber(0);
 
-        Slide currentSlide = presentation.getCurrentSlide();
-        assertNotNull(currentSlide); // Now it should not be null
+        assertNotNull(presentation.getCurrentSlide());
 
-        // Call update on the viewer component to simulate the update
         viewerComponent.update();
 
-        // Verify that the update led to the current slide being accessible
         assertNotNull(viewerComponent.getPresentation().getCurrentSlide());
     }
 
     @Test
     void testPaintComponentWithSlide() {
-        // Set the current slide using setSlideNumber
         Slide slide = new Slide();
         slide.setTitle("Test Slide");
-        presentation.addSlide(slide);  // Add the slide to the presentation
-        presentation.setSlideNumber(0); // Set to the first slide
+        presentation.addSlide(slide);
+        presentation.setSlideNumber(0);
 
         BufferedImage image = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
         Graphics graphics = image.getGraphics();
         viewerComponent.paintComponent(graphics);
         graphics.dispose();
 
-        // Add assertions based on what is expected to be drawn on the component
-        // This might depend on how the slide draws itself (e.g., its title)
+        // You can add assertions here if you have expected behaviors to check
     }
 
     @Test
@@ -82,10 +75,6 @@ class SlideViewerComponentTest {
 
     @Test
     void testSlideViewerWithNullPresentation() {
-        assertThrows(NullPointerException.class, () -> {
-            new SlideViewerComponent(null);
-        });
+        assertThrows(NullPointerException.class, () -> new SlideViewerComponent(null));
     }
-
-
 }

@@ -30,6 +30,9 @@ class StyleTest {
         Font font = style.getFont(1.0f);
         assertNotNull(font);
         assertEquals(32, font.getSize());
+        // Optionally check font name and style
+        assertEquals("Helvetica", font.getName());
+        assertEquals(Font.BOLD, font.getStyle());
     }
 
     @Test
@@ -52,11 +55,18 @@ class StyleTest {
     void testStaticGetStyle() {
         Style s0 = Style.getStyle(0);
         assertEquals(32, s0.getFontSize());
+        assertEquals(Color.BLACK, s0.getColor());
+
         Style s1 = Style.getStyle(1);
         assertEquals(28, s1.getFontSize());
+        assertEquals(Color.BLUE, s1.getColor());
+
         Style s2 = Style.getStyle(2);
         assertEquals(24, s2.getFontSize());
+        assertEquals(Color.DARK_GRAY, s2.getColor());
+
         Style s3 = Style.getStyle(99);
         assertEquals(20, s3.getFontSize());
+        assertEquals(Color.GRAY, s3.getColor());
     }
 }

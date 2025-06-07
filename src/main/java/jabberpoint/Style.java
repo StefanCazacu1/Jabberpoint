@@ -21,9 +21,15 @@ public final class Style {
 	/** Default color. */
 	public static final Color DEFAULT_COLOR = Color.black;
 	/** Default indent. */
-	public static final int DEFAULT_INDENT = 20;
+	public static final int DEFAULT_INDENT = 30;
 	/** Default leading. */
-	public static final int DEFAULT_LEADING = 30;
+	public static final int DEFAULT_LEADING = 20;
+	public static final int LEVEL1_LEADING = 18;
+	public static final int LEVEL2_LEADING = 16;
+	public static final int LEVEL3_LEADING = 14;
+	public static final Color LEVEL1_COLOR = Color.BLUE;
+	public static final Color LEVEL2_COLOR = Color.DARK_GRAY;
+	public static final Color LEVEL3_COLOR = Color.GRAY;
 
 	private final int fontSize;
 	private final Color color;
@@ -53,20 +59,17 @@ public final class Style {
 	public static Style getStyle(final int level) {
 		switch (level) {
 			case 0:
-				return new Style(LEVEL0_FONT_SIZE, Color.BLACK, 30, 20);
+				return new Style(LEVEL0_FONT_SIZE, Color.BLACK, DEFAULT_INDENT, DEFAULT_LEADING);
 			case 1:
-				return new Style(LEVEL1_FONT_SIZE, Color.BLUE, 30, 18);
+				return new Style(LEVEL1_FONT_SIZE, LEVEL1_COLOR, DEFAULT_INDENT, LEVEL1_LEADING);
 			case 2:
-				return new Style(LEVEL2_FONT_SIZE, Color.DARK_GRAY, 30, 16);
+				return new Style(LEVEL2_FONT_SIZE, LEVEL2_COLOR, DEFAULT_INDENT, LEVEL2_LEADING);
 			default:
-				return new Style(LEVEL3_FONT_SIZE, Color.GRAY, 30, 14);
+				return new Style(LEVEL3_FONT_SIZE, LEVEL3_COLOR, DEFAULT_INDENT, LEVEL3_LEADING);
 		}
 	}
 
-	/**
-	 * Returns the font size.
-	 * @return the font size
-	 */
+	/** Returns the font size. */
 	public int getFontSize() {
 		return fontSize;
 	}
@@ -81,26 +84,17 @@ public final class Style {
 				Math.round(fontSize * scale));
 	}
 
-	/**
-	 * Returns the indent value.
-	 * @return the indent
-	 */
+	/** Returns the indent value. */
 	public int getIndent() {
 		return indent;
 	}
 
-	/**
-	 * Returns the leading value.
-	 * @return the leading
-	 */
+	/** Returns the leading value. */
 	public int getLeading() {
 		return leading;
 	}
 
-	/**
-	 * Returns the color.
-	 * @return the color
-	 */
+	/** Returns the color. */
 	public Color getColor() {
 		return color;
 	}
