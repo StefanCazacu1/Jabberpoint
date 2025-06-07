@@ -97,7 +97,7 @@ public class MenuController extends MenuBar {
      * Shows an error dialog if loading fails.
      */
     public void openFile() {
-        FileDialog dialog = new FileDialog(parent,
+        FileDialog dialog = new FileDialog(this.parent,
                 "Open File",
                 FileDialog.LOAD);
         dialog.setVisible(true);
@@ -107,7 +107,7 @@ public class MenuController extends MenuBar {
             try {
                 presentation.load(filename);
             } catch (IOException e) {
-                JOptionPane.showMessageDialog(parent,
+                JOptionPane.showMessageDialog(this.parent,
                         "Error loading file!",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
@@ -120,7 +120,7 @@ public class MenuController extends MenuBar {
      * Shows an error dialog if saving fails.
      */
     public void saveFile() {
-        FileDialog dialog = new FileDialog(parent,
+        FileDialog dialog = new FileDialog(this.parent,
                 "Save File",
                 FileDialog.SAVE);
         dialog.setVisible(true);
@@ -129,7 +129,7 @@ public class MenuController extends MenuBar {
             try {
                 presentation.save(filename);
             } catch (IOException e) {
-                JOptionPane.showMessageDialog(parent,
+                JOptionPane.showMessageDialog(this.parent,
                         "Error saving file!",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
