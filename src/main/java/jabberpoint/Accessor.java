@@ -29,8 +29,8 @@ public class Accessor {
     public void load(final Presentation presentation,
             final String filename) throws IOException {
         if (accessorStrategy == null) {
-            throw new IllegalStateException
-                    ("No AccessorStrategy set!");
+            throw new IllegalStateException(
+                    "No AccessorStrategy set!");
         }
         accessorStrategy.loadFile(presentation, filename);
     }
@@ -45,8 +45,8 @@ public class Accessor {
     public void save(final Presentation presentation,
             final String filename) throws IOException {
         if (accessorStrategy == null) {
-            throw new IllegalStateException
-                    ("No AccessorStrategy set!");
+            throw new IllegalStateException(
+                    "No AccessorStrategy set!");
         }
         accessorStrategy.saveFile(presentation, filename);
     }
