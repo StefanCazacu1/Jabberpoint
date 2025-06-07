@@ -5,14 +5,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 class PresentationTest {
 
     private Presentation presentation;
     private MockSlideViewerComponent observer;
 
-    // Dummy observer to track updates
+    // Dummy observer to track notifications from Presentation
     static class MockSlideViewerComponent implements Observer {
         private boolean updated = false;
 
@@ -103,7 +102,7 @@ class PresentationTest {
     @Test
     void unsupportedLoadShouldThrowIOException() {
         IOException thrown = assertThrows(IOException.class, () -> {
-            presentation.load("file.ppt"); // Unsupported extension
+            presentation.load("file.ppt"); // Unsupported file type
         });
         assertEquals("Unsupported file type", thrown.getMessage());
     }
@@ -111,7 +110,7 @@ class PresentationTest {
     @Test
     void unsupportedSaveShouldThrowIOException() {
         IOException thrown = assertThrows(IOException.class, () -> {
-            presentation.save("file.ppt"); // Unsupported extension
+            presentation.save("file.ppt"); // Unsupported file type
         });
         assertEquals("Unsupported file type", thrown.getMessage());
     }
@@ -121,9 +120,9 @@ class PresentationTest {
         Slide slide1 = new Slide();
         presentation.addSlide(slide1);
 
-        presentation.setSlideNumber(0); // Set the first slide
-        presentation.nextSlide(); // Attempt to go to the next slide (should not change)
-        assertEquals(0, presentation.getSlideNumber()); // The slide number should remain at 0 (no next slide)
+        presentation.setSlideNumber(0); // Set first slide
+        presentation.nextSlide(); // Should not advance
+        assertEquals(0, presentation.getSlideNumber());
     }
 
     @Test
@@ -131,27 +130,20 @@ class PresentationTest {
         Slide slide1 = new Slide();
         presentation.addSlide(slide1);
 
-        presentation.setSlideNumber(0); // Set the first slide
-        presentation.prevSlide(); // Attempt to go to the previous slide (should not change)
-        assertEquals(0, presentation.getSlideNumber()); // The slide number should remain at 0 (no previous slide)
+        presentation.setSlideNumber(0); // Set first slide
+        presentation.prevSlide(); // Should not go negative
+        assertEquals(0, presentation.getSlideNumber());
     }
 
     @Test
     void testGetSlideWithInvalidIndices() {
-        // Add some slides to the presentation
         Slide slide1 = new Slide();
         Slide slide2 = new Slide();
         presentation.addSlide(slide1);
         presentation.addSlide(slide2);
 
-        // Test case 1: Index -1 (invalid)
         assertNull(presentation.getSlide(-1), "Should return null for index -1");
-
-        // Test case 2: Index greater than the size of the list
-        assertNull(presentation.getSlide(5), "Should return null for index greater than the size of the list");
-
-        // Test case 3: Index equal to the size of the list (out of bounds)
-        assertNull(presentation.getSlide(2), "Should return null for index equal to the size of the list");
+        assertNull(presentation.getSlide(5), "Should return null for index greater than size");
+        assertNull(presentation.getSlide(2), "Should return null for index equal to size");
     }
-
 }

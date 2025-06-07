@@ -6,78 +6,135 @@ import java.awt.image.ImageObserver;
 import java.util.List;
 import java.util.Vector;
 
+/**
+ * Represents a slide in the JabberPoint presentation.
+ */
 public class Slide {
-	private String title;
-	private Vector<SlideItem> items;
 
-	public Slide() {
-		items = new Vector<>();
-	}
+    /** The slide title. */
+    private String slideTitle;
 
-	// Add a SlideItem to the Slide
-	public void append(SlideItem item) {
-		items.addElement(item);
-	}
+    /** List of slide items. */
+    private final Vector<SlideItem> items;
 
-	// Alternative name for append
-	public void addItem(SlideItem item) {
-		items.add(item);
-	}
+    /**
+     * Constructs a new Slide.
+     */
+    public Slide() {
+        items = new Vector<>();
+    }
 
-	// Get all SlideItems
-	public Vector<SlideItem> getItems() {
-		return items;
-	}
+    /**
+     * Appends a SlideItem to the slide.
+     * @param item the item to add
+     */
+    public void append(final SlideItem item) {
+        items.addElement(item);
+    }
 
-	// Set the title of the Slide
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    /**
+     * Alternative name for append.
+     * @param item the item to add
+     */
+    public void addItem(final SlideItem item) {
+        items.add(item);
+    }
 
-	// Get the title of the Slide
-	public String getTitle() {
-		return title;
-	}
+    /**
+     * Gets all SlideItems as a Vector.
+     * @return the items
+     */
+    public Vector<SlideItem> getItems() {
+        return items;
+    }
 
-	// Draw all the items in the slide
-	public void draw(Graphics g, ImageObserver observer, int x, int y, float scale) {
-		int currentY = y;
-		for (SlideItem item : items) {
-			item.draw(g, observer, x, currentY, scale);
-			Rectangle bounds = item.getBoundingBox(g, observer, scale);
-			currentY += bounds.height;
-		}
-	}
+    /**
+     * Sets the title of the Slide.
+     * @param title the title to set
+     */
+    public void setTitle(final String title) {
+        this.slideTitle = title;
+    }
 
-	// --- 🆕 Added methods for Composite Pattern and tests ---
+    /**
+     * Gets the title of the Slide.
+     * @return the slide title
+     */
+    public String getTitle() {
+        return slideTitle;
+    }
 
-	// Get the number of SlideItems
-	public int getSize() {
-		return items.size();
-	}
+    /**
+     * Draws all items in the slide.
+     * @param g the Graphics context
+     * @param observer the image observer
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @param scale the scale factor
+     */
+    public void draw(final Graphics g,
+            final ImageObserver observer,
+            final int x,
+            final int y,
+            final float scale) {
+        int currentY = y;
+        for (SlideItem item : items) {
+            item.draw(g, observer, x, currentY, scale);
+            Rectangle bounds = item.getBoundingBox(g,
+                    observer,
+                    scale);
+            currentY += bounds.height;
+        }
+    }
 
-	// Get a specific SlideItem by index
-	public SlideItem getSlideItem(int index) {
-		if (index >= 0 && index < items.size()) {
-			return items.elementAt(index);
-		}
-		throw new IndexOutOfBoundsException("Invalid index: " + index);
-	}
+    /**
+     * Gets the number of SlideItems.
+     * @return the number of items
+     */
+    public int getSize() {
+        return items.size();
+    }
 
-	// Get the bounding box that wraps all SlideItems
-	public Rectangle getBoundingBox(Graphics g, ImageObserver observer, float scale) {
-		int width = 0;
-		int height = 0;
-		for (SlideItem item : items) {
-			Rectangle itemBox = item.getBoundingBox(g, observer, scale);
-			width = Math.max(width, itemBox.width);
-			height += itemBox.height;
-		}
-		return new Rectangle(0, 0, width, height);
-	}
+    /**
+     * Gets a specific SlideItem by index.
+     * @param index the item index
+     * @return the SlideItem at the given index
+     * @throws IndexOutOfBoundsException if index invalid
+     */
+    public SlideItem getSlideItem(final int index) {
+        if (index >= 0 && index < items.size()) {
+            return items.elementAt(index);
+        }
+        throw new IndexOutOfBoundsException("Invalid index: " + index);
+    }
 
-	public List<SlideItem> getSlideItems() {
-    return items;
-}
+    /**
+     * Gets the bounding box that wraps all SlideItems.
+     * @param g the Graphics context
+     * @param observer the image observer
+     * @param scale the scale
+     * @return the bounding box Rectangle
+     */
+    public Rectangle getBoundingBox(final Graphics g,
+            final ImageObserver observer,
+            final float scale) {
+        int width = 0;
+        int height = 0;
+        for (SlideItem item : items) {
+            Rectangle itemBox = item.getBoundingBox(g,
+                    observer,
+                    scale);
+            width = Math.max(width, itemBox.width);
+            height += itemBox.height;
+        }
+        return new Rectangle(0, 0, width, height);
+    }
 
+    /**
+     * Gets all SlideItems as a List.
+     * @return the list of SlideItems
+     */
+    public List<SlideItem> getSlideItems() {
+        return items;
+    }
 }

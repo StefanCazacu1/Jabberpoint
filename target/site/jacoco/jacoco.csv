@@ -1,5 +1,5 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-jabberpoint,jabberpoint,DemoPresentation,3,59,0,0,1,13,1,1,1,1
+jabberpoint,jabberpoint,DemoPresentation,3,97,0,0,1,20,1,1,1,1
 jabberpoint,jabberpoint,KeyController,3,23,2,3,1,8,2,4,0,2
 jabberpoint,jabberpoint,Accessor,32,3,4,0,10,1,5,1,3,1
 jabberpoint,jabberpoint,TextItem,0,91,0,4,0,25,0,9,0,7

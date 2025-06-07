@@ -10,31 +10,37 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Unit tests for the JsonAccessor class.
+ */
 public class JsonAccessorTest {
 
     private Presentation presentation;
     private JsonAccessor accessor;
 
+    /**
+     * Setup a new presentation and accessor before each test.
+     */
     @BeforeEach
     public void setUp() {
         presentation = new Presentation();
         accessor = new JsonAccessor();
     }
 
+    /**
+     * Test saving and loading a non-empty presentation.
+     * @throws IOException if file operations fail
+     */
     @Test
     public void testSaveAndLoadPresentation() throws IOException {
-        // Create a presentation
         presentation.setTitle("Test Presentation");
         Slide slide = new Slide();
         slide.append(new TextItem(0, "Welcome to JabberPoint"));
         presentation.addSlide(slide);
 
         File tempFile = File.createTempFile("test_presentation", ".json");
-
-        // Save the file
         accessor.saveFile(presentation, tempFile.getAbsolutePath());
 
-        // Load the file into a new presentation
         Presentation loadedPresentation = new Presentation();
         accessor.loadFile(loadedPresentation, tempFile.getAbsolutePath());
 
@@ -55,9 +61,13 @@ public class JsonAccessorTest {
         Files.deleteIfExists(tempFile.toPath());
     }
 
+    /**
+     * Test saving and loading an empty presentation.
+     * @throws IOException if file operations fail
+     */
     @Test
     public void testSaveAndLoadEmptyPresentation() throws IOException {
-        presentation.setTitle(null); // No title
+        presentation.setTitle(null);
         File tempFile = File.createTempFile("empty_presentation", ".json");
 
         accessor.saveFile(presentation, tempFile.getAbsolutePath());
@@ -71,12 +81,18 @@ public class JsonAccessorTest {
         Files.deleteIfExists(tempFile.toPath());
     }
 
+    /**
+     * Test that loading a non-existent file throws IOException.
+     */
     @Test
     public void testLoadInvalidFileThrowsIOException() {
         Presentation newPresentation = new Presentation();
         assertThrows(IOException.class, () -> accessor.loadFile(newPresentation, "non_existing_file.json"));
     }
 
+    /**
+     * Test that saving to an invalid path throws IOException.
+     */
     @Test
     public void testSavePresentationToInvalidPathThrowsIOException() {
         Presentation newPresentation = new Presentation();

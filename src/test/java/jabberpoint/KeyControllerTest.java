@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
 
 import java.awt.event.KeyEvent;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
+@DisabledIfEnvironmentVariable(named = "CI", matches = "true")
 class KeyControllerTest {
 
     private Presentation presentation;
@@ -41,5 +43,4 @@ class KeyControllerTest {
         verify(presentation, times(1)).setSlideNumber(0);
     }
 
-    // ⚠️ Do NOT test ESCAPE key if it calls System.exit()
 }

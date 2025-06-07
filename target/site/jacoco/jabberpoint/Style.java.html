@@ -10,65 +10,63 @@ public class Style {
 
 	static {
 <span class="fc" id="L12">		styles = new Style[5];</span>
-<span class="fc" id="L13">		styles[0] = new Style(24, 20, 10, Color.red); // Level 0</span>
-<span class="fc" id="L14">		styles[1] = new Style(20, 18, 10, Color.blue); // Level 1</span>
-<span class="fc" id="L15">		styles[2] = new Style(16, 16, 10, Color.black); // Level 2</span>
-<span class="fc" id="L16">		styles[3] = new Style(14, 14, 10, Color.gray); // Level 3</span>
-<span class="fc" id="L17">		styles[4] = new Style(12, 12, 10, Color.darkGray); // Level 4</span>
+<span class="fc" id="L13">		styles[0] = new Style(32, 20, 30, Color.red); // Level 0</span>
+<span class="fc" id="L14">		styles[1] = new Style(28, 18, 30, Color.blue); // Level 1</span>
+<span class="fc" id="L15">		styles[2] = new Style(24, 16, 30, Color.black); // Level 2</span>
+<span class="fc" id="L16">		styles[3] = new Style(24, 14, 30, Color.gray); // Level 3</span>
+<span class="fc" id="L17">		styles[4] = new Style(24, 12, 30, Color.darkGray); // Level 4</span>
 <span class="fc" id="L18">	}</span>
 
 	private int fontSize;
 	private int leading;
 	private int indent;
-	private Color color; // 🆕 ADD THIS
+	private Color color; 
 
-	// 🆕 Updated constructor
-<span class="fc" id="L26">	public Style(int fontSize, int leading, int indent, Color color) {</span>
-<span class="fc" id="L27">		this.fontSize = fontSize;</span>
-<span class="fc" id="L28">		this.leading = leading;</span>
-<span class="fc" id="L29">		this.indent = indent;</span>
-<span class="fc" id="L30">		this.color = color;</span>
-<span class="fc" id="L31">	}</span>
+<span class="fc" id="L25">	public Style(int fontSize, int leading, int indent, Color color) {</span>
+<span class="fc" id="L26">		this.fontSize = fontSize;</span>
+<span class="fc" id="L27">		this.leading = leading;</span>
+<span class="fc" id="L28">		this.indent = indent;</span>
+<span class="fc" id="L29">		this.color = color;</span>
+<span class="fc" id="L30">	}</span>
 
 	public static Style getStyle(int level) {
-<span class="pc bpc" id="L34" title="2 of 4 branches missed.">		if (level &gt;= 0 &amp;&amp; level &lt; styles.length) {</span>
-<span class="fc" id="L35">			return styles[level];</span>
+<span class="pc bpc" id="L33" title="2 of 4 branches missed.">		if (level &gt;= 0 &amp;&amp; level &lt; styles.length) {</span>
+<span class="fc" id="L34">			return styles[level];</span>
 		}
-<span class="nc" id="L37">		return styles[styles.length - 1]; // Return last style if level too big</span>
+<span class="nc" id="L36">		return styles[styles.length - 1]; // Return last style if level too big</span>
 	}
 
 	public Font getFont(float scale) {
-<span class="fc" id="L41">		return new Font(&quot;Helvetica&quot;, Font.PLAIN, Math.round(fontSize * scale));</span>
+<span class="fc" id="L40">		return new Font(&quot;Helvetica&quot;, Font.PLAIN, Math.round(fontSize * scale));</span>
 	}
 
 	public int getIndent() {
-<span class="fc" id="L45">		return indent;</span>
+<span class="fc" id="L44">		return indent;</span>
 	}
 
 	public int getLeading() {
-<span class="fc" id="L49">		return leading;</span>
+<span class="fc" id="L48">		return leading;</span>
 	}
 
-	// 🆕 ADD this method
 	public Color getColor() {
-<span class="fc" id="L54">		return color;</span>
+<span class="fc" id="L52">		return color;</span>
 	}
 
 	public Rectangle getBoundingBox(Graphics g, String text, float scale) {
-<span class="fc" id="L58">		Font font = getFont(scale);</span>
-<span class="fc" id="L59">		g.setFont(font);</span>
-<span class="fc" id="L60">		int width = g.getFontMetrics().stringWidth(text);</span>
-<span class="fc" id="L61">		int height = g.getFontMetrics().getHeight();</span>
-<span class="fc" id="L62">		return new Rectangle(0, 0, width, height);</span>
+<span class="fc" id="L56">		Font font = getFont(scale);</span>
+<span class="fc" id="L57">		g.setFont(font);</span>
+<span class="fc" id="L58">		int width = g.getFontMetrics().stringWidth(text);</span>
+<span class="fc" id="L59">		int height = g.getFontMetrics().getHeight();</span>
+<span class="fc" id="L60">		return new Rectangle(0, 0, width, height);</span>
 	}
 
 	public void drawString(Graphics g, String text, int x, int y, float scale) {
-<span class="nc bnc" id="L66" title="All 4 branches missed.">		if (text == null || text.isEmpty())</span>
-<span class="nc" id="L67">			return;</span>
-<span class="nc" id="L68">		Font font = getFont(scale);</span>
-<span class="nc" id="L69">		g.setFont(font);</span>
-<span class="nc" id="L70">		g.setColor(color); // 🆕 Set the color when drawing</span>
-<span class="nc" id="L71">		g.drawString(text, x + (indent * Math.round(scale)), y);</span>
-<span class="nc" id="L72">	}</span>
+<span class="nc bnc" id="L64" title="All 4 branches missed.">		if (text == null || text.isEmpty())</span>
+<span class="nc" id="L65">			return;</span>
+<span class="nc" id="L66">		Font font = getFont(scale);</span>
+<span class="nc" id="L67">		g.setFont(font);</span>
+<span class="nc" id="L68">		g.setColor(color); </span>
+<span class="nc" id="L69">		g.drawString(text, x + (indent * Math.round(scale)), y);</span>
+<span class="nc" id="L70">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
