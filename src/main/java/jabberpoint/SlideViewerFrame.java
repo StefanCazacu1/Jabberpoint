@@ -46,7 +46,8 @@ public class SlideViewerFrame extends Frame {
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
-            public void windowClosing(final java.awt.event.WindowEvent windowEvent) {
+            public void windowClosing(
+                    final java.awt.event.WindowEvent windowEvent) {
                 System.exit(0);
             }
         });
