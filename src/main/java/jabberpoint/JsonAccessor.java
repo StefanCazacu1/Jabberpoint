@@ -4,14 +4,24 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Accessor for loading and saving Presentation data in JSON format.
+ */
 public class JsonAccessor implements AccessorStrategy {
 
+    /**
+     * Loads a Presentation from a JSON file.
+     *
+     * @param presentation the Presentation to populate
+     * @param filename     the JSON filename
+     * @throws IOException if an error occurs while reading
+     */
     @Override
-    public void loadFile(Presentation presentation, String filename) throws IOException {
+    public void loadFile(final Presentation presentation, final String filename)
+            throws IOException {
         presentation.clear();
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(new File(filename));
@@ -27,7 +37,6 @@ public class JsonAccessor implements AccessorStrategy {
         if (slidesNode != null && slidesNode.isArray()) {
             for (JsonNode slideNode : slidesNode) {
                 Slide slide = new Slide();
-
                 JsonNode itemsNode = slideNode.get("items");
                 if (itemsNode != null && itemsNode.isArray()) {
                     for (JsonNode itemNode : itemsNode) {
@@ -38,7 +47,7 @@ public class JsonAccessor implements AccessorStrategy {
                         if ("text".equals(kind)) {
                             slide.append(new TextItem(level, content));
                         }
-                        // You could also add image loading here in future
+                        // Optionally: add support for images, etc.
                     }
                 }
                 presentation.addSlide(slide);
@@ -46,13 +55,22 @@ public class JsonAccessor implements AccessorStrategy {
         }
     }
 
+    /**
+     * Saves a Presentation to a JSON file.
+     *
+     * @param presentation the Presentation to save
+     * @param filename     the JSON filename
+     * @throws IOException if an error occurs while writing
+     */
     @Override
-    public void saveFile(Presentation presentation, String filename) throws IOException {
+    public void saveFile(final Presentation presentation, final String filename)
+            throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode root = mapper.createObjectNode();
 
         // Save title
-        root.put("title", presentation.getTitle() != null ? presentation.getTitle() : "");
+        root.put("title", presentation.getTitle() != null
+                ? presentation.getTitle() : "");
 
         // Save slides
         ArrayNode slidesArray = mapper.createArrayNode();
@@ -62,9 +80,10 @@ public class JsonAccessor implements AccessorStrategy {
 
             for (SlideItem item : slide.getSlideItems()) {
                 ObjectNode itemNode = mapper.createObjectNode();
-                itemNode.put("kind", item instanceof TextItem ? "text" : "unknown");
+                itemNode.put("kind",
+                        item instanceof TextItem ? "text" : "unknown");
                 itemNode.put("level", item.getLevel());
-                itemNode.put("content", item.toString()); // or item.getText() if you have such method
+                itemNode.put("content", item.toString());
                 itemsArray.add(itemNode);
             }
 
@@ -74,6 +93,7 @@ public class JsonAccessor implements AccessorStrategy {
 
         root.set("slides", slidesArray);
 
-        mapper.writerWithDefaultPrettyPrinter().writeValue(new File(filename), root);
+        mapper.writerWithDefaultPrettyPrinter()
+                .writeValue(new File(filename), root);
     }
 }

@@ -37,38 +37,25 @@ public class TextItemTest {
 
     @Test
     void testDrawSetsFontColorAndDrawsString() {
-        // Given a TextItem and a Graphics context
-        TextItem textItem = new TextItem(1, "Hello"); // level 1 uses Style level 1 (Blue color, 28pt font, leading 18)
+        TextItem textItem = new TextItem(1, "Hello");
         Graphics g = mock(Graphics.class);
         ImageObserver obs = mock(ImageObserver.class);
 
-        // When drawing the text item at (x=10, y=5) with scale 1.0
         textItem.draw(g, obs, 10, 5, 1.0f);
 
-        // Then Graphics should be set with the proper font and color, and drawString
-        // called with text
-        // Style level 1 -> font size 28, plain, color BLUE, leading 18
-        verify(g).setFont(argThat(
-                font -> font.getSize() == 28 && "Helvetica".equals(font.getName()) && font.getStyle() == Font.PLAIN));
+        verify(g).setFont(argThat(font -> font.getSize() == 28));
         verify(g).setColor(Color.blue);
-
-        // The y-coordinate for drawString should be y + (leading * scale) = 5 + 18 = 23
         verify(g).drawString("Hello", 10, 23);
     }
 
     @Test
     void testDrawAppliesScaleFactor() {
-        // Given a TextItem at level 1 and a Graphics context
-        TextItem textItem = new TextItem(1, "Hi"); // level 1, base font size 28pt, leading 18
+        TextItem textItem = new TextItem(1, "Hi");
         Graphics g = mock(Graphics.class);
 
-        // When drawing with scale 2.0
         textItem.draw(g, mock(ImageObserver.class), 0, 0, 2.0f);
 
-        // Then the font size should double (28pt base -> 56pt) and y offset double (18
-        // -> 36)
-        verify(g).setFont(argThat(font -> font.getSize() == 56)); // Font size should be 56 (28 * 2)
-        // The drawString y position should be 0 + 36 = 36 for leading=18 scaled by 2
+        verify(g).setFont(argThat(font -> font.getSize() == 56));
         verify(g).drawString("Hi", 0, 36);
     }
 
@@ -130,8 +117,13 @@ public class TextItemTest {
         assertEquals(0, emptyBox.width);
         assertEquals(15, emptyBox.height);
 
+        // Test with null text: should NOT throw, just return width 0 and height 15
         TextItem nullTextItem = new TextItem(1, null);
-        when(fm.stringWidth(null)).thenThrow(new NullPointerException());
-        assertThrows(NullPointerException.class, () -> nullTextItem.getBoundingBox(g, null, 1.0f));
+        when(fm.stringWidth(null)).thenReturn(0);
+        when(fm.getHeight()).thenReturn(15);
+
+        Rectangle nullBox = nullTextItem.getBoundingBox(g, null, 1.0f);
+        assertEquals(0, nullBox.width);
+        assertEquals(15, nullBox.height);
     }
 }

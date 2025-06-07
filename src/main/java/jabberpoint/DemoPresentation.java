@@ -1,42 +1,49 @@
 package jabberpoint;
 
-import java.awt.Image;
-import java.io.IOException;
+/** Utility class providing a demo presentation with sample slides. */
+public final class DemoPresentation {
+    /** Prevents instantiation. */
+    private DemoPresentation() {
+        throw new UnsupportedOperationException("Utility class");
+    }
 
-public class DemoPresentation {
+    /**
+     * Loads a demo presentation into the provided Presentation object.
+     *
+     * @param presentation the Presentation to load slides into
+     */
+    public static void loadDemoPresentation(
+            final Presentation presentation) {
+        if (presentation == null) {
+            return;
+        }
+        presentation.setTitle("Demo Presentation");
 
-	public static void loadDemoPresentation(Presentation presentation) {
-		presentation.setTitle("Demo Presentation");
+        // Style level constants (local variables)
+        final int titleLevel = 0;
+        final int subtitleLevel = 1;
+        final int contentLevel = 2;
 
-		// Slide 1: Welcome Slide with background image
-		Slide slide1 = new Slide();
-		slide1.setTitle("WELCOME TO JABBERPOINT\nTHE WONDER OF GUI TESTING");
+        Slide slide1 = new Slide();
+        slide1.setTitle("JabberPoint");
+        slide1.append(new TextItem(titleLevel,
+                "The Java Presentation Tool"));
+        slide1.append(new TextItem(subtitleLevel,
+                "by Stef Cazacu & Co."));
+        presentation.addSlide(slide1);
 
-		// Add the title
-		slide1.addItem(new TextItem(1, "WELCOME TO JABBERPOINT"));
-		slide1.addItem(new TextItem(2, "THE WONDER OF GUI TESTING"));
+        Slide slide2 = new Slide();
+        slide2.setTitle("Features");
+        slide2.append(new TextItem(contentLevel,
+                "Composite Pattern"));
+        slide2.append(new TextItem(contentLevel,
+                "Observer Pattern"));
+        slide2.append(new TextItem(contentLevel,
+                "Strategy Pattern"));
+        slide2.append(new TextItem(contentLevel,
+                "Unit Testing with JUnit"));
+        presentation.addSlide(slide2);
 
-		// Add the subtitle
-		slide1.addItem(new TextItem(3, "I must be crazy to use mockito so simulate all the interface to test it"));
-
-		// Add the footer
-		slide1.addItem(new TextItem(4, "BY STEFAN AND IARINA"));
-
-		presentation.addSlide(slide1);
-
-		// Slide 2: Features
-		Slide slide2 = new Slide();
-		slide2.setTitle("Features");
-		slide2.addItem(new TextItem(1, "Multiple file formats (XML/JSON)"));
-		slide2.addItem(new TextItem(2, "Observer pattern for dynamic updates"));
-		slide2.addItem(new TextItem(3, "Strategy pattern for flexible file IO"));
-		presentation.addSlide(slide2);
-
-		// Slide 3: Footer and "Next Slide" action
-		Slide slide3 = new Slide();
-		slide3.setTitle("Go Next Slide");
-		slide3.addItem(new TextItem(1, "Go to the next slide"));
-		slide3.addItem(new TextItem(2, "BY STEFAN AND IARINA"));
-		presentation.addSlide(slide3);
-	}
+        // Add more demo slides as needed...
+    }
 }
