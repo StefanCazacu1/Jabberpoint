@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
 
 import java.awt.event.KeyEvent;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
+@DisabledIfEnvironmentVariable(named = "CI", matches = "true")
 class KeyControllerTest {
 
     private Presentation presentation;

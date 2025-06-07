@@ -2,8 +2,7 @@ package jabberpoint;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,12 +11,21 @@ class XMLAccessorTest {
 
     private Presentation presentation;
     private XMLAccessor xmlAccessor;
-    private final String tempFile = System.getProperty("java.io.tmpdir") + File.separator + "test_presentation.xml";
+    private File tempFile;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
         presentation = new Presentation();
         xmlAccessor = new XMLAccessor();
+        tempFile = File.createTempFile("test_presentation", ".xml");
+        tempFile.deleteOnExit(); // Ensure temp file deleted on JVM exit
+    }
+
+    @AfterEach
+    void tearDown() {
+        if (tempFile != null && tempFile.exists()) {
+            tempFile.delete();
+        }
     }
 
     @Test
@@ -28,11 +36,12 @@ class XMLAccessorTest {
         slide.append(new TextItem(1, "Sample Text"));
         presentation.addSlide(slide);
 
-        xmlAccessor.saveFile(presentation, tempFile);
-
+        // Act: Save then load
+        xmlAccessor.saveFile(presentation, tempFile.getAbsolutePath());
         Presentation loadedPresentation = new Presentation();
-        xmlAccessor.loadFile(loadedPresentation, tempFile);
+        xmlAccessor.loadFile(loadedPresentation, tempFile.getAbsolutePath());
 
+        // Assert
         assertEquals("Test Title", loadedPresentation.getTitle());
         assertEquals(1, loadedPresentation.getSize());
         Slide loadedSlide = loadedPresentation.getSlide(0);

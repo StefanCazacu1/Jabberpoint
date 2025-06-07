@@ -1,0 +1,10 @@
+public class Style {
+    private String exampleVariable1; // Example variable 1
+    private String exampleVariable2; // Example variable 2
+    private String exampleVariable3; // Example variable 3
+
+    public void exampleMethod() {
+        String longString = "This is an example of a string that exceeds the character limit and needs to be shortened.";
+        String anotherLongString = "Another example of a long string that should be split into multiple lines for better readability.";
+    }
+}
