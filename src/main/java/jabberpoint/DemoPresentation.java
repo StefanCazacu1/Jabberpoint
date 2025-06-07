@@ -1,7 +1,6 @@
 package jabberpoint;
 
-/** Utility class providing a demo presentation with sample slides. This class is not meant to be instantiated. */
-/** This class is not meant to be instantiated. */
+/** Utility class providing a demo presentation with sample slides. */
 public final class DemoPresentation {
 
 	/** Prevents instantiation. */
