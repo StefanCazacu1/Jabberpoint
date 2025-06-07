@@ -1,133 +1,151 @@
 package jabberpoint;
 
-import java.awt.FileDialog;
-import java.awt.Frame;
-import java.awt.Menu;
-import java.awt.MenuBar;
-import java.awt.MenuItem;
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
-import javax.swing.JOptionPane;
 
 /**
  * Controls the menu bar and menu actions for JabberPoint.
  */
-public class MenuController extends MenuBar {
-	/** Parent frame of the application. */
-	private final Frame parent;
+public class MenuController extends MenuBar
+{
 
-	/** The presentation instance this controller manages. */
-	private final Presentation presentation;
+    public static final String OPEN = "Open";
+    public static final String NEW = "New";
+    public static final String SAVE = "Save";
+    public static final String EXIT = "Exit";
+    public static final String NEXT = "Next";
+    public static final String PREV = "Prev";
+    public static final String ABOUT = "About";
+    /**
+     * Parent frame of the application.
+     */
+    private final Frame parent;
+    /**
+     * The presentation instance this controller manages.
+     */
+    private final Presentation presentation;
+    /**
+     * Menu item for going to the next slide.
+     */
+    private final MenuItem nextItem;
+    /**
+     * Menu item for going to the previous slide.
+     */
+    private final MenuItem prevItem;
+    /**
+     * Menu item to show About information.
+     */
+    private final MenuItem aboutItem;
 
-	/** Menu item for going to the next slide. */
-	private final MenuItem nextItem;
+    /**
+     * Constructs the menu controller.
+     *
+     * @param parent       the parent frame
+     * @param presentation the presentation instance to control
+     */
+    public MenuController(final Frame parent, final Presentation presentation)
+    {
+        this.parent = parent;
+        this.presentation = presentation;
 
-	/** Menu item for going to the previous slide. */
-	private final MenuItem prevItem;
+        Menu fileMenu = new Menu("File");
 
-	/** Menu item to show About information. */
-	private final MenuItem aboutItem;
+        MenuItem openItem = new MenuItem(OPEN);
+        openItem.addActionListener(e -> openFile());
+        fileMenu.add(openItem);
 
-	public static final String OPEN = "Open";
-	public static final String NEW = "New";
-	public static final String SAVE = "Save";
-	public static final String EXIT = "Exit";
-	public static final String NEXT = "Next";
-	public static final String PREV = "Prev";
-	public static final String ABOUT = "About";
+        MenuItem saveItem = new MenuItem(SAVE);
+        saveItem.addActionListener(e -> saveFile());
+        fileMenu.add(saveItem);
 
-	/**
-	 * Constructs the menu controller.
-	 *
-	 * @param parent       the parent frame
-	 * @param presentation the presentation instance to control
-	 */
-	public MenuController(final Frame parent, final Presentation presentation) {
-		this.parent = parent;
-		this.presentation = presentation;
+        MenuItem exitItem = new MenuItem(EXIT);
+        exitItem.addActionListener(e -> System.exit(0));
+        fileMenu.add(exitItem);
 
-		Menu fileMenu = new Menu("File");
+        add(fileMenu);
 
-		MenuItem openItem = new MenuItem(OPEN);
-		openItem.addActionListener(e -> openFile());
-		fileMenu.add(openItem);
+        Menu viewMenu = new Menu("View");
 
-		MenuItem saveItem = new MenuItem(SAVE);
-		saveItem.addActionListener(e -> saveFile());
-		fileMenu.add(saveItem);
+        nextItem = new MenuItem(NEXT);
+        nextItem.addActionListener(e -> presentation.nextSlide());
+        viewMenu.add(nextItem);
 
-		MenuItem exitItem = new MenuItem(EXIT);
-		exitItem.addActionListener(e -> System.exit(0));
-		fileMenu.add(exitItem);
+        prevItem = new MenuItem(PREV);
+        prevItem.addActionListener(e -> presentation.prevSlide());
+        viewMenu.add(prevItem);
 
-		add(fileMenu);
+        aboutItem = new MenuItem(ABOUT);
+        aboutItem.addActionListener(e -> AboutBox.show(parent));
+        viewMenu.add(aboutItem);
 
-		Menu viewMenu = new Menu("View");
+        add(viewMenu);
+    }
 
-		nextItem = new MenuItem(NEXT);
-		nextItem.addActionListener(e -> presentation.nextSlide());
-		viewMenu.add(nextItem);
+    /**
+     * Opens a file dialog and loads a presentation file.
+     */
+    public void openFile()
+    {
+        FileDialog dialog = new FileDialog(parent, "Open File", FileDialog.LOAD);
+        dialog.setVisible(true);
+        if (dialog.getFile() != null)
+        {
+            String filename = dialog.getDirectory() + dialog.getFile();
+            try
+            {
+                presentation.load(filename);
+            }
+            catch (IOException e)
+            {
+                JOptionPane.showMessageDialog(parent, "Error loading file!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
 
-		prevItem = new MenuItem(PREV);
-		prevItem.addActionListener(e -> presentation.prevSlide());
-		viewMenu.add(prevItem);
+    /**
+     * Opens a file dialog and saves the presentation to a file.
+     */
+    public void saveFile()
+    {
+        FileDialog dialog = new FileDialog(parent, "Save File", FileDialog.SAVE);
+        dialog.setVisible(true);
+        if (dialog.getFile() != null)
+        {
+            String filename = dialog.getDirectory() + dialog.getFile();
+            try
+            {
+                presentation.save(filename);
+            }
+            catch (IOException e)
+            {
+                JOptionPane.showMessageDialog(parent, "Error saving file!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
 
-		aboutItem = new MenuItem(ABOUT);
-		aboutItem.addActionListener(e -> AboutBox.show(parent));
-		viewMenu.add(aboutItem);
+    /**
+     * @return the "Next" menu item for testing
+     */
+    public MenuItem getNextItem()
+    {
+        return nextItem;
+    }
 
-		add(viewMenu);
-	}
+    /**
+     * @return the "Previous" menu item for testing
+     */
+    public MenuItem getPrevItem()
+    {
+        return prevItem;
+    }
 
-	/**
-	 * Opens a file dialog and loads a presentation file.
-	 */
-	public void openFile() {
-		FileDialog dialog = new FileDialog(parent, "Open File", FileDialog.LOAD);
-		dialog.setVisible(true);
-		if (dialog.getFile() != null) {
-			String filename = dialog.getDirectory() + dialog.getFile();
-			try {
-				presentation.load(filename);
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(parent,
-						"Error loading file!",
-						"Error",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
+    /**
+     * @return the "About" menu item for testing
+     */
+    public MenuItem getAboutItem()
+    {
+        return aboutItem;
+    }
 
-	/**
-	 * Opens a file dialog and saves the presentation to a file.
-	 */
-	public void saveFile() {
-		FileDialog dialog = new FileDialog(parent, "Save File", FileDialog.SAVE);
-		dialog.setVisible(true);
-		if (dialog.getFile() != null) {
-			String filename = dialog.getDirectory() + dialog.getFile();
-			try {
-				presentation.save(filename);
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(parent,
-						"Error saving file!",
-						"Error",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
-
-	/** @return the "Next" menu item for testing */
-	public MenuItem getNextItem() {
-		return nextItem;
-	}
-
-	/** @return the "Previous" menu item for testing */
-	public MenuItem getPrevItem() {
-		return prevItem;
-	}
-
-	/** @return the "About" menu item for testing */
-	public MenuItem getAboutItem() {
-		return aboutItem;
-	}
 }
