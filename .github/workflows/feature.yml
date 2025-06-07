@@ -1,16 +1,17 @@
-name: Acceptance Build
+name: Feature Branch Build
 
 on:
   push:
-    branches: [acceptance]
+    branches:
+      - 'feature/*'
   pull_request:
-    branches: [acceptance]
+    branches:
+      - 'feature/*'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # Same as above, but can require approvals and run code scanning
       - uses: actions/checkout@v4
       - name: Set up JDK 17
         uses: actions/setup-java@v4

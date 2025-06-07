@@ -1,17 +1,24 @@
 package jabberpoint;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Frame;
 
 /**
  * The main application window (Frame) that shows the presentation.
  */
 public class SlideViewerFrame extends Frame {
+	private static final long serialVersionUID = 1L;
 	private static final String JABTITLE = "JabberPoint 1.0 - OU";
 
 	private final Presentation presentation;
 	private final SlideViewerComponent slideViewerComponent;
 
-	public SlideViewerFrame(String title, Presentation presentation) {
+	/**
+	 * Constructs a SlideViewerFrame.
+	 * @param title the window title
+	 * @param presentation the Presentation to display
+	 */
+	public SlideViewerFrame(final String title, final Presentation presentation) {
 		super(title);
 		this.presentation = presentation;
 
@@ -30,7 +37,7 @@ public class SlideViewerFrame extends Frame {
 		// When closing the window, exit the application
 		addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
-			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+			public void windowClosing(final java.awt.event.WindowEvent windowEvent) {
 				System.exit(0);
 			}
 		});
@@ -38,6 +45,10 @@ public class SlideViewerFrame extends Frame {
 		add(slideViewerComponent, BorderLayout.CENTER);
 	}
 
+	/**
+	 * Returns the SlideViewerComponent.
+	 * @return the SlideViewerComponent
+	 */
 	public SlideViewerComponent getSlideViewerComponent() {
 		return slideViewerComponent;
 	}

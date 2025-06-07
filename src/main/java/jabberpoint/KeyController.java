@@ -3,15 +3,28 @@ package jabberpoint;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
 
+/**
+ * Handles keyboard input for slide navigation.
+ */
 public class KeyController extends KeyAdapter {
 	private final Presentation presentation;
 
-	public KeyController(Presentation presentation) {
+	/**
+	 * Constructs a KeyController for the given Presentation.
+	 *
+	 * @param presentation the Presentation to control
+	 */
+	public KeyController(final Presentation presentation) {
 		this.presentation = presentation;
 	}
 
+	/**
+	 * Handles key press events for slide navigation.
+	 *
+	 * @param keyEvent the KeyEvent to process
+	 */
 	@Override
-	public void keyPressed(KeyEvent keyEvent) {
+	public void keyPressed(final KeyEvent keyEvent) {
 		switch (keyEvent.getKeyCode()) {
 			case KeyEvent.VK_PAGE_DOWN:
 			case KeyEvent.VK_DOWN:
@@ -33,5 +46,4 @@ public class KeyController extends KeyAdapter {
 				// Do nothing
 		}
 	}
-
 }

@@ -4,13 +4,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Presentation class manages slides and observers for JabberPoint.
+ */
 public class Presentation {
 	private String title;
-	private List<Slide> slides;
+	private final List<Slide> slides;
 	private int currentSlideNumber;
-	private List<Observer> observers;
-	private Accessor accessor;
+	private final List<Observer> observers;
+	private final Accessor accessor;
 
+	/**
+	 * Constructs a new Presentation.
+	 */
 	public Presentation() {
 		slides = new ArrayList<>();
 		observers = new ArrayList<>();
@@ -18,6 +24,9 @@ public class Presentation {
 		clear();
 	}
 
+	/**
+	 * Clears the presentation, removing all slides and resetting the title.
+	 */
 	public void clear() {
 		slides.clear();
 		setTitle("");
@@ -25,54 +34,98 @@ public class Presentation {
 		notifyObservers();
 	}
 
-	public void addObserver(Observer observer) {
+	/**
+	 * Adds an observer to the presentation.
+	 * @param observer the observer to add
+	 */
+	public void addObserver(final Observer observer) {
 		observers.add(observer);
 	}
 
-	public void removeObserver(Observer observer) {
+	/**
+	 * Removes an observer from the presentation.
+	 * @param observer the observer to remove
+	 */
+	public void removeObserver(final Observer observer) {
 		observers.remove(observer);
 	}
 
+	/**
+	 * Notifies all observers about changes.
+	 */
 	private void notifyObservers() {
 		for (Observer observer : observers) {
 			observer.update();
 		}
 	}
 
+	/**
+	 * Gets the number of slides.
+	 * @return the number of slides
+	 */
 	public int getSize() {
 		return slides.size();
 	}
 
+	/**
+	 * Gets the presentation title.
+	 * @return the title
+	 */
 	public String getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
+	/**
+	 * Sets the presentation title.
+	 * @param title the new title
+	 */
+	public void setTitle(final String title) {
 		this.title = title;
 		notifyObservers();
 	}
 
-	public void addSlide(Slide slide) {
+	/**
+	 * Adds a slide to the presentation.
+	 * @param slide the slide to add
+	 */
+	public void addSlide(final Slide slide) {
 		slides.add(slide);
 		notifyObservers();
 	}
 
-	public Slide getSlide(int number) {
+	/**
+	 * Gets a slide by its index.
+	 * @param number the slide index
+	 * @return the slide, or null if index is invalid
+	 */
+	public Slide getSlide(final int number) {
 		if (number < 0 || number >= getSize()) {
 			return null;
 		}
 		return slides.get(number);
 	}
 
+	/**
+	 * Gets the current slide number.
+	 * @return the current slide index
+	 */
 	public int getSlideNumber() {
 		return currentSlideNumber;
 	}
 
-	public void setSlideNumber(int number) {
+	/**
+	 * Sets the current slide number.
+	 * @param number the new slide index
+	 */
+	public void setSlideNumber(final int number) {
 		this.currentSlideNumber = number;
 		notifyObservers();
 	}
 
+	/**
+	 * Gets the current slide.
+	 * @return the current slide, or null if invalid index
+	 */
 	public Slide getCurrentSlide() {
 		if (currentSlideNumber < 0 || currentSlideNumber >= slides.size()) {
 			return null;
@@ -80,19 +133,30 @@ public class Presentation {
 		return slides.get(currentSlideNumber);
 	}
 
+	/**
+	 * Advances to the next slide.
+	 */
 	public void nextSlide() {
 		if (currentSlideNumber < slides.size() - 1) {
 			setSlideNumber(currentSlideNumber + 1);
 		}
 	}
 
+	/**
+	 * Goes back to the previous slide.
+	 */
 	public void prevSlide() {
 		if (currentSlideNumber > 0) {
 			setSlideNumber(currentSlideNumber - 1);
 		}
 	}
 
-	public void load(String filename) throws IOException {
+	/**
+	 * Loads a presentation from a file (XML or JSON).
+	 * @param filename the file to load from
+	 * @throws IOException if an error occurs
+	 */
+	public void load(final String filename) throws IOException {
 		if (filename.endsWith(".xml")) {
 			accessor.setStrategy(new XMLAccessor());
 		} else if (filename.endsWith(".json")) {
@@ -105,7 +169,12 @@ public class Presentation {
 		notifyObservers();
 	}
 
-	public void save(String filename) throws IOException {
+	/**
+	 * Saves a presentation to a file (XML or JSON).
+	 * @param filename the file to save to
+	 * @throws IOException if an error occurs
+	 */
+	public void save(final String filename) throws IOException {
 		if (filename.endsWith(".xml")) {
 			accessor.setStrategy(new XMLAccessor());
 		} else if (filename.endsWith(".json")) {
@@ -116,8 +185,11 @@ public class Presentation {
 		accessor.save(this, filename);
 	}
 
+	/**
+	 * Gets all slides as a list.
+	 * @return the slides
+	 */
 	public List<Slide> getSlides() {
 		return slides;
 	}
-
 }

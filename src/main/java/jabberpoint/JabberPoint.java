@@ -2,12 +2,22 @@ package jabberpoint;
 
 import java.io.IOException;
 
-public class JabberPoint {
+/**
+ * Main entry point for the JabberPoint presentation application.
+ */
+public final class JabberPoint {
 
+	/** Error message for IO errors. */
 	public static final String IO_ERR = "IO Error: ";
+	/** Error message for loading errors. */
 	public static final String LOAD_ERR = "Error while loading presentation: ";
 
-	public static void main(String[] argv) {
+	/**
+	 * Main method to start the application.
+	 *
+	 * @param argv command-line arguments
+	 */
+	public static void main(final String[] argv) {
 		Presentation presentation = new Presentation();
 		new SlideViewerFrame("JabberPoint 2.0", presentation);
 
@@ -23,5 +33,10 @@ public class JabberPoint {
 			System.err.println(IO_ERR + ex.getMessage());
 		}
 		presentation.setSlideNumber(0);
+	}
+
+	/** Private constructor to prevent instantiation. */
+	private JabberPoint() {
+		// Utility class
 	}
 }

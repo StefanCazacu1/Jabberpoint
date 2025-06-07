@@ -6,7 +6,7 @@ package jabberpoint;
  */
 public final class DemoPresentation {
 
-	// Private constructor to prevent instantiation
+	/** Prevents instantiation. */
 	private DemoPresentation() {
 		throw new UnsupportedOperationException("Utility class");
 	}
@@ -22,23 +22,23 @@ public final class DemoPresentation {
 		}
 		presentation.setTitle("Demo Presentation");
 
-		// Level constants for clarity
-		final int TITLE_LEVEL = 0;
-		final int SUBTITLE_LEVEL = 1;
-		final int CONTENT_LEVEL = 2;
+		// Style level constants (not ALL_CAPS because they're local)
+		final int titleLevel = 0;
+		final int subtitleLevel = 1;
+		final int contentLevel = 2;
 
 		Slide slide1 = new Slide();
 		slide1.setTitle("JabberPoint");
-		slide1.append(new TextItem(TITLE_LEVEL, "The Java Presentation Tool"));
-		slide1.append(new TextItem(SUBTITLE_LEVEL, "by Stef Cazacu & Co."));
+		slide1.append(new TextItem(titleLevel, "The Java Presentation Tool"));
+		slide1.append(new TextItem(subtitleLevel, "by Stef Cazacu & Co."));
 		presentation.addSlide(slide1);
 
 		Slide slide2 = new Slide();
 		slide2.setTitle("Features");
-		slide2.append(new TextItem(CONTENT_LEVEL, "Composite Pattern"));
-		slide2.append(new TextItem(CONTENT_LEVEL, "Observer Pattern"));
-		slide2.append(new TextItem(CONTENT_LEVEL, "Strategy Pattern"));
-		slide2.append(new TextItem(CONTENT_LEVEL, "Unit Testing with JUnit"));
+		slide2.append(new TextItem(contentLevel, "Composite Pattern"));
+		slide2.append(new TextItem(contentLevel, "Observer Pattern"));
+		slide2.append(new TextItem(contentLevel, "Strategy Pattern"));
+		slide2.append(new TextItem(contentLevel, "Unit Testing with JUnit"));
 		presentation.addSlide(slide2);
 
 		// Add more demo slides as needed...

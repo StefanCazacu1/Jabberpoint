@@ -7,7 +7,7 @@ import java.awt.Graphics;
 /**
  * Style represents the style for slide items.
  */
-public class Style {
+public final class Style {
 	/** Default font name. */
 	public static final String DEFAULT_FONT_NAME = "Helvetica";
 	/** Level 0 font size. */
@@ -37,7 +37,8 @@ public class Style {
 	 * @param indent the indent
 	 * @param leading the leading
 	 */
-	public Style(final int fontSize, final Color color, final int indent, final int leading) {
+	public Style(final int fontSize, final Color color,
+			final int indent, final int leading) {
 		this.fontSize = fontSize;
 		this.color = color;
 		this.indent = indent;
@@ -45,9 +46,11 @@ public class Style {
 	}
 
 	/**
-	 * Static method for backward compatibility with code that calls Style.getStyle(level)
+	 * Returns a Style object for the given level.
+	 * @param level the item level
+	 * @return the Style
 	 */
-	public static Style getStyle(int level) {
+	public static Style getStyle(final int level) {
 		switch (level) {
 			case 0:
 				return new Style(LEVEL0_FONT_SIZE, Color.BLACK, 30, 20);
@@ -60,6 +63,10 @@ public class Style {
 		}
 	}
 
+	/**
+	 * Returns the font size.
+	 * @return the font size
+	 */
 	public int getFontSize() {
 		return fontSize;
 	}
@@ -70,7 +77,8 @@ public class Style {
 	 * @return the Font
 	 */
 	public Font getFont(final float scale) {
-		return new Font(DEFAULT_FONT_NAME, Font.BOLD, Math.round(fontSize * scale));
+		return new Font(DEFAULT_FONT_NAME, Font.BOLD,
+				Math.round(fontSize * scale));
 	}
 
 	/**
@@ -104,7 +112,8 @@ public class Style {
 	 * @param scale the scale
 	 * @return the width of the string
 	 */
-	public int getBoundingBox(final Graphics g, final String text, final float scale) {
+	public int getBoundingBox(final Graphics g,
+			final String text, final float scale) {
 		Font font = getFont(scale);
 		g.setFont(font);
 		return g.getFontMetrics().stringWidth(text);

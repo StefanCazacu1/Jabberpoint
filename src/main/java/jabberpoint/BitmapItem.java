@@ -2,11 +2,12 @@ package jabberpoint;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.ImageObserver;
 import java.io.File;
+import java.io.IOException;
 import javax.imageio.ImageIO;
-import java.awt.Image;
 
 /**
  * Represents an image item on a slide.
@@ -37,7 +38,7 @@ public class BitmapItem extends SlideItem {
 	private void loadImage() {
 		try {
 			bufferedImage = ImageIO.read(new File(name));
-		} catch (Exception e) {
+		} catch (IOException e) {
 			System.err.println("Error loading image: " + name);
 			bufferedImage = null;
 		}
@@ -73,7 +74,7 @@ public class BitmapItem extends SlideItem {
 					(int) (bufferedImage.getHeight(observer) * scale), observer);
 		} else {
 			g.setColor(Color.RED);
-			g.drawRect(x, y, 100, 100); // Draw a red box for missing image
+			g.drawRect(x, y, 100, 100);
 			g.drawString("Image not found", x + 10, y + 50);
 		}
 	}
@@ -84,7 +85,7 @@ public class BitmapItem extends SlideItem {
 	 * @param g        the graphics context
 	 * @param observer the image observer
 	 * @param scale    the scale factor
-	 * @return the bounding box rectangle
+	 * @return the bounding box rectangle, or (0,0,0,0) if image missing
 	 */
 	@Override
 	public Rectangle getBoundingBox(final Graphics g, final ImageObserver observer,
@@ -97,7 +98,6 @@ public class BitmapItem extends SlideItem {
 			int height = (int) (bufferedImage.getHeight(observer) * scale);
 			return new Rectangle(0, 0, width, height);
 		}
-		// For missing images, return 0x0 (matches test expectation)
 		return new Rectangle(0, 0, 0, 0);
 	}
 }
