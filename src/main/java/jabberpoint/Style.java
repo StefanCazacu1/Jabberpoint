@@ -39,24 +39,39 @@ public final class Style {
     /** Leading (line spacing) for level 3. */
     public static final int LEVEL3_LEADING = 14;
 
-    /** 
+    /**
      * Color for level 1 items.
      */
     public static final Color LEVEL1_COLOR = Color.BLUE;
 
-    /** 
+    /**
      * Color for level 2 items.
      */
     public static final Color LEVEL2_COLOR = Color.DARK_GRAY;
 
-    /** 
+    /**
      * Color for level 3 items.
      */
     public static final Color LEVEL3_COLOR = Color.GRAY;
 
+    /**
+     * Font size for the style.
+     */
     private final int fontSize;
+
+    /**
+     * Color for the style.
+     */
     private final Color color;
+
+    /**
+     * Indentation value for the style.
+     */
     private final int indent;
+
+    /**
+     * Leading (line spacing) value for the style.
+     */
     private final int leading;
 
     /**
