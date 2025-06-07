@@ -27,8 +27,7 @@ public class BitmapItemTest {
         Rectangle box = item.getBoundingBox(mock(Graphics.class), mock(ImageObserver.class), 1.0f);
         assertEquals(0, box.width);
         assertEquals(0, box.height);
-        // draw() should not attempt to draw anything (no exceptions, no drawImage
-        // calls)
+        // draw() should not attempt to draw anything (no exceptions, no drawImage calls)
         Graphics g = mock(Graphics.class);
         item.draw(g, mock(ImageObserver.class), 10, 10, 1.0f);
         verify(g, never()).drawImage(any(), anyInt(), anyInt(), anyInt(), anyInt(), any(ImageObserver.class));
@@ -42,8 +41,7 @@ public class BitmapItemTest {
             imageIOStatic.when(() -> ImageIO.read(any(java.io.File.class))).thenReturn(dummyImage);
             // When creating a BitmapItem, the static ImageIO.read returns dummyImage
             BitmapItem item = new BitmapItem(2, "dummy.png");
-            // The image should now be loaded (dummyImage). Test getBoundingBox at different
-            // scales:
+            // The image should now be loaded (dummyImage). Test getBoundingBox at different scales:
             Rectangle box1 = item.getBoundingBox(mock(Graphics.class), mock(ImageObserver.class), 1.0f);
             Rectangle box2 = item.getBoundingBox(mock(Graphics.class), mock(ImageObserver.class), 2.0f);
             // At scale 1.0, bounding box should match image size (100x50)
@@ -66,8 +64,7 @@ public class BitmapItemTest {
             ImageObserver obs = mock(ImageObserver.class);
             // When drawing the item at (x=5, y=5) with scale 2.0
             item.draw(g, obs, 5, 5, 2.0f);
-            // Then it should call Graphics.drawImage with the scaled width and height
-            // (40*2=80, 30*2=60)
+            // Then it should call Graphics.drawImage with the scaled width and height (40*2=80, 30*2=60)
             verify(g).drawImage(same(dummyImage), eq(5), eq(5), eq(80), eq(60), eq(obs));
             verifyNoMoreInteractions(g);
         }

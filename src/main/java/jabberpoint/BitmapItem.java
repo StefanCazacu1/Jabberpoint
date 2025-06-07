@@ -1,50 +1,103 @@
 package jabberpoint;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.ImageObserver;
-import java.awt.Image;
 import java.io.File;
-import java.io.IOException;
 import javax.imageio.ImageIO;
+import java.awt.Image;
 
+/**
+ * Represents an image item on a slide.
+ */
 public class BitmapItem extends SlideItem {
-	private String imageName;
-	private Image image;
 
-	public BitmapItem(int level, String name) {
+	/** Image name/path. */
+	private final String name;
+
+	/** Loaded image. */
+	private Image bufferedImage;
+
+	/**
+	 * Constructs a BitmapItem.
+	 *
+	 * @param level the slide item level
+	 * @param name  the image filename
+	 */
+	public BitmapItem(final int level, final String name) {
 		super(level);
-		imageName = name;
+		this.name = name;
 		loadImage();
 	}
 
+	/**
+	 * Loads the image from disk.
+	 */
 	private void loadImage() {
 		try {
-			image = ImageIO.read(new File(imageName));
-		} catch (IOException e) {
-			System.err.println("Error loading image: " + imageName);
+			bufferedImage = ImageIO.read(new File(name));
+		} catch (Exception e) {
+			System.err.println("Error loading image: " + name);
+			bufferedImage = null;
 		}
 	}
 
-	@Override
-	public void draw(Graphics g, ImageObserver observer, int x, int y, float scale) {
-		if (image != null) {
-			Style style = Style.getStyle(getLevel());
-			g.drawImage(image, x, y, (int) (image.getWidth(observer) * scale),
-					(int) (image.getHeight(observer) * scale), observer);
-		}
-	}
-
-	@Override
-	public Rectangle getBoundingBox(Graphics g, ImageObserver observer, float scale) {
-		if (image == null)
-			return new Rectangle(0, 0, 0, 0);
-		return new Rectangle(0, 0,
-				(int) (image.getWidth(observer) * scale),
-				(int) (image.getHeight(observer) * scale));
-	}
-
+	/**
+	 * Gets the image name.
+	 *
+	 * @return the image filename
+	 */
 	public String getName() {
-		return imageName;
+		return name;
+	}
+
+	/**
+	 * Draws the image on the slide.
+	 *
+	 * @param g        the graphics context
+	 * @param observer the image observer
+	 * @param x        the x-coordinate
+	 * @param y        the y-coordinate
+	 * @param scale    the scale factor
+	 */
+	@Override
+	public void draw(final Graphics g, final ImageObserver observer, final int x,
+			final int y, final float scale) {
+		if (bufferedImage == null) {
+			loadImage();
+		}
+		if (bufferedImage != null) {
+			g.drawImage(bufferedImage, x, y,
+					(int) (bufferedImage.getWidth(observer) * scale),
+					(int) (bufferedImage.getHeight(observer) * scale), observer);
+		} else {
+			g.setColor(Color.RED);
+			g.drawRect(x, y, 100, 100); // Draw a red box for missing image
+			g.drawString("Image not found", x + 10, y + 50);
+		}
+	}
+
+	/**
+	 * Gets the bounding box for the image.
+	 *
+	 * @param g        the graphics context
+	 * @param observer the image observer
+	 * @param scale    the scale factor
+	 * @return the bounding box rectangle
+	 */
+	@Override
+	public Rectangle getBoundingBox(final Graphics g, final ImageObserver observer,
+			final float scale) {
+		if (bufferedImage == null) {
+			loadImage();
+		}
+		if (bufferedImage != null) {
+			int width = (int) (bufferedImage.getWidth(observer) * scale);
+			int height = (int) (bufferedImage.getHeight(observer) * scale);
+			return new Rectangle(0, 0, width, height);
+		}
+		// For missing images, return 0x0 (matches test expectation)
+		return new Rectangle(0, 0, 0, 0);
 	}
 }
