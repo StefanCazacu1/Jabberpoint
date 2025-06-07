@@ -3,6 +3,8 @@ name: Production Build & Deploy
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
@@ -30,5 +32,7 @@ jobs:
           name: jacoco-report
           path: target/site/jacoco/
       - name: Deploy to GitHub Packages
+        env:
+          MAVEN_DEPLOY_TOKEN: ${{ secrets.MAVEN_DEPLOY_TOKEN }}
         run: mvn deploy --settings .github/maven-settings.xml
-        # You might need to set up a settings.xml file and GitHub secrets for this step
+
