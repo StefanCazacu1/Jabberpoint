@@ -32,7 +32,8 @@ public final class XMLAccessor implements AccessorStrategy {
             final String filename) throws IOException {
         try {
             presentation.clear();
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory factory =
+                    DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(new File(filename));
             Element root = document.getDocumentElement();
@@ -76,7 +77,8 @@ public final class XMLAccessor implements AccessorStrategy {
     public void saveFile(final Presentation presentation,
             final String filename) throws IOException {
         try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory factory =
+                    DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.newDocument();
 
@@ -91,11 +93,13 @@ public final class XMLAccessor implements AccessorStrategy {
 
                 for (SlideItem item : slide.getSlideItems()) {
                     Element itemElement = document.createElement("item");
-                    itemElement.setAttribute("level", String.valueOf(item.getLevel()));
+                    itemElement.setAttribute("level",
+                            String.valueOf(item.getLevel()));
 
                     if (item instanceof TextItem) {
                         itemElement.setAttribute("kind", "text");
-                        itemElement.setTextContent(((TextItem) item).getText());
+                        itemElement.setTextContent(
+                                ((TextItem) item).getText());
                     } else if (item instanceof BitmapItem) {
                         itemElement.setAttribute("kind", "image");
                         itemElement.setTextContent(((BitmapItem) item).getName());
