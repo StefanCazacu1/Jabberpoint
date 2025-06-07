@@ -12,9 +12,16 @@ import javax.imageio.ImageIO;
 /** Represents an image item on a slide. */
 public class BitmapItem extends SlideItem {
 
+    /** Width of error rectangle drawn when image fails to load. */
     private static final int ERROR_RECT_WIDTH = 100;
+
+    /** Height of error rectangle drawn when image fails to load. */
     private static final int ERROR_RECT_HEIGHT = 100;
+
+    /** X offset for error text inside the rectangle. */
     private static final int ERROR_TEXT_X_OFFSET = 10;
+
+    /** Y offset for error text inside the rectangle. */
     private static final int ERROR_TEXT_Y_OFFSET = 50;
 
     /** Image filename. */
@@ -57,14 +64,16 @@ public class BitmapItem extends SlideItem {
     /**
      * Draws the image on the slide.
      *
-     * @param g        the graphics context
+     * @param g the graphics context
      * @param observer the image observer
-     * @param x        the x-coordinate
-     * @param y        the y-coordinate
-     * @param scale    the scale factor
+     * @param x the x-coordinate
+     * @param y the y-coordinate
+     * @param scale the scale factor
      */
     @Override
-    public void draw(final Graphics g, final ImageObserver observer, final int x,
+    public void draw(final Graphics g,
+            final ImageObserver observer,
+            final int x,
             final int y, final float scale) {
         if (bufferedImage == null) {
             loadImage();
@@ -72,32 +81,37 @@ public class BitmapItem extends SlideItem {
         if (bufferedImage != null) {
             g.drawImage(bufferedImage, x, y,
                     (int) (bufferedImage.getWidth(observer) * scale),
-                    (int) (bufferedImage.getHeight(observer) * scale), observer);
+                    (int) (bufferedImage.getHeight(observer) * scale),
+                    observer);
         } else {
             g.setColor(Color.RED);
             g.drawRect(x, y, ERROR_RECT_WIDTH, ERROR_RECT_HEIGHT);
             g.drawString("Image not found",
-                    x + ERROR_TEXT_X_OFFSET, y + ERROR_TEXT_Y_OFFSET);
+                    x + ERROR_TEXT_X_OFFSET,
+                    y + ERROR_TEXT_Y_OFFSET);
         }
     }
 
     /**
      * Gets the bounding box for the image.
      *
-     * @param g        the graphics context
+     * @param g the graphics context
      * @param observer the image observer
-     * @param scale    the scale factor
+     * @param scale the scale factor
      * @return the bounding box rectangle, or (0,0,0,0) if image missing
      */
     @Override
-    public Rectangle getBoundingBox(final Graphics g, final ImageObserver observer,
+    public Rectangle getBoundingBox(final Graphics g,
+            final ImageObserver observer,
             final float scale) {
         if (bufferedImage == null) {
             loadImage();
         }
         if (bufferedImage != null) {
-            int width = (int) (bufferedImage.getWidth(observer) * scale);
-            int height = (int) (bufferedImage.getHeight(observer) * scale);
+            int width = (int)
+                    (bufferedImage.getWidth(observer) * scale);
+            int height = (int)
+                    (bufferedImage.getHeight(observer) * scale);
             return new Rectangle(0, 0, width, height);
         }
         return new Rectangle(0, 0, 0, 0);
