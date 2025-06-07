@@ -1,6 +1,5 @@
 package jabberpoint;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -11,20 +10,24 @@ import java.awt.image.ImageObserver;
  * Represents a text item on a slide.
  */
 public final class TextItem extends SlideItem {
+
+	/** The text content of this item. */
 	private String text;
 
 	/**
 	 * Constructs a TextItem.
+	 *
 	 * @param level the slide item level
-	 * @param text the text content
+	 * @param textContent the text content
 	 */
-	public TextItem(final int level, final String text) {
+	public TextItem(final int level, final String textContent) {
 		super(level);
-		this.text = text;
+		this.text = textContent;
 	}
 
 	/**
 	 * Gets the text.
+	 *
 	 * @return the text
 	 */
 	public String getText() {
@@ -33,14 +36,16 @@ public final class TextItem extends SlideItem {
 
 	/**
 	 * Sets the text.
-	 * @param text the new text
+	 *
+	 * @param newText the new text
 	 */
-	public void setText(final String text) {
-		this.text = text;
+	public void setText(final String newText) {
+		this.text = newText;
 	}
 
 	/**
 	 * Sets the level.
+	 *
 	 * @param level the new level
 	 */
 	@Override
@@ -50,6 +55,7 @@ public final class TextItem extends SlideItem {
 
 	/**
 	 * Draws the text item.
+	 *
 	 * @param g the graphics context
 	 * @param observer the image observer
 	 * @param x the x-coordinate
@@ -72,6 +78,7 @@ public final class TextItem extends SlideItem {
 
 	/**
 	 * Gets the bounding box for the text.
+	 *
 	 * @param g the graphics context
 	 * @param observer the image observer
 	 * @param scale the scale factor
@@ -93,6 +100,7 @@ public final class TextItem extends SlideItem {
 
 	/**
 	 * Returns the text as a string.
+	 *
 	 * @return the text
 	 */
 	@Override

@@ -6,10 +6,12 @@ import java.awt.Graphics;
 
 /**
  * Style represents the style for slide items.
+ * It provides font size, color, indent, and leading values based on item level.
  */
 public final class Style {
 	/** Default font name. */
 	public static final String DEFAULT_FONT_NAME = "Helvetica";
+
 	/** Level 0 font size. */
 	public static final int LEVEL0_FONT_SIZE = 32;
 	/** Level 1 font size. */
@@ -18,15 +20,19 @@ public final class Style {
 	public static final int LEVEL2_FONT_SIZE = 24;
 	/** Level 3 font size. */
 	public static final int LEVEL3_FONT_SIZE = 20;
+
 	/** Default color. */
-	public static final Color DEFAULT_COLOR = Color.black;
+	public static final Color DEFAULT_COLOR = Color.BLACK;
 	/** Default indent. */
 	public static final int DEFAULT_INDENT = 30;
-	/** Default leading. */
+
+	/** Leading values for different levels. */
 	public static final int DEFAULT_LEADING = 20;
 	public static final int LEVEL1_LEADING = 18;
 	public static final int LEVEL2_LEADING = 16;
 	public static final int LEVEL3_LEADING = 14;
+
+	/** Colors for different levels. */
 	public static final Color LEVEL1_COLOR = Color.BLUE;
 	public static final Color LEVEL2_COLOR = Color.DARK_GRAY;
 	public static final Color LEVEL3_COLOR = Color.GRAY;
@@ -38,6 +44,7 @@ public final class Style {
 
 	/**
 	 * Constructs a Style object.
+	 *
 	 * @param fontSize the font size
 	 * @param color the color
 	 * @param indent the indent
@@ -53,13 +60,14 @@ public final class Style {
 
 	/**
 	 * Returns a Style object for the given level.
+	 *
 	 * @param level the item level
 	 * @return the Style
 	 */
 	public static Style getStyle(final int level) {
 		switch (level) {
 			case 0:
-				return new Style(LEVEL0_FONT_SIZE, Color.BLACK, DEFAULT_INDENT, DEFAULT_LEADING);
+				return new Style(LEVEL0_FONT_SIZE, DEFAULT_COLOR, DEFAULT_INDENT, DEFAULT_LEADING);
 			case 1:
 				return new Style(LEVEL1_FONT_SIZE, LEVEL1_COLOR, DEFAULT_INDENT, LEVEL1_LEADING);
 			case 2:
@@ -69,13 +77,18 @@ public final class Style {
 		}
 	}
 
-	/** Returns the font size. */
+	/**
+	 * Returns the font size.
+	 *
+	 * @return the font size
+	 */
 	public int getFontSize() {
 		return fontSize;
 	}
 
 	/**
 	 * Returns the Font object for this style.
+	 *
 	 * @param scale the scale factor
 	 * @return the Font
 	 */
@@ -84,23 +97,36 @@ public final class Style {
 				Math.round(fontSize * scale));
 	}
 
-	/** Returns the indent value. */
+	/**
+	 * Returns the indent value.
+	 *
+	 * @return the indent
+	 */
 	public int getIndent() {
 		return indent;
 	}
 
-	/** Returns the leading value. */
+	/**
+	 * Returns the leading value.
+	 *
+	 * @return the leading
+	 */
 	public int getLeading() {
 		return leading;
 	}
 
-	/** Returns the color. */
+	/**
+	 * Returns the color.
+	 *
+	 * @return the color
+	 */
 	public Color getColor() {
 		return color;
 	}
 
 	/**
 	 * Gets the bounding box width for the string.
+	 *
 	 * @param g the Graphics context
 	 * @param text the string
 	 * @param scale the scale
@@ -115,6 +141,7 @@ public final class Style {
 
 	/**
 	 * Draws a string with the given style.
+	 *
 	 * @param g the Graphics context
 	 * @param text the string
 	 * @param x the x coordinate

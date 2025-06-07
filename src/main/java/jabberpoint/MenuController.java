@@ -12,11 +12,19 @@ import javax.swing.JOptionPane;
  * Controls the menu bar and menu actions for JabberPoint.
  */
 public class MenuController extends MenuBar {
+	/** Parent frame of the application. */
 	private final Frame parent;
+
+	/** The presentation instance this controller manages. */
 	private final Presentation presentation;
 
+	/** Menu item for going to the next slide. */
 	private final MenuItem nextItem;
+
+	/** Menu item for going to the previous slide. */
 	private final MenuItem prevItem;
+
+	/** Menu item to show About information. */
 	private final MenuItem aboutItem;
 
 	public static final String OPEN = "Open";
@@ -30,7 +38,7 @@ public class MenuController extends MenuBar {
 	/**
 	 * Constructs the menu controller.
 	 *
-	 * @param parent the parent frame
+	 * @param parent       the parent frame
 	 * @param presentation the presentation instance to control
 	 */
 	public MenuController(final Frame parent, final Presentation presentation) {
@@ -38,6 +46,7 @@ public class MenuController extends MenuBar {
 		this.presentation = presentation;
 
 		Menu fileMenu = new Menu("File");
+
 		MenuItem openItem = new MenuItem(OPEN);
 		openItem.addActionListener(e -> openFile());
 		fileMenu.add(openItem);
@@ -49,6 +58,7 @@ public class MenuController extends MenuBar {
 		MenuItem exitItem = new MenuItem(EXIT);
 		exitItem.addActionListener(e -> System.exit(0));
 		fileMenu.add(exitItem);
+
 		add(fileMenu);
 
 		Menu viewMenu = new Menu("View");
@@ -79,8 +89,10 @@ public class MenuController extends MenuBar {
 			try {
 				presentation.load(filename);
 			} catch (IOException e) {
-				JOptionPane.showMessageDialog(parent, "Error loading file!",
-						"Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(parent,
+						"Error loading file!",
+						"Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
@@ -96,32 +108,25 @@ public class MenuController extends MenuBar {
 			try {
 				presentation.save(filename);
 			} catch (IOException e) {
-				JOptionPane.showMessageDialog(parent, "Error saving file!",
-						"Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(parent,
+						"Error saving file!",
+						"Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
 
-	/**
-	 * Returns the "Next" menu item (for testing).
-	 * @return the next menu item
-	 */
+	/** @return the "Next" menu item for testing */
 	public MenuItem getNextItem() {
 		return nextItem;
 	}
 
-	/**
-	 * Returns the "Previous" menu item (for testing).
-	 * @return the previous menu item
-	 */
+	/** @return the "Previous" menu item for testing */
 	public MenuItem getPrevItem() {
 		return prevItem;
 	}
 
-	/**
-	 * Returns the "About" menu item (for testing).
-	 * @return the about menu item
-	 */
+	/** @return the "About" menu item for testing */
 	public MenuItem getAboutItem() {
 		return aboutItem;
 	}

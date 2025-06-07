@@ -8,10 +8,19 @@ import java.util.List;
  * Presentation class manages slides and observers for JabberPoint.
  */
 public class Presentation {
+	/** The title of the presentation. */
 	private String title;
+
+	/** List of slides in the presentation. */
 	private final List<Slide> slides;
+
+	/** The index of the current slide. */
 	private int currentSlideNumber;
+
+	/** List of observers monitoring changes. */
 	private final List<Observer> observers;
+
+	/** Accessor to load/save presentations in various formats. */
 	private final Accessor accessor;
 
 	/**
@@ -77,10 +86,10 @@ public class Presentation {
 
 	/**
 	 * Sets the presentation title.
-	 * @param title the new title
+	 * @param newTitle the new title
 	 */
-	public void setTitle(final String title) {
-		this.title = title;
+	public void setTitle(final String newTitle) {
+		this.title = newTitle;
 		notifyObservers();
 	}
 

@@ -110,8 +110,7 @@ public final class XMLAccessor implements AccessorStrategy {
 
 			TransformerFactory tf = TransformerFactory.newInstance();
 			Transformer transformer = tf.newTransformer();
-			transformer.setOutputProperty(
-					OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty(
 					"{http://xml.apache.org/xslt}indent-amount", "2");
 

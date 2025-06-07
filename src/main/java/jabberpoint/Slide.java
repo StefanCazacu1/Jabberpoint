@@ -10,7 +10,11 @@ import java.util.Vector;
  * Represents a slide in the JabberPoint presentation.
  */
 public class Slide {
-	private String title;
+
+	/** The slide title. */
+	private String slideTitle;
+
+	/** List of slide items. */
 	private final Vector<SlideItem> items;
 
 	/**
@@ -46,18 +50,18 @@ public class Slide {
 
 	/**
 	 * Sets the title of the Slide.
-	 * @param title the title
+	 * @param title the title to set
 	 */
 	public void setTitle(final String title) {
-		this.title = title;
+		this.slideTitle = title;
 	}
 
 	/**
 	 * Gets the title of the Slide.
-	 * @return the title
+	 * @return the slide title
 	 */
 	public String getTitle() {
-		return title;
+		return slideTitle;
 	}
 
 	/**
@@ -89,7 +93,8 @@ public class Slide {
 	/**
 	 * Gets a specific SlideItem by index.
 	 * @param index the item index
-	 * @return the SlideItem
+	 * @return the SlideItem at the given index
+	 * @throws IndexOutOfBoundsException if index invalid
 	 */
 	public SlideItem getSlideItem(final int index) {
 		if (index >= 0 && index < items.size()) {

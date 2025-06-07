@@ -14,8 +14,13 @@ import javax.imageio.ImageIO;
  */
 public class BitmapItem extends SlideItem {
 
-	/** Image name/path. */
-	private final String name;
+	private static final int ERROR_RECT_WIDTH = 100;
+	private static final int ERROR_RECT_HEIGHT = 100;
+	private static final int ERROR_TEXT_X_OFFSET = 10;
+	private static final int ERROR_TEXT_Y_OFFSET = 50;
+
+	/** Image filename. */
+	private final String imageName;
 
 	/** Loaded image. */
 	private Image bufferedImage;
@@ -24,11 +29,11 @@ public class BitmapItem extends SlideItem {
 	 * Constructs a BitmapItem.
 	 *
 	 * @param level the slide item level
-	 * @param name  the image filename
+	 * @param imageName the image filename
 	 */
-	public BitmapItem(final int level, final String name) {
+	public BitmapItem(final int level, final String imageName) {
 		super(level);
-		this.name = name;
+		this.imageName = imageName;
 		loadImage();
 	}
 
@@ -37,20 +42,20 @@ public class BitmapItem extends SlideItem {
 	 */
 	private void loadImage() {
 		try {
-			bufferedImage = ImageIO.read(new File(name));
+			bufferedImage = ImageIO.read(new File(imageName));
 		} catch (IOException e) {
-			System.err.println("Error loading image: " + name);
+			System.err.println("Error loading image: " + imageName);
 			bufferedImage = null;
 		}
 	}
 
 	/**
-	 * Gets the image name.
+	 * Gets the image filename.
 	 *
 	 * @return the image filename
 	 */
 	public String getName() {
-		return name;
+		return imageName;
 	}
 
 	/**
@@ -74,8 +79,8 @@ public class BitmapItem extends SlideItem {
 					(int) (bufferedImage.getHeight(observer) * scale), observer);
 		} else {
 			g.setColor(Color.RED);
-			g.drawRect(x, y, 100, 100);
-			g.drawString("Image not found", x + 10, y + 50);
+			g.drawRect(x, y, ERROR_RECT_WIDTH, ERROR_RECT_HEIGHT);
+			g.drawString("Image not found", x + ERROR_TEXT_X_OFFSET, y + ERROR_TEXT_Y_OFFSET);
 		}
 	}
 

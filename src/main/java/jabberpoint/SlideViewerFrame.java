@@ -8,9 +8,20 @@ import java.awt.Frame;
  */
 public class SlideViewerFrame extends Frame {
 	private static final long serialVersionUID = 1L;
+
+	/** Default window title. */
 	private static final String JABTITLE = "JabberPoint 1.0 - OU";
 
+	/** Default window width in pixels. */
+	private static final int DEFAULT_WIDTH = 1024;
+
+	/** Default window height in pixels. */
+	private static final int DEFAULT_HEIGHT = 768;
+
+	/** The presentation to display. */
 	private final Presentation presentation;
+
+	/** The component that renders the slides. */
 	private final SlideViewerComponent slideViewerComponent;
 
 	/**
@@ -31,7 +42,7 @@ public class SlideViewerFrame extends Frame {
 		setMenuBar(new MenuController(this, presentation));
 
 		setTitle(JABTITLE);
-		setSize(1024, 768);
+		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		setVisible(true);
 
 		// When closing the window, exit the application

@@ -9,8 +9,9 @@ import java.awt.image.ImageObserver;
  * Abstract class representing an item on a slide.
  */
 public abstract class SlideItem {
+
 	/** The hierarchical level of the item. */
-	protected int level;
+	private int level;
 
 	/** The color of the item. */
 	private Color color = Color.BLACK;
@@ -36,7 +37,7 @@ public abstract class SlideItem {
 	 * @param lev the new level
 	 */
 	public void setLevel(final int lev) {
-		level = lev;
+		this.level = lev;
 	}
 
 	/**
@@ -47,7 +48,8 @@ public abstract class SlideItem {
 	 * @param y the y coordinate
 	 * @param scale the scale factor
 	 */
-	public abstract void draw(Graphics g, ImageObserver observer, int x, int y, float scale);
+	public abstract void draw(Graphics g, ImageObserver observer,
+			int x, int y, float scale);
 
 	/**
 	 * Gets the bounding box of the item.
@@ -56,7 +58,9 @@ public abstract class SlideItem {
 	 * @param scale the scale factor
 	 * @return the bounding box Rectangle
 	 */
-	public abstract Rectangle getBoundingBox(Graphics g, ImageObserver observer, float scale);
+	public abstract Rectangle getBoundingBox(Graphics g,
+			ImageObserver observer,
+			float scale);
 
 	/**
 	 * Gets the item's color.

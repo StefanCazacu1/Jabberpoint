@@ -7,15 +7,19 @@ import java.awt.event.KeyAdapter;
  * Handles keyboard input for slide navigation.
  */
 public class KeyController extends KeyAdapter {
+
+	/**
+	 * The Presentation this controller manipulates.
+	 */
 	private final Presentation presentation;
 
 	/**
 	 * Constructs a KeyController for the given Presentation.
 	 *
-	 * @param presentation the Presentation to control
+	 * @param presentationParam the Presentation to control
 	 */
-	public KeyController(final Presentation presentation) {
-		this.presentation = presentation;
+	public KeyController(final Presentation presentationParam) {
+		this.presentation = presentationParam;
 	}
 
 	/**
