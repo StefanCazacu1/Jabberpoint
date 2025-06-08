@@ -1,43 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DemoPresentation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jabberpoint</a> &gt; <a href="index.source.html" class="el_package">jabberpoint</a> &gt; <span class="el_source">DemoPresentation.java</span></div><h1>DemoPresentation.java</h1><pre class="source lang-java linenums">package jabberpoint;
 
-import java.awt.Image;
-import java.io.IOException;
+/** Utility class providing a demo presentation with sample slides. */
+public final class DemoPresentation {
+    /** Prevents instantiation. */
+<span class="nc" id="L6">    private DemoPresentation() {</span>
+<span class="nc" id="L7">        throw new UnsupportedOperationException(&quot;Utility class&quot;);</span>
+    }
 
-<span class="nc" id="L6">public class DemoPresentation {</span>
+    /**
+     * Loads a demo presentation into the provided Presentation object.
+     *
+     * @param presentation the Presentation to load slides into
+     */
+    public static void loadDemoPresentation(
+            final Presentation presentation) {
+<span class="pc bpc" id="L17" title="1 of 2 branches missed.">        if (presentation == null) {</span>
+<span class="nc" id="L18">            return;</span>
+        }
+<span class="fc" id="L20">        presentation.setTitle(&quot;Demo Presentation&quot;);</span>
 
-	public static void loadDemoPresentation(Presentation presentation) {
-<span class="fc" id="L9">		presentation.setTitle(&quot;Demo Presentation&quot;);</span>
+        // Style level constants (local variables)
+<span class="fc" id="L23">        final int titleLevel = 0;</span>
+<span class="fc" id="L24">        final int subtitleLevel = 1;</span>
+<span class="fc" id="L25">        final int contentLevel = 2;</span>
 
-		// Slide 1: Welcome Slide with background image
-<span class="fc" id="L12">		Slide slide1 = new Slide();</span>
-<span class="fc" id="L13">		slide1.setTitle(&quot;WELCOME TO JABBERPOINT\nTHE WONDER OF GUI TESTING&quot;);</span>
+<span class="fc" id="L27">        Slide slide1 = new Slide();</span>
+<span class="fc" id="L28">        slide1.setTitle(&quot;JabberPoint&quot;);</span>
+<span class="fc" id="L29">        slide1.addItem(new TextItem(titleLevel,</span>
+                &quot;The Java Presentation Tool&quot;));
+<span class="fc" id="L31">        slide1.addItem(new TextItem(subtitleLevel,</span>
+                &quot;by Stef Cazacu &amp; Co.&quot;));
+<span class="fc" id="L33">        presentation.addSlide(slide1);</span>
 
-		// Add the title
-<span class="fc" id="L16">		slide1.addItem(new TextItem(1, &quot;WELCOME TO JABBERPOINT&quot;));</span>
-<span class="fc" id="L17">		slide1.addItem(new TextItem(2, &quot;THE WONDER OF GUI TESTING&quot;));</span>
+<span class="fc" id="L35">        Slide slide2 = new Slide();</span>
+<span class="fc" id="L36">        slide2.setTitle(&quot;Features&quot;);</span>
+<span class="fc" id="L37">        slide2.addItem(new TextItem(contentLevel,</span>
+                &quot;Composite Pattern&quot;));
+<span class="fc" id="L39">        slide2.addItem(new TextItem(contentLevel,</span>
+                &quot;Observer Pattern&quot;));
+<span class="fc" id="L41">        slide2.addItem(new TextItem(contentLevel,</span>
+                &quot;Strategy Pattern&quot;));
+<span class="fc" id="L43">        slide2.addItem(new TextItem(contentLevel,</span>
+                &quot;Unit Testing with JUnit&quot;));
+<span class="fc" id="L45">        presentation.addSlide(slide2);</span>
 
-		// Add the subtitle
-<span class="fc" id="L20">		slide1.addItem(new TextItem(3, &quot;I must be crazy to use mockito so simulate all the interface to test it&quot;));</span>
-
-		// Add the footer
-<span class="fc" id="L23">		slide1.addItem(new TextItem(4, &quot;BY STEFAN AND IARINA&quot;));</span>
-
-<span class="fc" id="L25">		presentation.addSlide(slide1);</span>
-
-		// Slide 2: Features
-<span class="fc" id="L28">		Slide slide2 = new Slide();</span>
-<span class="fc" id="L29">		slide2.setTitle(&quot;Features&quot;);</span>
-<span class="fc" id="L30">		slide2.addItem(new TextItem(1, &quot;Multiple file formats (XML/JSON)&quot;));</span>
-<span class="fc" id="L31">		slide2.addItem(new TextItem(2, &quot;Observer pattern for dynamic updates&quot;));</span>
-<span class="fc" id="L32">		slide2.addItem(new TextItem(3, &quot;Strategy pattern for flexible file IO&quot;));</span>
-<span class="fc" id="L33">		presentation.addSlide(slide2);</span>
-
-		// Slide 3: Footer and &quot;Next Slide&quot; action
-<span class="fc" id="L36">		Slide slide3 = new Slide();</span>
-<span class="fc" id="L37">		slide3.setTitle(&quot;Go Next Slide&quot;);</span>
-<span class="fc" id="L38">		slide3.addItem(new TextItem(1, &quot;Go to the next slide&quot;));</span>
-<span class="fc" id="L39">		slide3.addItem(new TextItem(2, &quot;BY STEFAN AND IARINA&quot;));</span>
-<span class="fc" id="L40">		presentation.addSlide(slide3);</span>
-<span class="fc" id="L41">	}</span>
+        // Add more demo slides as needed...
+<span class="fc" id="L48">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
