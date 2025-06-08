@@ -1,45 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SlideViewerFrame.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jabberpoint</a> &gt; <a href="index.source.html" class="el_package">jabberpoint</a> &gt; <span class="el_source">SlideViewerFrame.java</span></div><h1>SlideViewerFrame.java</h1><pre class="source lang-java linenums">package jabberpoint;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Frame;
 
 /**
  * The main application window (Frame) that shows the presentation.
  */
-public class SlideViewerFrame extends Frame {
-	private static final String JABTITLE = &quot;JabberPoint 1.0 - OU&quot;;
+public class SlideViewerFrame extends Frame implements Observer {
+    private static final long serialVersionUID = 1L;
 
-	private final Presentation presentation;
-	private final SlideViewerComponent slideViewerComponent;
+    /** Default window title. */
+    private static final String JABTITLE = &quot;JabberPoint 1.0 - OU&quot;;
 
-	public SlideViewerFrame(String title, Presentation presentation) {
-<span class="fc" id="L15">		super(title);</span>
-<span class="fc" id="L16">		this.presentation = presentation;</span>
+    /** Default window width in pixels. */
+    private static final int DEFAULT_WIDTH = 1024;
 
-		// Add the SlideViewerComponent which observes Presentation
-<span class="fc" id="L19">		slideViewerComponent = new SlideViewerComponent(presentation);</span>
-<span class="fc" id="L20">		presentation.addObserver(slideViewerComponent);</span>
+    /** Default window height in pixels. */
+    private static final int DEFAULT_HEIGHT = 768;
 
-		// Add key controller and menu controller
-<span class="fc" id="L23">		addKeyListener(new KeyController(presentation));</span>
-<span class="fc" id="L24">		setMenuBar(new MenuController(this, presentation));</span>
+    /** The presentation to display. */
+    private final Presentation presentation;
 
-<span class="fc" id="L26">		setTitle(JABTITLE);</span>
-<span class="fc" id="L27">		setSize(1024, 768);</span>
-<span class="fc" id="L28">		setVisible(true);</span>
+    /** The component that renders the slides. */
+    private final SlideViewerComponent slideViewerComponent;
 
-		// When closing the window, exit the application
-<span class="fc" id="L31">		addWindowListener(new java.awt.event.WindowAdapter() {</span>
-			@Override
-			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-<span class="nc" id="L34">				System.exit(0);</span>
-<span class="nc" id="L35">			}</span>
-		});
+    /**
+     * Constructs a SlideViewerFrame.
+     * @param title the window title
+     * @param presentationParam the Presentation to display
+     */
+    public SlideViewerFrame(final String title,
+            final Presentation presentationParam) {
+<span class="fc" id="L34">        super(title);</span>
+<span class="fc" id="L35">        this.presentation = presentationParam;</span>
 
-<span class="fc" id="L38">		add(slideViewerComponent, BorderLayout.CENTER);</span>
-<span class="fc" id="L39">	}</span>
+        // Register this frame as an observer to presentation
+<span class="fc" id="L38">        this.presentation.addObserver(this);</span>
 
-	public SlideViewerComponent getSlideViewerComponent() {
-<span class="fc" id="L42">		return slideViewerComponent;</span>
-	}
+<span class="fc" id="L40">        slideViewerComponent = new SlideViewerComponent(this.presentation);</span>
+<span class="fc" id="L41">        this.presentation.addObserver(slideViewerComponent);</span>
+
+<span class="fc" id="L43">        addKeyListener(new KeyController(this.presentation));</span>
+<span class="fc" id="L44">        setMenuBar(new MenuController(this, this.presentation));</span>
+
+<span class="fc" id="L46">        setTitle(JABTITLE);</span>
+<span class="fc" id="L47">        setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);</span>
+<span class="fc" id="L48">        setVisible(true);</span>
+
+<span class="fc" id="L50">        addWindowListener(new java.awt.event.WindowAdapter() {</span>
+            @Override
+            public void windowClosing(
+                    final java.awt.event.WindowEvent windowEvent) {
+<span class="nc" id="L54">                System.exit(0);</span>
+<span class="nc" id="L55">            }</span>
+        });
+
+<span class="fc" id="L58">        add(slideViewerComponent, BorderLayout.CENTER);</span>
+<span class="fc" id="L59">    }</span>
+
+    /**
+     * Called when the observed Presentation updates.
+     * Updates the window title with current slide info.
+     */
+    @Override
+    public void update() {
+<span class="fc" id="L67">        int slideNumber = presentation.getSlideNumber();</span>
+<span class="fc" id="L68">        int totalSlides = presentation.getSize();</span>
+<span class="pc bpc" id="L69" title="1 of 4 branches missed.">        if (slideNumber &gt;= 0 &amp;&amp; totalSlides &gt; 0) {</span>
+<span class="fc" id="L70">            updateTitleWithSlideNumber(slideNumber, totalSlides);</span>
+        } else {
+<span class="fc" id="L72">            setTitle(JABTITLE);</span>
+        }
+<span class="fc" id="L74">    }</span>
+
+    /**
+     * Updates the window title with slide number and total slides.
+     * @param slideNumber current slide index
+     * @param totalSlides total number of slides
+     */
+    public void updateTitleWithSlideNumber(int slideNumber, int totalSlides) {
+<span class="fc" id="L82">        setTitle(&quot;JabberPoint 1.0 - OU  Slide &quot; + (slideNumber + 1) + &quot; of &quot; + totalSlides);</span>
+<span class="fc" id="L83">    }</span>
+
+    /**
+     * Returns the SlideViewerComponent.
+     * @return the SlideViewerComponent
+     */
+    public SlideViewerComponent getSlideViewerComponent() {
+<span class="fc" id="L90">        return slideViewerComponent;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

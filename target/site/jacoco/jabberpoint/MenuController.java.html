@@ -1,83 +1,307 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MenuController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jabberpoint</a> &gt; <a href="index.source.html" class="el_package">jabberpoint</a> &gt; <span class="el_source">MenuController.java</span></div><h1>MenuController.java</h1><pre class="source lang-java linenums">package jabberpoint;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.FileDialog;
+import java.awt.Frame;
+import java.awt.Menu;
+import java.awt.MenuBar;
+import java.awt.MenuItem;
 import java.io.IOException;
+import java.util.List;
+import javax.swing.JOptionPane;
 
+/**
+ * Controls the menu bar and menu actions for JabberPoint.
+ */
 public class MenuController extends MenuBar {
-	private final Frame parent;
-	private final Presentation presentation;
+    /** Parent frame of the application. */
+    private final Frame parent;
 
-	public MenuItem nextItem; 
-	public MenuItem prevItem; 
-	public MenuItem aboutItem;
+    /** The presentation instance this controller manages. */
+    private final Presentation presentation;
 
-	public static final String OPEN = &quot;Open&quot;;
-	public static final String NEW = &quot;New&quot;;
-	public static final String SAVE = &quot;Save&quot;;
-	public static final String EXIT = &quot;Exit&quot;;
-	public static final String NEXT = &quot;Next&quot;;
-	public static final String PREV = &quot;Prev&quot;;
-	public static final String ABOUT = &quot;About&quot;;
+    /** Menu item to show About information. */
+    private final MenuItem aboutItem;
 
-<span class="fc" id="L24">	public MenuController(Frame parent, Presentation presentation) {</span>
-<span class="fc" id="L25">		this.parent = parent;</span>
-<span class="fc" id="L26">		this.presentation = presentation;</span>
+    /** Labels for menu items. */
+    public static final String OPEN = &quot;Open&quot;;
+    public static final String NEW = &quot;New Presentation&quot;;
+    public static final String SAVE = &quot;Save&quot;;
+    public static final String EXIT = &quot;Exit&quot;;
+    public static final String NEXT = &quot;Next&quot;;
+    public static final String PREV = &quot;Prev&quot;;
+    public static final String ABOUT = &quot;About&quot;;
 
-<span class="fc" id="L28">		Menu fileMenu = new Menu(&quot;File&quot;);</span>
-<span class="fc" id="L29">		MenuItem openItem = new MenuItem(&quot;Open&quot;);</span>
-<span class="fc" id="L30">		openItem.addActionListener(e -&gt; openFile());</span>
-<span class="fc" id="L31">		fileMenu.add(openItem);</span>
+    public static final String ADD_SLIDE = &quot;Add Slide&quot;;
+    public static final String REMOVE_SLIDE = &quot;Remove Slide&quot;;
+    public static final String ADD_TEXT_ITEM = &quot;Add Text Item&quot;;
+    public static final String ADD_IMAGE_ITEM = &quot;Add Image Item&quot;;
+    public static final String REMOVE_SLIDE_ITEM = &quot;Remove Slide Item&quot;;
 
-<span class="fc" id="L33">		MenuItem saveItem = new MenuItem(&quot;Save&quot;);</span>
-<span class="fc" id="L34">		saveItem.addActionListener(e -&gt; saveFile());</span>
-<span class="fc" id="L35">		fileMenu.add(saveItem);</span>
+    /**
+     * Constructs the menu controller.
+     *
+     * @param parentParam       the parent frame
+     * @param presentationParam the presentation instance to control
+     */
+    public MenuController(final Frame parentParam,
+<span class="fc" id="L47">            final Presentation presentationParam) {</span>
+<span class="fc" id="L48">        this.parent = parentParam;</span>
+<span class="fc" id="L49">        this.presentation = presentationParam;</span>
 
-<span class="fc" id="L37">		MenuItem exitItem = new MenuItem(&quot;Exit&quot;);</span>
-<span class="pc" id="L38">		exitItem.addActionListener(e -&gt; System.exit(0));</span>
-<span class="fc" id="L39">		fileMenu.add(exitItem);</span>
-<span class="fc" id="L40">		add(fileMenu);</span>
+        // File menu
+<span class="fc" id="L52">        Menu fileMenu = new Menu(&quot;File&quot;);</span>
 
-<span class="fc" id="L42">		Menu viewMenu = new Menu(&quot;View&quot;);</span>
-<span class="fc" id="L43">		MenuItem nextItem = new MenuItem(&quot;Next Slide&quot;);</span>
-<span class="fc" id="L44">		nextItem.addActionListener(e -&gt; presentation.nextSlide());</span>
-<span class="fc" id="L45">		viewMenu.add(nextItem);</span>
+<span class="fc" id="L54">        MenuItem newItem = new MenuItem(NEW);</span>
+<span class="pc" id="L55">        newItem.addActionListener(e -&gt; newPresentation());</span>
+<span class="fc" id="L56">        fileMenu.add(newItem);</span>
 
-<span class="fc" id="L47">		MenuItem prevItem = new MenuItem(&quot;Previous Slide&quot;);</span>
-<span class="fc" id="L48">		prevItem.addActionListener(e -&gt; presentation.prevSlide());</span>
-<span class="fc" id="L49">		viewMenu.add(prevItem);</span>
+<span class="fc" id="L58">        MenuItem openItem = new MenuItem(OPEN);</span>
+<span class="fc" id="L59">        openItem.addActionListener(e -&gt; openFile());</span>
+<span class="fc" id="L60">        fileMenu.add(openItem);</span>
 
-<span class="fc" id="L51">		MenuItem aboutItem = new MenuItem(&quot;About&quot;);</span>
-<span class="fc" id="L52">		aboutItem.addActionListener(e -&gt; AboutBox.show(parent));</span>
-<span class="fc" id="L53">		viewMenu.add(aboutItem);</span>
-<span class="fc" id="L54">		add(viewMenu);</span>
-<span class="fc" id="L55">	}</span>
+<span class="fc" id="L62">        MenuItem saveItem = new MenuItem(SAVE);</span>
+<span class="fc" id="L63">        saveItem.addActionListener(e -&gt; saveFile());</span>
+<span class="fc" id="L64">        fileMenu.add(saveItem);</span>
 
-	public void openFile() {
-<span class="fc" id="L58">		FileDialog dialog = new FileDialog(parent, &quot;Open File&quot;, FileDialog.LOAD);</span>
-<span class="fc" id="L59">		dialog.setVisible(true);</span>
-<span class="pc bpc" id="L60" title="1 of 2 branches missed.">		if (dialog.getFile() != null) {</span>
-<span class="nc" id="L61">			String filename = dialog.getDirectory() + dialog.getFile();</span>
-			try {
-<span class="nc" id="L63">				presentation.load(filename);</span>
-<span class="nc" id="L64">			} catch (IOException e) {</span>
-<span class="nc" id="L65">				JOptionPane.showMessageDialog(parent, &quot;Error loading file!&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
-<span class="nc" id="L66">			}</span>
-		}
-<span class="fc" id="L68">	}</span>
+<span class="fc" id="L66">        MenuItem exitItem = new MenuItem(EXIT);</span>
+<span class="pc" id="L67">        exitItem.addActionListener(e -&gt; System.exit(0));</span>
+<span class="fc" id="L68">        fileMenu.add(exitItem);</span>
 
-	public void saveFile() {
-<span class="fc" id="L71">		FileDialog dialog = new FileDialog(parent, &quot;Save File&quot;, FileDialog.SAVE);</span>
-<span class="fc" id="L72">		dialog.setVisible(true);</span>
-<span class="pc bpc" id="L73" title="1 of 2 branches missed.">		if (dialog.getFile() != null) {</span>
-<span class="nc" id="L74">			String filename = dialog.getDirectory() + dialog.getFile();</span>
-			try {
-<span class="nc" id="L76">				presentation.save(filename);</span>
-<span class="nc" id="L77">			} catch (IOException e) {</span>
-<span class="nc" id="L78">				JOptionPane.showMessageDialog(parent, &quot;Error saving file!&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
-<span class="nc" id="L79">			}</span>
-		}
-<span class="fc" id="L81">	}</span>
+<span class="fc" id="L70">        this.add(fileMenu);</span>
+
+        // Edit menu for slide/slide item operations
+<span class="fc" id="L73">        Menu editMenu = new Menu(&quot;Edit&quot;);</span>
+
+<span class="fc" id="L75">        MenuItem addSlideItem = new MenuItem(ADD_SLIDE);</span>
+<span class="pc" id="L76">        addSlideItem.addActionListener(e -&gt; addSlide());</span>
+<span class="fc" id="L77">        editMenu.add(addSlideItem);</span>
+
+<span class="fc" id="L79">        MenuItem removeSlideItem = new MenuItem(REMOVE_SLIDE);</span>
+<span class="pc" id="L80">        removeSlideItem.addActionListener(e -&gt; removeSlide());</span>
+<span class="fc" id="L81">        editMenu.add(removeSlideItem);</span>
+
+<span class="fc" id="L83">        MenuItem addTextItem = new MenuItem(ADD_TEXT_ITEM);</span>
+<span class="pc" id="L84">        addTextItem.addActionListener(e -&gt; addTextItem());</span>
+<span class="fc" id="L85">        editMenu.add(addTextItem);</span>
+
+<span class="fc" id="L87">        MenuItem addImageItem = new MenuItem(ADD_IMAGE_ITEM);</span>
+<span class="pc" id="L88">        addImageItem.addActionListener(e -&gt; addImageItem());</span>
+<span class="fc" id="L89">        editMenu.add(addImageItem);</span>
+
+<span class="fc" id="L91">        MenuItem removeSlideItemItem = new MenuItem(REMOVE_SLIDE_ITEM);</span>
+<span class="pc" id="L92">        removeSlideItemItem.addActionListener(e -&gt; removeSlideItem());</span>
+<span class="fc" id="L93">        editMenu.add(removeSlideItemItem);</span>
+
+<span class="fc" id="L95">        this.add(editMenu);</span>
+
+        // Navigation menu
+<span class="fc" id="L98">        Menu navigationMenu = new Menu(&quot;Navigate&quot;);</span>
+
+<span class="fc" id="L100">        MenuItem nextItem = new MenuItem(NEXT);</span>
+<span class="fc" id="L101">        nextItem.addActionListener(e -&gt; this.presentation.nextSlide());</span>
+<span class="fc" id="L102">        navigationMenu.add(nextItem);</span>
+
+<span class="fc" id="L104">        MenuItem prevItem = new MenuItem(PREV);</span>
+<span class="fc" id="L105">        prevItem.addActionListener(e -&gt; this.presentation.prevSlide());</span>
+<span class="fc" id="L106">        navigationMenu.add(prevItem);</span>
+
+<span class="fc" id="L108">        this.add(navigationMenu);</span>
+
+        // View menu with only About item
+<span class="fc" id="L111">        Menu viewMenu = new Menu(&quot;View&quot;);</span>
+
+<span class="fc" id="L113">        aboutItem = new MenuItem(ABOUT);</span>
+<span class="fc" id="L114">        aboutItem.addActionListener(e -&gt; AboutBox.show(this.parent));</span>
+<span class="fc" id="L115">        viewMenu.add(aboutItem);</span>
+
+<span class="fc" id="L117">        this.add(viewMenu);</span>
+<span class="fc" id="L118">    }</span>
+
+    private void newPresentation() {
+<span class="nc" id="L121">        int result = JOptionPane.showConfirmDialog(parent,</span>
+                &quot;Create a new presentation? Unsaved changes will be lost.&quot;,
+                &quot;New Presentation&quot;,
+                JOptionPane.OK_CANCEL_OPTION);
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        if (result == JOptionPane.OK_OPTION) {</span>
+<span class="nc" id="L126">            presentation.clear();</span>
+        }
+<span class="nc" id="L128">    }</span>
+
+    private void addSlide() {
+<span class="nc" id="L131">        String title = JOptionPane.showInputDialog(parent,</span>
+                &quot;Enter slide title:&quot;,
+                &quot;Add Slide&quot;,
+                JOptionPane.PLAIN_MESSAGE);
+<span class="nc bnc" id="L135" title="All 4 branches missed.">        if (title != null &amp;&amp; !title.trim().isEmpty()) {</span>
+<span class="nc" id="L136">            Slide slide = new Slide();</span>
+<span class="nc" id="L137">            slide.setTitle(title.trim());</span>
+<span class="nc" id="L138">            presentation.addSlide(slide);</span>
+<span class="nc" id="L139">            presentation.setSlideNumber(presentation.getSize() - 1);</span>
+        }
+<span class="nc" id="L141">    }</span>
+
+    private void removeSlide() {
+<span class="nc" id="L144">        int currentIndex = presentation.getSlideNumber();</span>
+<span class="nc bnc" id="L145" title="All 4 branches missed.">        if (currentIndex &lt; 0 || currentIndex &gt;= presentation.getSize()) {</span>
+<span class="nc" id="L146">            JOptionPane.showMessageDialog(parent,</span>
+                    &quot;No slide to remove.&quot;,
+                    &quot;Remove Slide&quot;,
+                    JOptionPane.WARNING_MESSAGE);
+<span class="nc" id="L150">            return;</span>
+        }
+<span class="nc" id="L152">        int result = JOptionPane.showConfirmDialog(parent,</span>
+                &quot;Remove current slide?&quot;,
+                &quot;Remove Slide&quot;,
+                JOptionPane.OK_CANCEL_OPTION);
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        if (result == JOptionPane.OK_OPTION) {</span>
+            // Remove slide and update current slide index
+<span class="nc" id="L158">            List&lt;Slide&gt; slides = presentation.getSlides();</span>
+<span class="nc" id="L159">            slides.remove(currentIndex);</span>
+            // Adjust slide number
+<span class="nc bnc" id="L161" title="All 2 branches missed.">            if (slides.isEmpty()) {</span>
+<span class="nc" id="L162">                presentation.setSlideNumber(-1);</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">            } else if (currentIndex &gt;= slides.size()) {</span>
+<span class="nc" id="L164">                presentation.setSlideNumber(slides.size() - 1);</span>
+            } else {
+<span class="nc" id="L166">                presentation.setSlideNumber(currentIndex);</span>
+            }
+        }
+<span class="nc" id="L169">    }</span>
+
+    private void addTextItem() {
+<span class="nc" id="L172">        int currentIndex = presentation.getSlideNumber();</span>
+<span class="nc bnc" id="L173" title="All 4 branches missed.">        if (currentIndex &lt; 0 || currentIndex &gt;= presentation.getSize()) {</span>
+<span class="nc" id="L174">            JOptionPane.showMessageDialog(parent,</span>
+                    &quot;No slide selected to add a text item.&quot;,
+                    &quot;Add Text Item&quot;,
+                    JOptionPane.WARNING_MESSAGE);
+<span class="nc" id="L178">            return;</span>
+        }
+<span class="nc" id="L180">        String text = JOptionPane.showInputDialog(parent,</span>
+                &quot;Enter text for new slide item:&quot;,
+                &quot;Add Text Item&quot;,
+                JOptionPane.PLAIN_MESSAGE);
+<span class="nc bnc" id="L184" title="All 4 branches missed.">        if (text != null &amp;&amp; !text.trim().isEmpty()) {</span>
+<span class="nc" id="L185">            Slide currentSlide = presentation.getSlide(currentIndex);</span>
+<span class="nc" id="L186">            SlideItem textItem = new TextItem(1, text.trim()); // Default level 1</span>
+<span class="nc" id="L187">            currentSlide.addItem(textItem);</span>
+            // Notify observers after modification
+<span class="nc" id="L189">            presentation.notifyPresentationChanged();</span>
+        }
+<span class="nc" id="L191">    }</span>
+
+    private void addImageItem() {
+<span class="nc" id="L194">        int currentIndex = presentation.getSlideNumber();</span>
+<span class="nc bnc" id="L195" title="All 4 branches missed.">        if (currentIndex &lt; 0 || currentIndex &gt;= presentation.getSize()) {</span>
+<span class="nc" id="L196">            JOptionPane.showMessageDialog(parent,</span>
+                    &quot;No slide selected to add an image item.&quot;,
+                    &quot;Add Image Item&quot;,
+                    JOptionPane.WARNING_MESSAGE);
+<span class="nc" id="L200">            return;</span>
+        }
+<span class="nc" id="L202">        String imagePath = JOptionPane.showInputDialog(parent,</span>
+                &quot;Enter image file path:&quot;,
+                &quot;Add Image Item&quot;,
+                JOptionPane.PLAIN_MESSAGE);
+<span class="nc bnc" id="L206" title="All 4 branches missed.">        if (imagePath != null &amp;&amp; !imagePath.trim().isEmpty()) {</span>
+<span class="nc" id="L207">            Slide currentSlide = presentation.getSlide(currentIndex);</span>
+<span class="nc" id="L208">            SlideItem imageItem = new BitmapItem(1, imagePath.trim()); // Default level 1</span>
+<span class="nc" id="L209">            currentSlide.addItem(imageItem);</span>
+<span class="nc" id="L210">            presentation.notifyPresentationChanged();</span>
+        }
+<span class="nc" id="L212">    }</span>
+
+    private void removeSlideItem() {
+<span class="nc" id="L215">        int currentIndex = presentation.getSlideNumber();</span>
+<span class="nc bnc" id="L216" title="All 4 branches missed.">        if (currentIndex &lt; 0 || currentIndex &gt;= presentation.getSize()) {</span>
+<span class="nc" id="L217">            JOptionPane.showMessageDialog(parent,</span>
+                    &quot;No slide selected to remove an item.&quot;,
+                    &quot;Remove Slide Item&quot;,
+                    JOptionPane.WARNING_MESSAGE);
+<span class="nc" id="L221">            return;</span>
+        }
+<span class="nc" id="L223">        Slide currentSlide = presentation.getSlide(currentIndex);</span>
+<span class="nc" id="L224">        List&lt;SlideItem&gt; items = currentSlide.getSlideItems();</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">        if (items.isEmpty()) {</span>
+<span class="nc" id="L226">            JOptionPane.showMessageDialog(parent,</span>
+                    &quot;Current slide has no items to remove.&quot;,
+                    &quot;Remove Slide Item&quot;,
+                    JOptionPane.WARNING_MESSAGE);
+<span class="nc" id="L230">            return;</span>
+        }
+<span class="nc" id="L232">        String[] itemDescriptions = new String[items.size()];</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">        for (int i = 0; i &lt; items.size(); i++) {</span>
+<span class="nc" id="L234">            itemDescriptions[i] = items.get(i).toString();</span>
+        }
+<span class="nc" id="L236">        String toRemove = (String) JOptionPane.showInputDialog(parent,</span>
+                &quot;Select slide item to remove:&quot;,
+                &quot;Remove Slide Item&quot;,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                itemDescriptions,
+                itemDescriptions[0]);
+<span class="nc bnc" id="L243" title="All 2 branches missed.">        if (toRemove != null) {</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">            for (SlideItem item : items) {</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">                if (toRemove.equals(item.toString())) {</span>
+<span class="nc" id="L246">                    currentSlide.removeItem(item);</span>
+<span class="nc" id="L247">                    presentation.notifyPresentationChanged();</span>
+<span class="nc" id="L248">                    break;</span>
+                }
+<span class="nc" id="L250">            }</span>
+        }
+<span class="nc" id="L252">    }</span>
+
+    /**
+     * Opens a file dialog and loads a presentation file.
+     * Shows an error dialog if loading fails.
+     */
+    public void openFile() {
+<span class="fc" id="L259">        FileDialog dialog = new FileDialog(this.parent,</span>
+                &quot;Open File&quot;,
+                FileDialog.LOAD);
+<span class="fc" id="L262">        dialog.setVisible(true);</span>
+<span class="pc bpc" id="L263" title="1 of 2 branches missed.">        if (dialog.getFile() != null) {</span>
+<span class="nc" id="L264">            String filename = dialog.getDirectory() + dialog.getFile();</span>
+            try {
+<span class="nc" id="L266">                this.presentation.load(filename);</span>
+<span class="nc" id="L267">            } catch (IOException e) {</span>
+<span class="nc" id="L268">                JOptionPane.showMessageDialog(this.parent,</span>
+                        &quot;Error loading file!&quot;,
+                        &quot;Error&quot;,
+                        JOptionPane.ERROR_MESSAGE);
+<span class="nc" id="L272">            }</span>
+        }
+<span class="fc" id="L274">    }</span>
+
+    /**
+     * Opens a file dialog and saves the presentation to a file.
+     * Shows an error dialog if saving fails.
+     */
+    public void saveFile() {
+<span class="fc" id="L281">        FileDialog dialog = new FileDialog(this.parent,</span>
+                &quot;Save File&quot;,
+                FileDialog.SAVE);
+<span class="fc" id="L284">        dialog.setVisible(true);</span>
+<span class="pc bpc" id="L285" title="1 of 2 branches missed.">        if (dialog.getFile() != null) {</span>
+<span class="nc" id="L286">            String filename = dialog.getDirectory() + dialog.getFile();</span>
+            try {
+<span class="nc" id="L288">                this.presentation.save(filename);</span>
+<span class="nc" id="L289">            } catch (IOException e) {</span>
+<span class="nc" id="L290">                JOptionPane.showMessageDialog(this.parent,</span>
+                        &quot;Error saving file!&quot;,
+                        &quot;Error&quot;,
+                        JOptionPane.ERROR_MESSAGE);
+<span class="nc" id="L294">            }</span>
+        }
+<span class="fc" id="L296">    }</span>
+
+    /**
+     * Returns the &quot;About&quot; menu item.
+     *
+     * @return the about menu item
+     */
+    public MenuItem getAboutItem() {
+<span class="nc" id="L304">        return aboutItem;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

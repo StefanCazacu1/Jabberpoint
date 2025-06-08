@@ -6,6 +6,7 @@ import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
 import java.io.IOException;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,35 +19,23 @@ public class MenuController extends MenuBar {
     /** The presentation instance this controller manages. */
     private final Presentation presentation;
 
-    /** Menu item for going to the next slide. */
-    private final MenuItem nextItem;
-
-    /** Menu item for going to the previous slide. */
-    private final MenuItem prevItem;
-
     /** Menu item to show About information. */
     private final MenuItem aboutItem;
 
-    /** Label for the Open menu item. */
+    /** Labels for menu items. */
     public static final String OPEN = "Open";
-
-    /** Label for the New menu item. */
-    public static final String NEW = "New";
-
-    /** Label for the Save menu item. */
+    public static final String NEW = "New Presentation";
     public static final String SAVE = "Save";
-
-    /** Label for the Exit menu item. */
     public static final String EXIT = "Exit";
-
-    /** Label for the Next menu item. */
     public static final String NEXT = "Next";
-
-    /** Label for the Previous menu item. */
     public static final String PREV = "Prev";
-
-    /** Label for the About menu item. */
     public static final String ABOUT = "About";
+
+    public static final String ADD_SLIDE = "Add Slide";
+    public static final String REMOVE_SLIDE = "Remove Slide";
+    public static final String ADD_TEXT_ITEM = "Add Text Item";
+    public static final String ADD_IMAGE_ITEM = "Add Image Item";
+    public static final String REMOVE_SLIDE_ITEM = "Remove Slide Item";
 
     /**
      * Constructs the menu controller.
@@ -59,14 +48,19 @@ public class MenuController extends MenuBar {
         this.parent = parentParam;
         this.presentation = presentationParam;
 
+        // File menu
         Menu fileMenu = new Menu("File");
 
+        MenuItem newItem = new MenuItem(NEW);
+        newItem.addActionListener(e -> newPresentation());
+        fileMenu.add(newItem);
+
         MenuItem openItem = new MenuItem(OPEN);
-        openItem.addActionListener(e -> this.openFile());
+        openItem.addActionListener(e -> openFile());
         fileMenu.add(openItem);
 
         MenuItem saveItem = new MenuItem(SAVE);
-        saveItem.addActionListener(e -> this.saveFile());
+        saveItem.addActionListener(e -> saveFile());
         fileMenu.add(saveItem);
 
         MenuItem exitItem = new MenuItem(EXIT);
@@ -75,21 +69,186 @@ public class MenuController extends MenuBar {
 
         this.add(fileMenu);
 
-        Menu viewMenu = new Menu("View");
+        // Edit menu for slide/slide item operations
+        Menu editMenu = new Menu("Edit");
 
-        nextItem = new MenuItem(NEXT);
+        MenuItem addSlideItem = new MenuItem(ADD_SLIDE);
+        addSlideItem.addActionListener(e -> addSlide());
+        editMenu.add(addSlideItem);
+
+        MenuItem removeSlideItem = new MenuItem(REMOVE_SLIDE);
+        removeSlideItem.addActionListener(e -> removeSlide());
+        editMenu.add(removeSlideItem);
+
+        MenuItem addTextItem = new MenuItem(ADD_TEXT_ITEM);
+        addTextItem.addActionListener(e -> addTextItem());
+        editMenu.add(addTextItem);
+
+        MenuItem addImageItem = new MenuItem(ADD_IMAGE_ITEM);
+        addImageItem.addActionListener(e -> addImageItem());
+        editMenu.add(addImageItem);
+
+        MenuItem removeSlideItemItem = new MenuItem(REMOVE_SLIDE_ITEM);
+        removeSlideItemItem.addActionListener(e -> removeSlideItem());
+        editMenu.add(removeSlideItemItem);
+
+        this.add(editMenu);
+
+        // Navigation menu
+        Menu navigationMenu = new Menu("Navigate");
+
+        MenuItem nextItem = new MenuItem(NEXT);
         nextItem.addActionListener(e -> this.presentation.nextSlide());
-        viewMenu.add(nextItem);
+        navigationMenu.add(nextItem);
 
-        prevItem = new MenuItem(PREV);
+        MenuItem prevItem = new MenuItem(PREV);
         prevItem.addActionListener(e -> this.presentation.prevSlide());
-        viewMenu.add(prevItem);
+        navigationMenu.add(prevItem);
+
+        this.add(navigationMenu);
+
+        // View menu with only About item
+        Menu viewMenu = new Menu("View");
 
         aboutItem = new MenuItem(ABOUT);
         aboutItem.addActionListener(e -> AboutBox.show(this.parent));
         viewMenu.add(aboutItem);
 
         this.add(viewMenu);
+    }
+
+    private void newPresentation() {
+        int result = JOptionPane.showConfirmDialog(parent,
+                "Create a new presentation? Unsaved changes will be lost.",
+                "New Presentation",
+                JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            presentation.clear();
+        }
+    }
+
+    private void addSlide() {
+        String title = JOptionPane.showInputDialog(parent,
+                "Enter slide title:",
+                "Add Slide",
+                JOptionPane.PLAIN_MESSAGE);
+        if (title != null && !title.trim().isEmpty()) {
+            Slide slide = new Slide();
+            slide.setTitle(title.trim());
+            presentation.addSlide(slide);
+            presentation.setSlideNumber(presentation.getSize() - 1);
+        }
+    }
+
+    private void removeSlide() {
+        int currentIndex = presentation.getSlideNumber();
+        if (currentIndex < 0 || currentIndex >= presentation.getSize()) {
+            JOptionPane.showMessageDialog(parent,
+                    "No slide to remove.",
+                    "Remove Slide",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        int result = JOptionPane.showConfirmDialog(parent,
+                "Remove current slide?",
+                "Remove Slide",
+                JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            // Remove slide and update current slide index
+            List<Slide> slides = presentation.getSlides();
+            slides.remove(currentIndex);
+            // Adjust slide number
+            if (slides.isEmpty()) {
+                presentation.setSlideNumber(-1);
+            } else if (currentIndex >= slides.size()) {
+                presentation.setSlideNumber(slides.size() - 1);
+            } else {
+                presentation.setSlideNumber(currentIndex);
+            }
+        }
+    }
+
+    private void addTextItem() {
+        int currentIndex = presentation.getSlideNumber();
+        if (currentIndex < 0 || currentIndex >= presentation.getSize()) {
+            JOptionPane.showMessageDialog(parent,
+                    "No slide selected to add a text item.",
+                    "Add Text Item",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        String text = JOptionPane.showInputDialog(parent,
+                "Enter text for new slide item:",
+                "Add Text Item",
+                JOptionPane.PLAIN_MESSAGE);
+        if (text != null && !text.trim().isEmpty()) {
+            Slide currentSlide = presentation.getSlide(currentIndex);
+            SlideItem textItem = new TextItem(1, text.trim()); // Default level 1
+            currentSlide.addItem(textItem);
+            // Notify observers after modification
+            presentation.notifyPresentationChanged();
+        }
+    }
+
+    private void addImageItem() {
+        int currentIndex = presentation.getSlideNumber();
+        if (currentIndex < 0 || currentIndex >= presentation.getSize()) {
+            JOptionPane.showMessageDialog(parent,
+                    "No slide selected to add an image item.",
+                    "Add Image Item",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        String imagePath = JOptionPane.showInputDialog(parent,
+                "Enter image file path:",
+                "Add Image Item",
+                JOptionPane.PLAIN_MESSAGE);
+        if (imagePath != null && !imagePath.trim().isEmpty()) {
+            Slide currentSlide = presentation.getSlide(currentIndex);
+            SlideItem imageItem = new BitmapItem(1, imagePath.trim()); // Default level 1
+            currentSlide.addItem(imageItem);
+            presentation.notifyPresentationChanged();
+        }
+    }
+
+    private void removeSlideItem() {
+        int currentIndex = presentation.getSlideNumber();
+        if (currentIndex < 0 || currentIndex >= presentation.getSize()) {
+            JOptionPane.showMessageDialog(parent,
+                    "No slide selected to remove an item.",
+                    "Remove Slide Item",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        Slide currentSlide = presentation.getSlide(currentIndex);
+        List<SlideItem> items = currentSlide.getSlideItems();
+        if (items.isEmpty()) {
+            JOptionPane.showMessageDialog(parent,
+                    "Current slide has no items to remove.",
+                    "Remove Slide Item",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        String[] itemDescriptions = new String[items.size()];
+        for (int i = 0; i < items.size(); i++) {
+            itemDescriptions[i] = items.get(i).toString();
+        }
+        String toRemove = (String) JOptionPane.showInputDialog(parent,
+                "Select slide item to remove:",
+                "Remove Slide Item",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                itemDescriptions,
+                itemDescriptions[0]);
+        if (toRemove != null) {
+            for (SlideItem item : items) {
+                if (toRemove.equals(item.toString())) {
+                    currentSlide.removeItem(item);
+                    presentation.notifyPresentationChanged();
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -134,24 +293,6 @@ public class MenuController extends MenuBar {
                         JOptionPane.ERROR_MESSAGE);
             }
         }
-    }
-
-    /**
-     * Returns the "Next" menu item.
-     *
-     * @return the next slide menu item
-     */
-    public MenuItem getNextItem() {
-        return nextItem;
-    }
-
-    /**
-     * Returns the "Previous" menu item.
-     *
-     * @return the previous slide menu item
-     */
-    public MenuItem getPrevItem() {
-        return prevItem;
     }
 
     /**

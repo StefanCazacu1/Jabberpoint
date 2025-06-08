@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Unit tests for the JsonAccessor class.
+ * Unit tests for the JsonAccessor class, including TextItem and BitmapItem.
  */
 public class JsonAccessorTest {
 
@@ -28,14 +28,52 @@ public class JsonAccessorTest {
     }
 
     /**
-     * Test saving and loading a non-empty presentation.
+     * Test saving and loading a presentation with TextItem and BitmapItem.
      * @throws IOException if file operations fail
      */
+    @Test
+    public void testSaveAndLoadPresentationWithTextAndImage() throws IOException {
+        presentation.setTitle("Test Presentation with Image");
+        Slide slide = new Slide();
+        slide.addItem(new TextItem(0, "Welcome to JabberPoint"));
+        slide.addItem(new BitmapItem(1, "example.png"));
+        presentation.addSlide(slide);
+
+        File tempFile = File.createTempFile("test_presentation_img", ".json");
+        accessor.saveFile(presentation, tempFile.getAbsolutePath());
+
+        Presentation loadedPresentation = new Presentation();
+        accessor.loadFile(loadedPresentation, tempFile.getAbsolutePath());
+
+        assertEquals("Test Presentation with Image", loadedPresentation.getTitle());
+        assertEquals(1, loadedPresentation.getSize());
+
+        Slide loadedSlide = loadedPresentation.getSlide(0);
+        assertNotNull(loadedSlide);
+
+        List<SlideItem> items = loadedSlide.getSlideItems();
+        assertEquals(2, items.size());
+
+        SlideItem item1 = items.get(0);
+        assertTrue(item1 instanceof TextItem);
+        assertEquals(0, item1.getLevel());
+        assertEquals("Welcome to JabberPoint", item1.toString());
+
+        SlideItem item2 = items.get(1);
+        assertTrue(item2 instanceof BitmapItem);
+        assertEquals(1, item2.getLevel());
+        assertEquals("example.png", item2.toString());
+
+        Files.deleteIfExists(tempFile.toPath());
+    }
+
+    // Existing tests below...
+
     @Test
     public void testSaveAndLoadPresentation() throws IOException {
         presentation.setTitle("Test Presentation");
         Slide slide = new Slide();
-        slide.append(new TextItem(0, "Welcome to JabberPoint"));
+        slide.addItem(new TextItem(0, "Welcome to JabberPoint"));
         presentation.addSlide(slide);
 
         File tempFile = File.createTempFile("test_presentation", ".json");
@@ -61,10 +99,6 @@ public class JsonAccessorTest {
         Files.deleteIfExists(tempFile.toPath());
     }
 
-    /**
-     * Test saving and loading an empty presentation.
-     * @throws IOException if file operations fail
-     */
     @Test
     public void testSaveAndLoadEmptyPresentation() throws IOException {
         presentation.setTitle(null);
@@ -81,18 +115,12 @@ public class JsonAccessorTest {
         Files.deleteIfExists(tempFile.toPath());
     }
 
-    /**
-     * Test that loading a non-existent file throws IOException.
-     */
     @Test
     public void testLoadInvalidFileThrowsIOException() {
         Presentation newPresentation = new Presentation();
         assertThrows(IOException.class, () -> accessor.loadFile(newPresentation, "non_existing_file.json"));
     }
 
-    /**
-     * Test that saving to an invalid path throws IOException.
-     */
     @Test
     public void testSavePresentationToInvalidPathThrowsIOException() {
         Presentation newPresentation = new Presentation();

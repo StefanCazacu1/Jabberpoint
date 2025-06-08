@@ -3,24 +3,52 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
 
+/**
+ * Handles keyboard input for slide navigation.
+ */
 public class KeyController extends KeyAdapter {
-	private final Presentation presentation;
 
-<span class="fc" id="L9">	public KeyController(Presentation presentation) {</span>
-<span class="fc" id="L10">		this.presentation = presentation;</span>
-<span class="fc" id="L11">	}</span>
+    /**
+     * The Presentation this controller manipulates.
+     */
+    private final Presentation presentation;
 
-	@Override
-	public void keyPressed(KeyEvent keyEvent) {
-<span class="pc bpc" id="L15" title="2 of 5 branches missed.">		switch (keyEvent.getKeyCode()) {</span>
-<span class="fc" id="L16">			case KeyEvent.VK_PAGE_DOWN, KeyEvent.VK_DOWN, KeyEvent.VK_RIGHT -&gt; presentation.nextSlide();</span>
-<span class="fc" id="L17">			case KeyEvent.VK_PAGE_UP, KeyEvent.VK_UP, KeyEvent.VK_LEFT -&gt; presentation.prevSlide();</span>
-<span class="nc" id="L18">			case KeyEvent.VK_Q -&gt; System.exit(0);</span>
-<span class="fc" id="L19">			case KeyEvent.VK_HOME -&gt; presentation.setSlideNumber(0);</span>
+    /**
+     * Constructs a KeyController for the given Presentation.
+     *
+     * @param presentationParam the Presentation to control
+     */
+<span class="fc" id="L21">    public KeyController(final Presentation presentationParam) {</span>
+<span class="fc" id="L22">        this.presentation = presentationParam;</span>
+<span class="fc" id="L23">    }</span>
 
-			default -&gt; {
-				/* Do nothing */ }
-		}
-<span class="fc" id="L24">	}</span>
+    /**
+     * Handles key press events for slide navigation.
+     *
+     * @param keyEvent the KeyEvent to process
+     */
+    @Override
+    public void keyPressed(final KeyEvent keyEvent) {
+<span class="pc bpc" id="L32" title="1 of 5 branches missed.">        switch (keyEvent.getKeyCode()) {</span>
+            case KeyEvent.VK_PAGE_DOWN:
+            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_RIGHT:
+<span class="fc" id="L36">                presentation.nextSlide();</span>
+<span class="fc" id="L37">                break;</span>
+            case KeyEvent.VK_PAGE_UP:
+            case KeyEvent.VK_UP:
+            case KeyEvent.VK_LEFT:
+<span class="fc" id="L41">                presentation.prevSlide();</span>
+<span class="fc" id="L42">                break;</span>
+            case KeyEvent.VK_Q:
+<span class="nc" id="L44">                System.exit(0);</span>
+<span class="nc" id="L45">                break;</span>
+            case KeyEvent.VK_HOME:
+<span class="fc" id="L47">                presentation.setSlideNumber(0);</span>
+<span class="fc" id="L48">                break;</span>
+            default:
+                // Do nothing
+        }
+<span class="fc" id="L52">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

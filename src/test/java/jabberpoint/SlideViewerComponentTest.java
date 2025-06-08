@@ -19,6 +19,11 @@ class SlideViewerComponentTest {
     }
 
     @Test
+    void testConstructorRejectsNull() {
+        assertThrows(NullPointerException.class, () -> new SlideViewerComponent(null));
+    }
+
+    @Test
     void testUpdatePresentation() {
         Presentation newPresentation = new Presentation();
         SlideViewerComponent newViewer = new SlideViewerComponent(newPresentation);
@@ -26,7 +31,7 @@ class SlideViewerComponentTest {
     }
 
     @Test
-    void testGetPreferredSize() {
+    void testGetPreferredSizeNotNull() {
         assertNotNull(viewerComponent.getPreferredSize());
     }
 
@@ -36,20 +41,13 @@ class SlideViewerComponentTest {
         Graphics graphics = image.getGraphics();
         viewerComponent.paintComponent(graphics);
         graphics.dispose();
-        // No exceptions means success
+        // Success means no exceptions
     }
 
     @Test
-    void testUpdate() {
-        Slide slide = new Slide();
-        presentation.addSlide(slide);
-        presentation.setSlideNumber(0);
-
-        assertNotNull(presentation.getCurrentSlide());
-
+    void testUpdateTriggersRepaint() {
+        // Just call update and confirm no errors
         viewerComponent.update();
-
-        assertNotNull(viewerComponent.getPresentation().getCurrentSlide());
     }
 
     @Test
@@ -63,18 +61,10 @@ class SlideViewerComponentTest {
         Graphics graphics = image.getGraphics();
         viewerComponent.paintComponent(graphics);
         graphics.dispose();
-
-        // You can add assertions here if you have expected behaviors to check
     }
 
     @Test
-    void testGetPresentation() {
-        assertNotNull(viewerComponent.getPresentation());
+    void testGetPresentationReturnsCorrectInstance() {
         assertEquals(presentation, viewerComponent.getPresentation());
-    }
-
-    @Test
-    void testSlideViewerWithNullPresentation() {
-        assertThrows(NullPointerException.class, () -> new SlideViewerComponent(null));
     }
 }

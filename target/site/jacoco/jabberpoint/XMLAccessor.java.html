@@ -1,93 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>XMLAccessor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jabberpoint</a> &gt; <a href="index.source.html" class="el_package">jabberpoint</a> &gt; <span class="el_source">XMLAccessor.java</span></div><h1>XMLAccessor.java</h1><pre class="source lang-java linenums">package jabberpoint;
 
-import org.w3c.dom.*;
-import javax.xml.parsers.*;
-import javax.xml.transform.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
-<span class="fc" id="L11">public class XMLAccessor implements AccessorStrategy {</span>
+/**
+ * Provides methods to load and save Presentations to and from XML files.
+ */
+<span class="fc" id="L21">public final class XMLAccessor implements AccessorStrategy {</span>
 
-	@Override
-	public void loadFile(Presentation presentation, String filename) throws IOException {
-<span class="fc" id="L15">		presentation.clear();</span>
-		try {
-<span class="fc" id="L17">			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();</span>
-<span class="fc" id="L18">			Document document = builder.parse(new File(filename));</span>
-			
-			// Load the title
-<span class="fc" id="L21">			NodeList titleNodes = document.getElementsByTagName(&quot;title&quot;);</span>
-<span class="pc bpc" id="L22" title="1 of 2 branches missed.">			if (titleNodes.getLength() &gt; 0) {</span>
-<span class="fc" id="L23">				String title = titleNodes.item(0).getTextContent();</span>
-<span class="fc" id="L24">				presentation.setTitle(title);</span>
-			}
+    @Override
+    public void loadFile(final Presentation presentation,
+            final String filename) throws IOException {
+        try {
+<span class="fc" id="L27">            presentation.clear();</span>
+<span class="fc" id="L28">            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();</span>
+<span class="fc" id="L29">            DocumentBuilder builder = factory.newDocumentBuilder();</span>
+<span class="fc" id="L30">            Document document = builder.parse(new File(filename));</span>
+<span class="fc" id="L31">            Element root = document.getDocumentElement();</span>
 
-			// Load slides
-<span class="fc" id="L28">			NodeList slideNodes = document.getElementsByTagName(&quot;slide&quot;);</span>
-<span class="fc bfc" id="L29" title="All 2 branches covered.">			for (int i = 0; i &lt; slideNodes.getLength(); i++) {</span>
-<span class="fc" id="L30">				Element slideElement = (Element) slideNodes.item(i);</span>
-<span class="fc" id="L31">				Slide slide = new Slide();</span>
+<span class="fc" id="L33">            String titleAttr = root.getAttribute(&quot;title&quot;);</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">            presentation.setTitle(titleAttr != null ? titleAttr : &quot;&quot;);</span>
 
-<span class="fc" id="L33">				NodeList itemNodes = slideElement.getElementsByTagName(&quot;item&quot;);</span>
-<span class="fc bfc" id="L34" title="All 2 branches covered.">				for (int j = 0; j &lt; itemNodes.getLength(); j++) {</span>
-<span class="fc" id="L35">					Element itemElement = (Element) itemNodes.item(j);</span>
-<span class="fc" id="L36">					String kind = itemElement.getAttribute(&quot;kind&quot;);</span>
-<span class="fc" id="L37">					int level = Integer.parseInt(itemElement.getAttribute(&quot;level&quot;));</span>
-<span class="fc" id="L38">					String content = itemElement.getTextContent();</span>
+<span class="fc" id="L36">            NodeList slides = root.getElementsByTagName(&quot;slide&quot;);</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">            for (int i = 0; i &lt; slides.getLength(); i++) {</span>
+<span class="fc" id="L38">                Element slideElement = (Element) slides.item(i);</span>
+<span class="fc" id="L39">                Slide slide = new Slide();</span>
 
-<span class="pc bpc" id="L40" title="1 of 2 branches missed.">					if (&quot;text&quot;.equals(kind)) {</span>
-<span class="fc" id="L41">						slide.append(new TextItem(level, content));</span>
-					}
-				}
-<span class="fc" id="L44">				presentation.addSlide(slide);</span>
-			}
-<span class="fc" id="L46">		} catch (Exception e) {</span>
-<span class="fc" id="L47">			throw new IOException(&quot;Error loading presentation: &quot; + e.getMessage(), e);</span>
-<span class="fc" id="L48">		}</span>
-<span class="fc" id="L49">	}</span>
+<span class="fc" id="L41">                String slideTitle = slideElement.getAttribute(&quot;title&quot;);</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">                slide.setTitle(slideTitle != null ? slideTitle : &quot;&quot;);</span>
 
-	@Override
-	public void saveFile(Presentation presentation, String filename) throws IOException {
-<span class="fc" id="L53">		File file = new File(filename);</span>
-<span class="pc bpc" id="L54" title="1 of 4 branches missed.">		if (file.getParentFile() != null &amp;&amp; !file.getParentFile().exists()) {</span>
-<span class="fc" id="L55">			throw new IOException(&quot;Directory does not exist: &quot; + file.getParent());</span>
-		}
+<span class="fc" id="L44">                NodeList items = slideElement.getElementsByTagName(&quot;item&quot;);</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">                for (int j = 0; j &lt; items.getLength(); j++) {</span>
+<span class="fc" id="L46">                    Element item = (Element) items.item(j);</span>
+<span class="fc" id="L47">                    int level = Integer.parseInt(item.getAttribute(&quot;level&quot;));</span>
+<span class="fc" id="L48">                    String kind = item.getAttribute(&quot;kind&quot;);</span>
+<span class="fc" id="L49">                    String content = item.getTextContent();</span>
 
-		try {
-<span class="fc" id="L59">			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();</span>
-<span class="fc" id="L60">			Document document = builder.newDocument();</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">                    if (&quot;text&quot;.equals(kind)) {</span>
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">                        slide.addItem(new TextItem(level, content != null ? content : &quot;&quot;));</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">                    } else if (&quot;image&quot;.equals(kind)) {</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">                        slide.addItem(new BitmapItem(level, content != null ? content : &quot;&quot;));</span>
+                    }
+                }
+<span class="fc" id="L57">                presentation.addSlide(slide);</span>
+            }
+<span class="fc" id="L59">        } catch (Exception e) {</span>
+<span class="fc" id="L60">            throw new IOException(&quot;Failed to load XML: &quot; + e.getMessage(), e);</span>
+<span class="fc" id="L61">        }</span>
+<span class="fc" id="L62">    }</span>
 
-<span class="fc" id="L62">			Element root = document.createElement(&quot;presentation&quot;);</span>
-<span class="fc" id="L63">			document.appendChild(root);</span>
+    @Override
+    public void saveFile(final Presentation presentation,
+            final String filename) throws IOException {
+        try {
+<span class="fc" id="L68">            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();</span>
+<span class="fc" id="L69">            DocumentBuilder builder = factory.newDocumentBuilder();</span>
+<span class="fc" id="L70">            Document document = builder.newDocument();</span>
 
-			// Save title
-<span class="fc" id="L66">			Element titleElement = document.createElement(&quot;title&quot;);</span>
-<span class="pc bpc" id="L67" title="1 of 2 branches missed.">			titleElement.setTextContent(presentation.getTitle() != null ? presentation.getTitle() : &quot;&quot;);</span>
-<span class="fc" id="L68">			root.appendChild(titleElement);</span>
+<span class="fc" id="L72">            Element root = document.createElement(&quot;presentation&quot;);</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">            root.setAttribute(&quot;title&quot;, presentation.getTitle() != null ? presentation.getTitle() : &quot;&quot;);</span>
+<span class="fc" id="L74">            document.appendChild(root);</span>
 
-			// Save slides
-<span class="fc bfc" id="L71" title="All 2 branches covered.">			for (Slide slide : presentation.getSlides()) {</span>
-<span class="fc" id="L72">				Element slideElement = document.createElement(&quot;slide&quot;);</span>
-<span class="fc" id="L73">				root.appendChild(slideElement);</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">            for (Slide slide : presentation.getSlides()) {</span>
+<span class="fc" id="L77">                Element slideElement = document.createElement(&quot;slide&quot;);</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">                slideElement.setAttribute(&quot;title&quot;, slide.getTitle() != null ? slide.getTitle() : &quot;&quot;);</span>
+<span class="fc" id="L79">                root.appendChild(slideElement);</span>
 
-<span class="fc bfc" id="L75" title="All 2 branches covered.">				for (SlideItem item : slide.getSlideItems()) {</span>
-<span class="fc" id="L76">					Element itemElement = document.createElement(&quot;item&quot;);</span>
-<span class="pc bpc" id="L77" title="1 of 2 branches missed.">					itemElement.setAttribute(&quot;kind&quot;, item instanceof TextItem ? &quot;text&quot; : &quot;unknown&quot;);</span>
-<span class="fc" id="L78">					itemElement.setAttribute(&quot;level&quot;, Integer.toString(item.getLevel()));</span>
-<span class="fc" id="L79">					itemElement.setTextContent(item.toString());</span>
-<span class="fc" id="L80">					slideElement.appendChild(itemElement);</span>
-<span class="fc" id="L81">				}</span>
-<span class="fc" id="L82">			}</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">                for (SlideItem item : slide.getSlideItems()) {</span>
+<span class="fc" id="L82">                    Element itemElement = document.createElement(&quot;item&quot;);</span>
+<span class="fc" id="L83">                    itemElement.setAttribute(&quot;level&quot;, String.valueOf(item.getLevel()));</span>
 
-<span class="fc" id="L84">			Transformer transformer = TransformerFactory.newInstance().newTransformer();</span>
-<span class="fc" id="L85">			transformer.setOutputProperty(OutputKeys.INDENT, &quot;yes&quot;);</span>
-<span class="fc" id="L86">			transformer.transform(new DOMSource(document), new StreamResult(file));</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">                    if (item instanceof TextItem) {</span>
+<span class="fc" id="L86">                        itemElement.setAttribute(&quot;kind&quot;, &quot;text&quot;);</span>
+<span class="fc" id="L87">                        String textContent = ((TextItem) item).getText();</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">                        itemElement.setTextContent(textContent != null ? textContent : &quot;&quot;);</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">                    } else if (item instanceof BitmapItem) {</span>
+<span class="fc" id="L90">                        itemElement.setAttribute(&quot;kind&quot;, &quot;image&quot;);</span>
+<span class="fc" id="L91">                        String name = ((BitmapItem) item).getName();</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">                        itemElement.setTextContent(name != null ? name : &quot;&quot;);</span>
+                    }
+<span class="fc" id="L94">                    slideElement.appendChild(itemElement);</span>
+<span class="fc" id="L95">                }</span>
+<span class="fc" id="L96">            }</span>
 
-<span class="nc" id="L88">		} catch (ParserConfigurationException | TransformerException e) {</span>
-<span class="nc" id="L89">			throw new IOException(&quot;Error saving presentation: &quot; + e.getMessage(), e);</span>
-<span class="fc" id="L90">		}</span>
-<span class="fc" id="L91">	}</span>
+<span class="fc" id="L98">            TransformerFactory tf = TransformerFactory.newInstance();</span>
+<span class="fc" id="L99">            Transformer transformer = tf.newTransformer();</span>
+<span class="fc" id="L100">            transformer.setOutputProperty(OutputKeys.INDENT, &quot;yes&quot;);</span>
+<span class="fc" id="L101">            transformer.setOutputProperty(&quot;{http://xml.apache.org/xslt}indent-amount&quot;, &quot;2&quot;);</span>
+
+<span class="fc" id="L103">            DOMSource source = new DOMSource(document);</span>
+<span class="fc" id="L104">            FileOutputStream fos = new FileOutputStream(filename);</span>
+<span class="fc" id="L105">            StreamResult result = new StreamResult(fos);</span>
+<span class="fc" id="L106">            transformer.transform(source, result);</span>
+<span class="fc" id="L107">            fos.close();</span>
+<span class="fc" id="L108">        } catch (Exception e) {</span>
+<span class="fc" id="L109">            throw new IOException(&quot;Failed to save XML: &quot; + e.getMessage(), e);</span>
+<span class="fc" id="L110">        }</span>
+<span class="fc" id="L111">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

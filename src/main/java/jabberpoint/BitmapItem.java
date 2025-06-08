@@ -116,4 +116,10 @@ public class BitmapItem extends SlideItem {
         }
         return new Rectangle(0, 0, 0, 0);
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
+
 }

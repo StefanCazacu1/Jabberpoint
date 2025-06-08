@@ -12,13 +12,6 @@ import java.io.IOException;
  */
 public class JsonAccessor implements AccessorStrategy {
 
-    /**
-     * Loads a Presentation from a JSON file.
-     *
-     * @param presentation the Presentation to populate
-     * @param filename     the JSON filename
-     * @throws IOException if an error occurs while reading
-     */
     @Override
     public void loadFile(final Presentation presentation, final String filename)
             throws IOException {
@@ -45,9 +38,10 @@ public class JsonAccessor implements AccessorStrategy {
                         String content = itemNode.get("content").asText();
 
                         if ("text".equals(kind)) {
-                            slide.append(new TextItem(level, content));
+                            slide.addItem(new TextItem(level, content));
+                        } else if ("image".equals(kind)) {
+                            slide.addItem(new BitmapItem(level, content));
                         }
-                        // Optionally: add support for images, etc.
                     }
                 }
                 presentation.addSlide(slide);
@@ -55,13 +49,6 @@ public class JsonAccessor implements AccessorStrategy {
         }
     }
 
-    /**
-     * Saves a Presentation to a JSON file.
-     *
-     * @param presentation the Presentation to save
-     * @param filename     the JSON filename
-     * @throws IOException if an error occurs while writing
-     */
     @Override
     public void saveFile(final Presentation presentation, final String filename)
             throws IOException {
@@ -80,10 +67,17 @@ public class JsonAccessor implements AccessorStrategy {
 
             for (SlideItem item : slide.getSlideItems()) {
                 ObjectNode itemNode = mapper.createObjectNode();
-                itemNode.put("kind",
-                        item instanceof TextItem ? "text" : "unknown");
+                if (item instanceof TextItem) {
+                    itemNode.put("kind", "text");
+                    itemNode.put("content", ((TextItem) item).getText());
+                } else if (item instanceof BitmapItem) {
+                    itemNode.put("kind", "image");
+                    itemNode.put("content", ((BitmapItem) item).getName());
+                } else {
+                    itemNode.put("kind", "unknown");
+                    itemNode.put("content", item.toString());
+                }
                 itemNode.put("level", item.getLevel());
-                itemNode.put("content", item.toString());
                 itemsArray.add(itemNode);
             }
 

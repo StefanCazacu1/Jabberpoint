@@ -6,7 +6,7 @@ import java.awt.Frame;
 /**
  * The main application window (Frame) that shows the presentation.
  */
-public class SlideViewerFrame extends Frame {
+public class SlideViewerFrame extends Frame implements Observer {
     private static final long serialVersionUID = 1L;
 
     /** Default window title. */
@@ -34,6 +34,9 @@ public class SlideViewerFrame extends Frame {
         super(title);
         this.presentation = presentationParam;
 
+        // Register this frame as an observer to presentation
+        this.presentation.addObserver(this);
+
         slideViewerComponent = new SlideViewerComponent(this.presentation);
         this.presentation.addObserver(slideViewerComponent);
 
@@ -55,6 +58,29 @@ public class SlideViewerFrame extends Frame {
         add(slideViewerComponent, BorderLayout.CENTER);
     }
 
+    /**
+     * Called when the observed Presentation updates.
+     * Updates the window title with current slide info.
+     */
+    @Override
+    public void update() {
+        int slideNumber = presentation.getSlideNumber();
+        int totalSlides = presentation.getSize();
+        if (slideNumber >= 0 && totalSlides > 0) {
+            updateTitleWithSlideNumber(slideNumber, totalSlides);
+        } else {
+            setTitle(JABTITLE);
+        }
+    }
+
+    /**
+     * Updates the window title with slide number and total slides.
+     * @param slideNumber current slide index
+     * @param totalSlides total number of slides
+     */
+    public void updateTitleWithSlideNumber(int slideNumber, int totalSlides) {
+        setTitle("JabberPoint 1.0 - OU  Slide " + (slideNumber + 1) + " of " + totalSlides);
+    }
 
     /**
      * Returns the SlideViewerComponent.

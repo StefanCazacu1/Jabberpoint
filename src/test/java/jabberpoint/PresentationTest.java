@@ -146,4 +146,36 @@ class PresentationTest {
         assertNull(presentation.getSlide(5), "Should return null for index greater than size");
         assertNull(presentation.getSlide(2), "Should return null for index equal to size");
     }
+
+    // New tests for notification optimization and observer notifications
+
+    @Test
+    void setTitleSameValueDoesNotNotify() {
+        presentation.setTitle("Title");
+        observer.reset();
+        presentation.setTitle("Title"); // Same title again
+        assertFalse(observer.wasUpdated());
+    }
+
+    @Test
+    void setSlideNumberSameValueDoesNotNotify() {
+        presentation.setSlideNumber(1);
+        observer.reset();
+        presentation.setSlideNumber(1); // Same slide number again
+        assertFalse(observer.wasUpdated());
+    }
+
+    @Test
+    void clearShouldNotifyObservers() {
+        observer.reset();
+        presentation.clear();
+        assertTrue(observer.wasUpdated());
+    }
+
+    @Test
+    void addSlideShouldNotifyObservers() {
+        observer.reset();
+        presentation.addSlide(new Slide());
+        assertTrue(observer.wasUpdated());
+    }
 }
