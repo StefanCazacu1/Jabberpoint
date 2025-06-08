@@ -74,14 +74,14 @@ public final class XMLAccessor implements AccessorStrategy {
             Document document = builder.newDocument();
 
             Element root = document.createElement("presentation");
-            root.setAttribute("title", presentation.getTitle() !=
-                    null ? presentation.getTitle() : "");
+            root.setAttribute("title", presentation.getTitle()
+                    != null ? presentation.getTitle() : "");
             document.appendChild(root);
 
             for (Slide slide : presentation.getSlides()) {
                 Element slideElement = document.createElement("slide");
-                slideElement.setAttribute("title", slide.getTitle() !=
-                        null ? slide.getTitle() : "");
+                slideElement.setAttribute("title", slide.getTitle()
+                        != null ? slide.getTitle() : "");
                 root.appendChild(slideElement);
 
                 for (SlideItem item : slide.getSlideItems()) {
@@ -92,8 +92,8 @@ public final class XMLAccessor implements AccessorStrategy {
                     if (item instanceof TextItem) {
                         itemElement.setAttribute("kind", "text");
                         String textContent = ((TextItem) item).getText();
-                        itemElement.setTextContent(textContent !=
-                                null ? textContent : "");
+                        itemElement.setTextContent(textContent
+                                != null ? textContent : "");
                     } else if (item instanceof BitmapItem) {
                         itemElement.setAttribute("kind", "image");
                         String name = ((BitmapItem) item).getName();

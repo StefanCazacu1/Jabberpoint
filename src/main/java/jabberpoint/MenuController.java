@@ -204,7 +204,8 @@ public class MenuController extends MenuBar {
                 JOptionPane.PLAIN_MESSAGE);
         if (text != null && !text.trim().isEmpty()) {
             Slide currentSlide = presentation.getSlide(currentIndex);
-            SlideItem textItem = new TextItem(1, text.trim()); // Default level 1
+            SlideItem textItem = new TextItem(1,
+                    text.trim()); // Default level 1
             currentSlide.addItem(textItem);
             // Notify observers after modification
             presentation.notifyPresentationChanged();
@@ -226,7 +227,8 @@ public class MenuController extends MenuBar {
                 JOptionPane.PLAIN_MESSAGE);
         if (imagePath != null && !imagePath.trim().isEmpty()) {
             Slide currentSlide = presentation.getSlide(currentIndex);
-            SlideItem imageItem = new BitmapItem(1, imagePath.trim()); // Default level 1
+            SlideItem imageItem = new BitmapItem(1,
+                    imagePath.trim()); // Default level 1
             currentSlide.addItem(imageItem);
             presentation.notifyPresentationChanged();
         }

@@ -75,11 +75,13 @@ public class SlideViewerFrame extends Frame implements Observer {
 
     /**
      * Updates the window title with slide number and total slides.
-     * @param slideNumber current slide index
-     * @param totalSlides total number of slides
+     * @param slideNumber final current slide index
+     * @param totalSlides final total number of slides
      */
-    public void updateTitleWithSlideNumber(int slideNumber, int totalSlides) {
-        setTitle("JabberPoint 1.0 - OU  Slide " + (slideNumber + 1) + " of " + totalSlides);
+    public void updateTitleWithSlideNumber(final int slideNumber,
+            final int totalSlides) {
+        setTitle("JabberPoint 1.0 - OU  Slide " + (slideNumber + 1)
+                + " of " + totalSlides);
     }
 
     /**

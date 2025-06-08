@@ -109,7 +109,7 @@ public class Presentation {
 
     /**
      * Public method to notify observers that presentation content changed.
-     * Call this after internal modifications that do not change slide number or title.
+     * Call after internal modifications that do not change slide number/title.
      */
     public void notifyPresentationChanged() {
         setChanged();
