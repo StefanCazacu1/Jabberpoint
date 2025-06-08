@@ -14,10 +14,10 @@ public class SlideViewerComponent extends JPanel implements Observer {
     /** The Presentation this component observes and displays. */
     private final Presentation presentationRef;
 
-    // Padding for slide Y coordinate
+    /** Padding in pixels for slide Y coordinate when drawing. */
     private static final int SLIDE_Y_OFFSET = 10;
 
-    // Alpha value for translucent background behind slide number
+    /** Transparency value for translucent background behind slide number */
     private static final int BG_ALPHA = 150;
 
     /**

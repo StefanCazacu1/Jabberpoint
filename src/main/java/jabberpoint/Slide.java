@@ -107,7 +107,7 @@ public class Slide extends SlideItem {
 
     /**
      * Draws all child SlideItems on the slide.
-     * Each item is drawn vertically stacked with spacing based on bounding boxes.
+     * Each item drawn vertically stacked with space based on bounding boxes.
      *
      * @param g the Graphics context to draw on
      * @param observer the ImageObserver to notify for image updates
