@@ -23,6 +23,9 @@ public class Presentation {
     /** Accessor to load/save presentations in various formats. */
     private final Accessor accessor;
 
+    /** Flag to indicate if state changed to control notifications. */
+    private boolean changed;
+
     /**
      * Constructs a new Presentation.
      */
@@ -40,6 +43,7 @@ public class Presentation {
         slides.clear();
         setTitle("");
         setSlideNumber(-1);
+        setChanged();
         notifyObservers();
     }
 
@@ -47,25 +51,69 @@ public class Presentation {
      * Adds an observer to the presentation.
      * @param observer the observer to add
      */
-    public void addObserver(final Observer observer) {
-        observers.add(observer);
+    public synchronized void addObserver(final Observer observer) {
+        if (observer == null) {
+            throw new NullPointerException();
+        }
+        if (!observers.contains(observer)) {
+            observers.add(observer);
+        }
     }
 
     /**
      * Removes an observer from the presentation.
      * @param observer the observer to remove
      */
-    public void removeObserver(final Observer observer) {
+    public synchronized void removeObserver(final Observer observer) {
         observers.remove(observer);
     }
 
     /**
-     * Notifies all observers about changes.
+     * Marks the state as changed.
+     */
+    private synchronized void setChanged() {
+        changed = true;
+    }
+
+    /**
+     * Clears the changed flag.
+     */
+    private synchronized void clearChanged() {
+        changed = false;
+    }
+
+    /**
+     * Checks if the state has changed.
+     * @return true if changed, false otherwise
+     */
+    private synchronized boolean hasChanged() {
+        return changed;
+    }
+
+    /**
+     * Notifies all observers if state has changed.
      */
     private void notifyObservers() {
-        for (Observer observer : observers) {
+        List<Observer> observersLocal;
+        synchronized (this) {
+            if (!hasChanged()) {
+                return;
+            }
+            observersLocal = new ArrayList<>(observers);
+            clearChanged();
+        }
+        for (Observer observer : observersLocal) {
             observer.update();
         }
+    }
+
+    /**
+     * Public method to notify observers that presentation content changed.
+     * Call after internal modifications that do not change slide number/title.
+     */
+    public void notifyPresentationChanged() {
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -89,8 +137,15 @@ public class Presentation {
      * @param newTitle the new title
      */
     public void setTitle(final String newTitle) {
-        this.title = newTitle;
-        notifyObservers();
+        String titleToSet = newTitle;
+        if (titleToSet == null) {
+            titleToSet = "";
+        }
+        if (!titleToSet.equals(this.title)) {
+            this.title = titleToSet;
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
@@ -99,6 +154,7 @@ public class Presentation {
      */
     public void addSlide(final Slide slide) {
         slides.add(slide);
+        setChanged();
         notifyObservers();
     }
 
@@ -127,8 +183,11 @@ public class Presentation {
      * @param number the new slide index
      */
     public void setSlideNumber(final int number) {
-        this.currentSlideNumber = number;
-        notifyObservers();
+        if (this.currentSlideNumber != number) {
+            this.currentSlideNumber = number;
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
@@ -136,8 +195,7 @@ public class Presentation {
      * @return the current slide, or null if invalid index
      */
     public Slide getCurrentSlide() {
-        if (currentSlideNumber < 0
-                || currentSlideNumber >= slides.size()) {
+        if (currentSlideNumber < 0 || currentSlideNumber >= slides.size()) {
             return null;
         }
         return slides.get(currentSlideNumber);
@@ -176,6 +234,7 @@ public class Presentation {
         }
         accessor.load(this, filename);
         setSlideNumber(0);
+        setChanged();
         notifyObservers();
     }
 

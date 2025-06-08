@@ -43,4 +43,28 @@ class KeyControllerTest {
         verify(presentation, times(1)).setSlideNumber(0);
     }
 
+    @Test
+    void testNextSlideOnPageDown() {
+        KeyEvent event = new KeyEvent(new java.awt.Button(), KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0,
+                KeyEvent.VK_PAGE_DOWN, KeyEvent.CHAR_UNDEFINED);
+        keyController.keyPressed(event);
+        verify(presentation, times(1)).nextSlide();
+    }
+
+    @Test
+    void testPrevSlideOnPageUp() {
+        KeyEvent event = new KeyEvent(new java.awt.Button(), KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0,
+                KeyEvent.VK_PAGE_UP, KeyEvent.CHAR_UNDEFINED);
+        keyController.keyPressed(event);
+        verify(presentation, times(1)).prevSlide();
+    }
+
+    @Test
+    void testNoActionOnOtherKeys() {
+        KeyEvent event = new KeyEvent(new java.awt.Button(), KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0,
+                KeyEvent.VK_A, KeyEvent.CHAR_UNDEFINED);
+        keyController.keyPressed(event);
+        verifyNoInteractions(presentation);
+    }
+
 }

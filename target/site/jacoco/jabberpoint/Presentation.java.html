@@ -4,121 +4,256 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Presentation class manages slides and observers for JabberPoint.
+ */
 public class Presentation {
-	private String title;
-	private List&lt;Slide&gt; slides;
-	private int currentSlideNumber;
-	private List&lt;Observer&gt; observers;
-	private Accessor accessor;
+    /** The title of the presentation. */
+    private String title;
 
-<span class="fc" id="L14">	public Presentation() {</span>
-<span class="fc" id="L15">		slides = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L16">		observers = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L17">		accessor = new Accessor();</span>
-<span class="fc" id="L18">		clear();</span>
-<span class="fc" id="L19">	}</span>
+    /** List of slides in the presentation. */
+    private final List&lt;Slide&gt; slides;
 
-	public void clear() {
-<span class="fc" id="L22">		slides.clear();</span>
-<span class="fc" id="L23">		setTitle(&quot;&quot;);</span>
-<span class="fc" id="L24">		setSlideNumber(-1);</span>
-<span class="fc" id="L25">		notifyObservers();</span>
-<span class="fc" id="L26">	}</span>
+    /** The index of the current slide. */
+    private int currentSlideNumber;
 
-	public void addObserver(Observer observer) {
-<span class="fc" id="L29">		observers.add(observer);</span>
-<span class="fc" id="L30">	}</span>
+    /** List of observers monitoring changes. */
+    private final List&lt;Observer&gt; observers;
 
-	public void removeObserver(Observer observer) {
-<span class="fc" id="L33">		observers.remove(observer);</span>
-<span class="fc" id="L34">	}</span>
+    /** Accessor to load/save presentations in various formats. */
+    private final Accessor accessor;
 
-	private void notifyObservers() {
-<span class="fc bfc" id="L37" title="All 2 branches covered.">		for (Observer observer : observers) {</span>
-<span class="fc" id="L38">			observer.update();</span>
-<span class="fc" id="L39">		}</span>
-<span class="fc" id="L40">	}</span>
+    /** Flag to indicate if state changed to control notifications. */
+    private boolean changed;
 
-	public int getSize() {
-<span class="fc" id="L43">		return slides.size();</span>
-	}
+    /**
+     * Constructs a new Presentation.
+     */
+<span class="fc" id="L32">    public Presentation() {</span>
+<span class="fc" id="L33">        slides = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L34">        observers = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L35">        accessor = new Accessor();</span>
+<span class="fc" id="L36">        clear();</span>
+<span class="fc" id="L37">    }</span>
 
-	public String getTitle() {
-<span class="fc" id="L47">		return title;</span>
-	}
+    /**
+     * Clears the presentation, removing all slides and resetting the title.
+     */
+    public void clear() {
+<span class="fc" id="L43">        slides.clear();</span>
+<span class="fc" id="L44">        setTitle(&quot;&quot;);</span>
+<span class="fc" id="L45">        setSlideNumber(-1);</span>
+<span class="fc" id="L46">        setChanged();</span>
+<span class="fc" id="L47">        notifyObservers();</span>
+<span class="fc" id="L48">    }</span>
 
-	public void setTitle(String title) {
-<span class="fc" id="L51">		this.title = title;</span>
-<span class="fc" id="L52">		notifyObservers();</span>
-<span class="fc" id="L53">	}</span>
+    /**
+     * Adds an observer to the presentation.
+     * @param observer the observer to add
+     */
+    public synchronized void addObserver(final Observer observer) {
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">        if (observer == null) throw new NullPointerException();</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (!observers.contains(observer)) {</span>
+<span class="fc" id="L57">            observers.add(observer);</span>
+        }
+<span class="fc" id="L59">    }</span>
 
-	public void addSlide(Slide slide) {
-<span class="fc" id="L56">		slides.add(slide);</span>
-<span class="fc" id="L57">		notifyObservers();</span>
-<span class="fc" id="L58">	}</span>
+    /**
+     * Removes an observer from the presentation.
+     * @param observer the observer to remove
+     */
+    public synchronized void removeObserver(final Observer observer) {
+<span class="fc" id="L66">        observers.remove(observer);</span>
+<span class="fc" id="L67">    }</span>
 
-	public Slide getSlide(int number) {
-<span class="fc bfc" id="L61" title="All 4 branches covered.">		if (number &lt; 0 || number &gt;= getSize()) {</span>
-<span class="fc" id="L62">			return null;</span>
-		}
-<span class="fc" id="L64">		return slides.get(number);</span>
-	}
+    /**
+     * Marks the state as changed.
+     */
+    private synchronized void setChanged() {
+<span class="fc" id="L73">        changed = true;</span>
+<span class="fc" id="L74">    }</span>
 
-	public int getSlideNumber() {
-<span class="fc" id="L68">		return currentSlideNumber;</span>
-	}
+    /**
+     * Clears the changed flag.
+     */
+    private synchronized void clearChanged() {
+<span class="fc" id="L80">        changed = false;</span>
+<span class="fc" id="L81">    }</span>
 
-	public void setSlideNumber(int number) {
-<span class="fc" id="L72">		this.currentSlideNumber = number;</span>
-<span class="fc" id="L73">		notifyObservers();</span>
-<span class="fc" id="L74">	}</span>
+    /**
+     * Checks if the state has changed.
+     * @return true if changed, false otherwise
+     */
+    private synchronized boolean hasChanged() {
+<span class="fc" id="L88">        return changed;</span>
+    }
 
-	public Slide getCurrentSlide() {
-<span class="pc bpc" id="L77" title="1 of 4 branches missed.">		if (currentSlideNumber &lt; 0 || currentSlideNumber &gt;= slides.size()) {</span>
-<span class="fc" id="L78">			return null;</span>
-		}
-<span class="fc" id="L80">		return slides.get(currentSlideNumber);</span>
-	}
+    /**
+     * Notifies all observers if state has changed.
+     */
+    private void notifyObservers() {
+        List&lt;Observer&gt; observersLocal;
+<span class="fc" id="L96">        synchronized (this) {</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">            if (!hasChanged()) return;</span>
+<span class="fc" id="L98">            observersLocal = new ArrayList&lt;&gt;(observers);</span>
+<span class="fc" id="L99">            clearChanged();</span>
+<span class="fc" id="L100">        }</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        for (Observer observer : observersLocal) {</span>
+<span class="fc" id="L102">            observer.update();</span>
+<span class="fc" id="L103">        }</span>
+<span class="fc" id="L104">    }</span>
 
-	public void nextSlide() {
-<span class="fc bfc" id="L84" title="All 2 branches covered.">		if (currentSlideNumber &lt; slides.size() - 1) {</span>
-<span class="fc" id="L85">			setSlideNumber(currentSlideNumber + 1);</span>
-		}
-<span class="fc" id="L87">	}</span>
+    /**
+     * Public method to notify observers that presentation content changed.
+     * Call this after internal modifications that do not change slide number or title.
+     */
+    public void notifyPresentationChanged() {
+<span class="nc" id="L111">        setChanged();</span>
+<span class="nc" id="L112">        notifyObservers();</span>
+<span class="nc" id="L113">    }</span>
 
-	public void prevSlide() {
-<span class="fc bfc" id="L90" title="All 2 branches covered.">		if (currentSlideNumber &gt; 0) {</span>
-<span class="fc" id="L91">			setSlideNumber(currentSlideNumber - 1);</span>
-		}
-<span class="fc" id="L93">	}</span>
+    /**
+     * Gets the number of slides.
+     * @return the number of slides
+     */
+    public int getSize() {
+<span class="fc" id="L120">        return slides.size();</span>
+    }
 
-	public void load(String filename) throws IOException {
-<span class="pc bpc" id="L96" title="1 of 2 branches missed.">		if (filename.endsWith(&quot;.xml&quot;)) {</span>
-<span class="nc" id="L97">			accessor.setStrategy(new XMLAccessor());</span>
-<span class="pc bpc" id="L98" title="1 of 2 branches missed.">		} else if (filename.endsWith(&quot;.json&quot;)) {</span>
-<span class="nc" id="L99">			accessor.setStrategy(new JsonAccessor());</span>
-		} else {
-<span class="fc" id="L101">			throw new IOException(&quot;Unsupported file type&quot;);</span>
-		}
-<span class="nc" id="L103">		accessor.load(this, filename);</span>
-<span class="nc" id="L104">		setSlideNumber(0);</span>
-<span class="nc" id="L105">		notifyObservers();</span>
-<span class="nc" id="L106">	}</span>
+    /**
+     * Gets the presentation title.
+     * @return the title
+     */
+    public String getTitle() {
+<span class="fc" id="L128">        return title;</span>
+    }
 
-	public void save(String filename) throws IOException {
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (filename.endsWith(&quot;.xml&quot;)) {</span>
-<span class="nc" id="L110">			accessor.setStrategy(new XMLAccessor());</span>
-<span class="pc bpc" id="L111" title="1 of 2 branches missed.">		} else if (filename.endsWith(&quot;.json&quot;)) {</span>
-<span class="nc" id="L112">			accessor.setStrategy(new JsonAccessor());</span>
-		} else {
-<span class="fc" id="L114">			throw new IOException(&quot;Unsupported file type&quot;);</span>
-		}
-<span class="nc" id="L116">		accessor.save(this, filename);</span>
-<span class="nc" id="L117">	}</span>
+    /**
+     * Sets the presentation title.
+     * @param newTitle the new title
+     */
+    public void setTitle(final String newTitle) {
+<span class="fc" id="L136">        String titleToSet = newTitle;</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">        if (titleToSet == null) titleToSet = &quot;&quot;;</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">        if (!titleToSet.equals(this.title)) {</span>
+<span class="fc" id="L139">            this.title = titleToSet;</span>
+<span class="fc" id="L140">            setChanged();</span>
+<span class="fc" id="L141">            notifyObservers();</span>
+        }
+<span class="fc" id="L143">    }</span>
 
-	public List&lt;Slide&gt; getSlides() {
-<span class="fc" id="L120">		return slides;</span>
-	}
+    /**
+     * Adds a slide to the presentation.
+     * @param slide the slide to add
+     */
+    public void addSlide(final Slide slide) {
+<span class="fc" id="L150">        slides.add(slide);</span>
+<span class="fc" id="L151">        setChanged();</span>
+<span class="fc" id="L152">        notifyObservers();</span>
+<span class="fc" id="L153">    }</span>
 
+    /**
+     * Gets a slide by its index.
+     * @param number the slide index
+     * @return the slide, or null if index is invalid
+     */
+    public Slide getSlide(final int number) {
+<span class="fc bfc" id="L161" title="All 4 branches covered.">        if (number &lt; 0 || number &gt;= getSize()) {</span>
+<span class="fc" id="L162">            return null;</span>
+        }
+<span class="fc" id="L164">        return slides.get(number);</span>
+    }
+
+    /**
+     * Gets the current slide number.
+     * @return the current slide index
+     */
+    public int getSlideNumber() {
+<span class="fc" id="L172">        return currentSlideNumber;</span>
+    }
+
+    /**
+     * Sets the current slide number.
+     * @param number the new slide index
+     */
+    public void setSlideNumber(final int number) {
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        if (this.currentSlideNumber != number) {</span>
+<span class="fc" id="L181">            this.currentSlideNumber = number;</span>
+<span class="fc" id="L182">            setChanged();</span>
+<span class="fc" id="L183">            notifyObservers();</span>
+        }
+<span class="fc" id="L185">    }</span>
+
+    /**
+     * Gets the current slide.
+     * @return the current slide, or null if invalid index
+     */
+    public Slide getCurrentSlide() {
+<span class="pc bpc" id="L192" title="1 of 4 branches missed.">        if (currentSlideNumber &lt; 0 || currentSlideNumber &gt;= slides.size()) {</span>
+<span class="fc" id="L193">            return null;</span>
+        }
+<span class="fc" id="L195">        return slides.get(currentSlideNumber);</span>
+    }
+
+    /**
+     * Advances to the next slide.
+     */
+    public void nextSlide() {
+<span class="fc bfc" id="L202" title="All 2 branches covered.">        if (currentSlideNumber &lt; slides.size() - 1) {</span>
+<span class="fc" id="L203">            setSlideNumber(currentSlideNumber + 1);</span>
+        }
+<span class="fc" id="L205">    }</span>
+
+    /**
+     * Goes back to the previous slide.
+     */
+    public void prevSlide() {
+<span class="fc bfc" id="L211" title="All 2 branches covered.">        if (currentSlideNumber &gt; 0) {</span>
+<span class="fc" id="L212">            setSlideNumber(currentSlideNumber - 1);</span>
+        }
+<span class="fc" id="L214">    }</span>
+
+    /**
+     * Loads a presentation from a file (XML or JSON).
+     * @param filename the file to load from
+     * @throws IOException if an error occurs
+     */
+    public void load(final String filename) throws IOException {
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">        if (filename.endsWith(&quot;.xml&quot;)) {</span>
+<span class="nc" id="L223">            accessor.setStrategy(new XMLAccessor());</span>
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">        } else if (filename.endsWith(&quot;.json&quot;)) {</span>
+<span class="nc" id="L225">            accessor.setStrategy(new JsonAccessor());</span>
+        } else {
+<span class="fc" id="L227">            throw new IOException(&quot;Unsupported file type&quot;);</span>
+        }
+<span class="nc" id="L229">        accessor.load(this, filename);</span>
+<span class="nc" id="L230">        setSlideNumber(0);</span>
+<span class="nc" id="L231">        setChanged();</span>
+<span class="nc" id="L232">        notifyObservers();</span>
+<span class="nc" id="L233">    }</span>
+
+    /**
+     * Saves a presentation to a file (XML or JSON).
+     * @param filename the file to save to
+     * @throws IOException if an error occurs
+     */
+    public void save(final String filename) throws IOException {
+<span class="pc bpc" id="L241" title="1 of 2 branches missed.">        if (filename.endsWith(&quot;.xml&quot;)) {</span>
+<span class="nc" id="L242">            accessor.setStrategy(new XMLAccessor());</span>
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">        } else if (filename.endsWith(&quot;.json&quot;)) {</span>
+<span class="nc" id="L244">            accessor.setStrategy(new JsonAccessor());</span>
+        } else {
+<span class="fc" id="L246">            throw new IOException(&quot;Unsupported file type&quot;);</span>
+        }
+<span class="nc" id="L248">        accessor.save(this, filename);</span>
+<span class="nc" id="L249">    }</span>
+
+    /**
+     * Gets all slides as a list.
+     * @return the slides
+     */
+    public List&lt;Slide&gt; getSlides() {
+<span class="fc" id="L256">        return slides;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
