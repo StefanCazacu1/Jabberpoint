@@ -3,70 +3,172 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 
-public class Style {
-	private static Style[] styles;
+/** Style represents the style for slide items. */
+public final class Style {
+    /** Default font name. */
+    public static final String DEFAULT_FONT_NAME = &quot;Helvetica&quot;;
 
-	static {
-<span class="fc" id="L12">		styles = new Style[5];</span>
-<span class="fc" id="L13">		styles[0] = new Style(32, 20, 30, Color.red); // Level 0</span>
-<span class="fc" id="L14">		styles[1] = new Style(28, 18, 30, Color.blue); // Level 1</span>
-<span class="fc" id="L15">		styles[2] = new Style(24, 16, 30, Color.black); // Level 2</span>
-<span class="fc" id="L16">		styles[3] = new Style(24, 14, 30, Color.gray); // Level 3</span>
-<span class="fc" id="L17">		styles[4] = new Style(24, 12, 30, Color.darkGray); // Level 4</span>
-<span class="fc" id="L18">	}</span>
+    /** Level 0 font size. */
+    public static final int LEVEL0_FONT_SIZE = 32;
+    /** Level 1 font size. */
+    public static final int LEVEL1_FONT_SIZE = 28;
+    /** Level 2 font size. */
+    public static final int LEVEL2_FONT_SIZE = 24;
+    /** Level 3 font size. */
+    public static final int LEVEL3_FONT_SIZE = 20;
 
-	private int fontSize;
-	private int leading;
-	private int indent;
-	private Color color; 
+    /** Default color for level 0. */
+<span class="fc" id="L22">    public static final Color DEFAULT_COLOR = Color.BLACK;</span>
 
-<span class="fc" id="L25">	public Style(int fontSize, int leading, int indent, Color color) {</span>
-<span class="fc" id="L26">		this.fontSize = fontSize;</span>
-<span class="fc" id="L27">		this.leading = leading;</span>
-<span class="fc" id="L28">		this.indent = indent;</span>
-<span class="fc" id="L29">		this.color = color;</span>
-<span class="fc" id="L30">	}</span>
+    /** Default indent value in pixels. */
+    public static final int DEFAULT_INDENT = 30;
 
-	public static Style getStyle(int level) {
-<span class="pc bpc" id="L33" title="2 of 4 branches missed.">		if (level &gt;= 0 &amp;&amp; level &lt; styles.length) {</span>
-<span class="fc" id="L34">			return styles[level];</span>
-		}
-<span class="nc" id="L36">		return styles[styles.length - 1]; // Return last style if level too big</span>
-	}
+    /** Default leading (line spacing) for level 0. */
+    public static final int DEFAULT_LEADING = 20;
 
-	public Font getFont(float scale) {
-<span class="fc" id="L40">		return new Font(&quot;Helvetica&quot;, Font.PLAIN, Math.round(fontSize * scale));</span>
-	}
+    /** Leading (line spacing) for level 1. */
+    public static final int LEVEL1_LEADING = 18;
 
-	public int getIndent() {
-<span class="fc" id="L44">		return indent;</span>
-	}
+    /** Leading (line spacing) for level 2. */
+    public static final int LEVEL2_LEADING = 16;
 
-	public int getLeading() {
-<span class="fc" id="L48">		return leading;</span>
-	}
+    /** Leading (line spacing) for level 3. */
+    public static final int LEVEL3_LEADING = 14;
 
-	public Color getColor() {
-<span class="fc" id="L52">		return color;</span>
-	}
+    /** Color for level 1 items. */
+<span class="fc" id="L40">    public static final Color LEVEL1_COLOR = Color.BLUE;</span>
 
-	public Rectangle getBoundingBox(Graphics g, String text, float scale) {
-<span class="fc" id="L56">		Font font = getFont(scale);</span>
-<span class="fc" id="L57">		g.setFont(font);</span>
-<span class="fc" id="L58">		int width = g.getFontMetrics().stringWidth(text);</span>
-<span class="fc" id="L59">		int height = g.getFontMetrics().getHeight();</span>
-<span class="fc" id="L60">		return new Rectangle(0, 0, width, height);</span>
-	}
+    /** Color for level 2 items. */
+<span class="fc" id="L43">    public static final Color LEVEL2_COLOR = Color.DARK_GRAY;</span>
 
-	public void drawString(Graphics g, String text, int x, int y, float scale) {
-<span class="nc bnc" id="L64" title="All 4 branches missed.">		if (text == null || text.isEmpty())</span>
-<span class="nc" id="L65">			return;</span>
-<span class="nc" id="L66">		Font font = getFont(scale);</span>
-<span class="nc" id="L67">		g.setFont(font);</span>
-<span class="nc" id="L68">		g.setColor(color); </span>
-<span class="nc" id="L69">		g.drawString(text, x + (indent * Math.round(scale)), y);</span>
-<span class="nc" id="L70">	}</span>
+    /** Color for level 3 items. */
+<span class="fc" id="L46">    public static final Color LEVEL3_COLOR = Color.GRAY;</span>
+
+    /** Font size for the style. */
+    private final int fontSize;
+
+    /** Color for the style. */
+    private final Color color;
+
+    /** Indentation value for the style. */
+    private final int indent;
+
+    /** Leading (line spacing) value for the style. */
+    private final int leading;
+
+    /** Constructs a Style object.
+     * @param fontSizeParam the font size
+     * @param colorParam the color
+     * @param indentParam the indent
+     * @param leadingParam the leading
+     */
+    public Style(final int fontSizeParam,
+            final Color colorParam,
+            final int indentParam,
+<span class="fc" id="L69">            final int leadingParam) {</span>
+<span class="fc" id="L70">        this.fontSize = fontSizeParam;</span>
+<span class="fc" id="L71">        this.color = colorParam;</span>
+<span class="fc" id="L72">        this.indent = indentParam;</span>
+<span class="fc" id="L73">        this.leading = leadingParam;</span>
+<span class="fc" id="L74">    }</span>
+
+    /** Returns a Style object for the given level.
+     * @param level the item level
+     * @return the Style
+     */
+    public static Style getStyle(final int level) {
+<span class="fc bfc" id="L81" title="All 4 branches covered.">        switch (level) {</span>
+            case 0:
+<span class="fc" id="L83">                return new Style(LEVEL0_FONT_SIZE,</span>
+                        DEFAULT_COLOR,
+                        DEFAULT_INDENT,
+                        DEFAULT_LEADING);
+            case 1:
+<span class="fc" id="L88">                return new Style(LEVEL1_FONT_SIZE,</span>
+                        LEVEL1_COLOR,
+                        DEFAULT_INDENT,
+                        LEVEL1_LEADING);
+            case 2:
+<span class="fc" id="L93">                return new Style(LEVEL2_FONT_SIZE,</span>
+                        LEVEL2_COLOR,
+                        DEFAULT_INDENT,
+                        LEVEL2_LEADING);
+            default:
+<span class="fc" id="L98">                return new Style(LEVEL3_FONT_SIZE,</span>
+                        LEVEL3_COLOR,
+                        DEFAULT_INDENT,
+                        LEVEL3_LEADING);
+        }
+    }
+
+    /** Returns the font size.
+     * @return the font size
+     */
+    public int getFontSize() {
+<span class="fc" id="L109">        return fontSize;</span>
+    }
+
+    /** Returns the Font object for this style.
+     * @param scale the scale factor
+     * @return the Font
+     */
+    public Font getFont(final float scale) {
+<span class="fc" id="L117">        return new Font(DEFAULT_FONT_NAME,</span>
+                Font.BOLD,
+<span class="fc" id="L119">                Math.round(fontSize * scale));</span>
+    }
+
+    /** Returns the indent value.
+     * @return the indent
+     */
+    public int getIndent() {
+<span class="fc" id="L126">        return indent;</span>
+    }
+
+    /** Returns the leading value.
+     * @return the leading
+     */
+    public int getLeading() {
+<span class="fc" id="L133">        return leading;</span>
+    }
+
+    /** Returns the color.
+     * @return the color
+     */
+    public Color getColor() {
+<span class="fc" id="L140">        return color;</span>
+    }
+
+    /** Gets the bounding box width for the string.
+     * @param g the Graphics context
+     * @param text the string
+     * @param scale the scale
+     * @return the width of the string
+     */
+    public int getBoundingBox(final Graphics g,
+            final String text,
+            final float scale) {
+<span class="fc" id="L152">        Font font = getFont(scale);</span>
+<span class="fc" id="L153">        g.setFont(font);</span>
+<span class="fc" id="L154">        return g.getFontMetrics().stringWidth(text);</span>
+    }
+
+    /** Draws a string with the given style.
+     * @param g the Graphics context
+     * @param text the string
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @param scale the scale
+     */
+    public void drawString(final Graphics g,
+            final String text,
+            final int x,
+            final int y,
+            final float scale) {
+<span class="fc" id="L169">        g.setFont(getFont(scale));</span>
+<span class="fc" id="L170">        g.setColor(color);</span>
+<span class="fc" id="L171">        g.drawString(text, x, y);</span>
+<span class="fc" id="L172">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

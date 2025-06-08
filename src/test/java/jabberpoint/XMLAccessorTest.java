@@ -33,7 +33,7 @@ class XMLAccessorTest {
         // Arrange: Create a presentation
         presentation.setTitle("Test Title");
         Slide slide = new Slide();
-        slide.append(new TextItem(1, "Sample Text"));
+        slide.addItem(new TextItem(1, "Sample Text"));
         presentation.addSlide(slide);
 
         // Act: Save then load
@@ -49,6 +49,30 @@ class XMLAccessorTest {
         assertEquals(1, loadedSlide.getSlideItems().size());
         assertTrue(loadedSlide.getSlideItems().get(0) instanceof TextItem);
         assertEquals("Sample Text", loadedSlide.getSlideItems().get(0).toString());
+    }
+
+    @Test
+    void testSaveAndLoadPresentationWithImage() throws IOException {
+        presentation.setTitle("Image Slide Test");
+        Slide slide = new Slide();
+        slide.addItem(new BitmapItem(1, "dummy_image.png"));  // Image file name only
+        presentation.addSlide(slide);
+
+        xmlAccessor.saveFile(presentation, tempFile.getAbsolutePath());
+
+        Presentation loadedPresentation = new Presentation();
+        xmlAccessor.loadFile(loadedPresentation, tempFile.getAbsolutePath());
+
+        assertEquals("Image Slide Test", loadedPresentation.getTitle());
+        assertEquals(1, loadedPresentation.getSize());
+
+        Slide loadedSlide = loadedPresentation.getSlide(0);
+        assertNotNull(loadedSlide);
+
+        assertEquals(1, loadedSlide.getSlideItems().size());
+        SlideItem loadedItem = loadedSlide.getSlideItems().get(0);
+        assertTrue(loadedItem instanceof BitmapItem);
+        assertEquals("dummy_image.png", loadedItem.toString());
     }
 
     @Test

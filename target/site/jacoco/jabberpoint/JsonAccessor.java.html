@@ -4,77 +4,91 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import java.io.File;
 import java.io.IOException;
 
-<span class="fc" id="L11">public class JsonAccessor implements AccessorStrategy {</span>
+/**
+ * Accessor for loading and saving Presentation data in JSON format.
+ */
+<span class="fc" id="L13">public class JsonAccessor implements AccessorStrategy {</span>
 
     @Override
-    public void loadFile(Presentation presentation, String filename) throws IOException {
-<span class="fc" id="L15">        presentation.clear();</span>
-<span class="fc" id="L16">        ObjectMapper mapper = new ObjectMapper();</span>
-<span class="fc" id="L17">        JsonNode root = mapper.readTree(new File(filename));</span>
+    public void loadFile(final Presentation presentation, final String filename)
+            throws IOException {
+<span class="fc" id="L18">        presentation.clear();</span>
+<span class="fc" id="L19">        ObjectMapper mapper = new ObjectMapper();</span>
+<span class="fc" id="L20">        JsonNode root = mapper.readTree(new File(filename));</span>
 
         // Load the title
-<span class="fc" id="L20">        JsonNode titleNode = root.get(&quot;title&quot;);</span>
-<span class="pc bpc" id="L21" title="1 of 2 branches missed.">        if (titleNode != null) {</span>
-<span class="fc" id="L22">            presentation.setTitle(titleNode.asText());</span>
+<span class="fc" id="L23">        JsonNode titleNode = root.get(&quot;title&quot;);</span>
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">        if (titleNode != null) {</span>
+<span class="fc" id="L25">            presentation.setTitle(titleNode.asText());</span>
         }
 
         // Load the slides
-<span class="fc" id="L26">        JsonNode slidesNode = root.get(&quot;slides&quot;);</span>
-<span class="pc bpc" id="L27" title="2 of 4 branches missed.">        if (slidesNode != null &amp;&amp; slidesNode.isArray()) {</span>
-<span class="fc bfc" id="L28" title="All 2 branches covered.">            for (JsonNode slideNode : slidesNode) {</span>
-<span class="fc" id="L29">                Slide slide = new Slide();</span>
+<span class="fc" id="L29">        JsonNode slidesNode = root.get(&quot;slides&quot;);</span>
+<span class="pc bpc" id="L30" title="2 of 4 branches missed.">        if (slidesNode != null &amp;&amp; slidesNode.isArray()) {</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">            for (JsonNode slideNode : slidesNode) {</span>
+<span class="fc" id="L32">                Slide slide = new Slide();</span>
+<span class="fc" id="L33">                JsonNode itemsNode = slideNode.get(&quot;items&quot;);</span>
+<span class="pc bpc" id="L34" title="2 of 4 branches missed.">                if (itemsNode != null &amp;&amp; itemsNode.isArray()) {</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">                    for (JsonNode itemNode : itemsNode) {</span>
+<span class="fc" id="L36">                        String kind = itemNode.get(&quot;kind&quot;).asText();</span>
+<span class="fc" id="L37">                        int level = itemNode.get(&quot;level&quot;).asInt();</span>
+<span class="fc" id="L38">                        String content = itemNode.get(&quot;content&quot;).asText();</span>
 
-<span class="fc" id="L31">                JsonNode itemsNode = slideNode.get(&quot;items&quot;);</span>
-<span class="pc bpc" id="L32" title="2 of 4 branches missed.">                if (itemsNode != null &amp;&amp; itemsNode.isArray()) {</span>
-<span class="fc bfc" id="L33" title="All 2 branches covered.">                    for (JsonNode itemNode : itemsNode) {</span>
-<span class="fc" id="L34">                        String kind = itemNode.get(&quot;kind&quot;).asText();</span>
-<span class="fc" id="L35">                        int level = itemNode.get(&quot;level&quot;).asInt();</span>
-<span class="fc" id="L36">                        String content = itemNode.get(&quot;content&quot;).asText();</span>
-
-<span class="pc bpc" id="L38" title="1 of 2 branches missed.">                        if (&quot;text&quot;.equals(kind)) {</span>
-<span class="fc" id="L39">                            slide.append(new TextItem(level, content));</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">                        if (&quot;text&quot;.equals(kind)) {</span>
+<span class="fc" id="L41">                            slide.addItem(new TextItem(level, content));</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">                        } else if (&quot;image&quot;.equals(kind)) {</span>
+<span class="fc" id="L43">                            slide.addItem(new BitmapItem(level, content));</span>
                         }
-                        // You could also add image loading here in future
-<span class="fc" id="L42">                    }</span>
+<span class="fc" id="L45">                    }</span>
                 }
-<span class="fc" id="L44">                presentation.addSlide(slide);</span>
-<span class="fc" id="L45">            }</span>
+<span class="fc" id="L47">                presentation.addSlide(slide);</span>
+<span class="fc" id="L48">            }</span>
         }
-<span class="fc" id="L47">    }</span>
+<span class="fc" id="L50">    }</span>
 
     @Override
-    public void saveFile(Presentation presentation, String filename) throws IOException {
-<span class="fc" id="L51">        ObjectMapper mapper = new ObjectMapper();</span>
-<span class="fc" id="L52">        ObjectNode root = mapper.createObjectNode();</span>
+    public void saveFile(final Presentation presentation, final String filename)
+            throws IOException {
+<span class="fc" id="L55">        ObjectMapper mapper = new ObjectMapper();</span>
+<span class="fc" id="L56">        ObjectNode root = mapper.createObjectNode();</span>
 
         // Save title
-<span class="fc bfc" id="L55" title="All 2 branches covered.">        root.put(&quot;title&quot;, presentation.getTitle() != null ? presentation.getTitle() : &quot;&quot;);</span>
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        root.put(&quot;title&quot;, presentation.getTitle() != null</span>
+<span class="pc" id="L60">                ? presentation.getTitle() : &quot;&quot;);</span>
 
         // Save slides
-<span class="fc" id="L58">        ArrayNode slidesArray = mapper.createArrayNode();</span>
-<span class="fc bfc" id="L59" title="All 2 branches covered.">        for (Slide slide : presentation.getSlides()) {</span>
-<span class="fc" id="L60">            ObjectNode slideNode = mapper.createObjectNode();</span>
-<span class="fc" id="L61">            ArrayNode itemsArray = mapper.createArrayNode();</span>
+<span class="fc" id="L63">        ArrayNode slidesArray = mapper.createArrayNode();</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        for (Slide slide : presentation.getSlides()) {</span>
+<span class="fc" id="L65">            ObjectNode slideNode = mapper.createObjectNode();</span>
+<span class="fc" id="L66">            ArrayNode itemsArray = mapper.createArrayNode();</span>
 
-<span class="fc bfc" id="L63" title="All 2 branches covered.">            for (SlideItem item : slide.getSlideItems()) {</span>
-<span class="fc" id="L64">                ObjectNode itemNode = mapper.createObjectNode();</span>
-<span class="pc bpc" id="L65" title="1 of 2 branches missed.">                itemNode.put(&quot;kind&quot;, item instanceof TextItem ? &quot;text&quot; : &quot;unknown&quot;);</span>
-<span class="fc" id="L66">                itemNode.put(&quot;level&quot;, item.getLevel());</span>
-<span class="fc" id="L67">                itemNode.put(&quot;content&quot;, item.toString()); // or item.getText() if you have such method</span>
-<span class="fc" id="L68">                itemsArray.add(itemNode);</span>
-<span class="fc" id="L69">            }</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">            for (SlideItem item : slide.getSlideItems()) {</span>
+<span class="fc" id="L69">                ObjectNode itemNode = mapper.createObjectNode();</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">                if (item instanceof TextItem) {</span>
+<span class="fc" id="L71">                    itemNode.put(&quot;kind&quot;, &quot;text&quot;);</span>
+<span class="fc" id="L72">                    itemNode.put(&quot;content&quot;, ((TextItem) item).getText());</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">                } else if (item instanceof BitmapItem) {</span>
+<span class="fc" id="L74">                    itemNode.put(&quot;kind&quot;, &quot;image&quot;);</span>
+<span class="fc" id="L75">                    itemNode.put(&quot;content&quot;, ((BitmapItem) item).getName());</span>
+                } else {
+<span class="nc" id="L77">                    itemNode.put(&quot;kind&quot;, &quot;unknown&quot;);</span>
+<span class="nc" id="L78">                    itemNode.put(&quot;content&quot;, item.toString());</span>
+                }
+<span class="fc" id="L80">                itemNode.put(&quot;level&quot;, item.getLevel());</span>
+<span class="fc" id="L81">                itemsArray.add(itemNode);</span>
+<span class="fc" id="L82">            }</span>
 
-<span class="fc" id="L71">            slideNode.set(&quot;items&quot;, itemsArray);</span>
-<span class="fc" id="L72">            slidesArray.add(slideNode);</span>
-<span class="fc" id="L73">        }</span>
+<span class="fc" id="L84">            slideNode.set(&quot;items&quot;, itemsArray);</span>
+<span class="fc" id="L85">            slidesArray.add(slideNode);</span>
+<span class="fc" id="L86">        }</span>
 
-<span class="fc" id="L75">        root.set(&quot;slides&quot;, slidesArray);</span>
+<span class="fc" id="L88">        root.set(&quot;slides&quot;, slidesArray);</span>
 
-<span class="fc" id="L77">        mapper.writerWithDefaultPrettyPrinter().writeValue(new File(filename), root);</span>
-<span class="fc" id="L78">    }</span>
+<span class="fc" id="L90">        mapper.writerWithDefaultPrettyPrinter()</span>
+<span class="fc" id="L91">                .writeValue(new File(filename), root);</span>
+<span class="fc" id="L92">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

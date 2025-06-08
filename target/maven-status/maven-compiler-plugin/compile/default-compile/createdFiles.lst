@@ -12,6 +12,7 @@ jabberpoint\JsonAccessor.class
 jabberpoint\BitmapItem.class
 jabberpoint\KeyController.class
 jabberpoint\MenuController.class
+jabberpoint\package-info.class
 jabberpoint\SlideViewerComponent.class
 jabberpoint\SlideViewerFrame$1.class
 jabberpoint\Style.class

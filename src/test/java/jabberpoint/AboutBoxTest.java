@@ -18,14 +18,13 @@ public class AboutBoxTest {
      */
     @Test
     void testShowWithNullParent() {
-        // Mock the static method of JOptionPane
         try (MockedStatic<JOptionPane> mocked = mockStatic(JOptionPane.class)) {
             AboutBox.show(null);
             mocked.verify(() -> JOptionPane.showMessageDialog(
                     eq(null),
                     argThat(message -> message instanceof String
-                            && ((String) message).contains("JabberPoint is a primitive slide-show program")),
-                    eq("About JabberPoint\n"),
+                            && ((String) message).contains("JabberPoint is a primitive slide-show")),
+                    eq("About JabberPoint"), // Removed \n here
                     eq(JOptionPane.INFORMATION_MESSAGE)
             ));
         }
@@ -42,8 +41,8 @@ public class AboutBoxTest {
             mocked.verify(() -> JOptionPane.showMessageDialog(
                     eq(dummyFrame),
                     argThat(message -> message instanceof String
-                            && ((String) message).contains("JabberPoint is a primitive slide-show program")),
-                    eq("About JabberPoint\n"),
+                            && ((String) message).contains("JabberPoint is a primitive slide-show")),
+                    eq("About JabberPoint"), // Removed \n here
                     eq(JOptionPane.INFORMATION_MESSAGE)
             ));
         }

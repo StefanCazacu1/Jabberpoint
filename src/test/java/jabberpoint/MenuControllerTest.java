@@ -5,11 +5,9 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,90 +17,109 @@ import java.io.IOException;
 class MenuControllerTest {
 
     private static final int FILE_MENU_INDEX = 0;
-    private static final int VIEW_MENU_INDEX = 1;
+    private static final int EDIT_MENU_INDEX = 1;
+    private static final int NAVIGATE_MENU_INDEX = 2;
+    private static final int VIEW_MENU_INDEX = 3;
 
     private Presentation presentation;
-    private JFrame frame;
+    private Frame frame;
     private MenuController menuController;
 
     @BeforeEach
     void setUp() {
         presentation = mock(Presentation.class);
-        frame = new JFrame();
+        frame = new Frame();
         menuController = new MenuController(frame, presentation);
     }
 
     @Test
-    @DisplayName("MenuController instance is created successfully")
-    void testMenuControllerIsNotNull() {
-        assertNotNull(menuController);
+    void testMenuCount() {
+        assertEquals(4, menuController.getMenuCount(), "Should have 4 top-level menus");
     }
 
     @Test
-    @DisplayName("MenuController has exactly two menus: File and View")
-    void testMenuControllerHasTwoMenus() {
-        assertEquals(2, menuController.getMenuCount());
+    void testFileMenuItems() {
+        Menu fileMenu = menuController.getMenu(FILE_MENU_INDEX);
+        assertEquals("File", fileMenu.getLabel());
+        // Expecting 4 items: New Presentation, Open, Save, Exit
+        assertEquals(4, fileMenu.getItemCount());
     }
 
     @Test
-    @DisplayName("Next Slide menu item triggers presentation.nextSlide()")
-    void testNextSlideMenuItem() {
-        // Get the 'View' menu by index
+    void testEditMenuItems() {
+        Menu editMenu = menuController.getMenu(EDIT_MENU_INDEX);
+        assertEquals("Edit", editMenu.getLabel());
+        // Expecting 5 items: Add Slide, Remove Slide, Add Text Item, Add Image Item, Remove Slide Item
+        assertEquals(5, editMenu.getItemCount());
+    }
+
+    @Test
+    void testNavigateMenuItems() {
+        Menu navigateMenu = menuController.getMenu(NAVIGATE_MENU_INDEX);
+        assertEquals("Navigate", navigateMenu.getLabel());
+        // Expecting 2 items: Next, Prev
+        assertEquals(2, navigateMenu.getItemCount());
+    }
+
+    @Test
+    void testViewMenuHasAbout() {
         Menu viewMenu = menuController.getMenu(VIEW_MENU_INDEX);
-        // 'Next Slide' menu item is first in View menu
-        MenuItem nextItem = viewMenu.getItem(0);
-        ActionListener[] listeners = nextItem.getActionListeners();
+        assertEquals("View", viewMenu.getLabel());
+        assertEquals(1, viewMenu.getItemCount());
+        MenuItem aboutItem = viewMenu.getItem(0);
+        assertEquals("About", aboutItem.getLabel());
 
-        // Simulate clicking the menu item
-        listeners[0].actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
-
-        verify(presentation, times(1)).nextSlide();
-    }
-
-    @Test
-    @DisplayName("Previous Slide menu item triggers presentation.prevSlide()")
-    void testPrevSlideMenuItem() {
-        Menu viewMenu = menuController.getMenu(VIEW_MENU_INDEX);
-        MenuItem prevItem = viewMenu.getItem(1);
-        ActionListener[] listeners = prevItem.getActionListeners();
-
-        listeners[0].actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
-
-        verify(presentation, times(1)).prevSlide();
-    }
-
-    @Test
-    @DisplayName("About menu item does not throw any exception on click")
-    void testAboutMenuItemDoesNotCrash() {
-        Menu viewMenu = menuController.getMenu(VIEW_MENU_INDEX);
-        MenuItem aboutItem = viewMenu.getItem(2);
         ActionListener[] listeners = aboutItem.getActionListeners();
-
         assertDoesNotThrow(() -> listeners[0].actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null)));
     }
 
     @Test
-    @DisplayName("Save menu item handles IOException gracefully")
-    void testSaveFileIOExceptionHandling() throws IOException {
+    void testNextMenuCallsNextSlide() {
+        Menu navigateMenu = menuController.getMenu(NAVIGATE_MENU_INDEX); // index 2
+        assertEquals("Navigate", navigateMenu.getLabel());
+
+        MenuItem nextItem = navigateMenu.getItem(0);
+        assertNotNull(nextItem);
+        assertEquals("Next", nextItem.getLabel());  // Check item label
+
+        // Trigger the menu item action
+        for (ActionListener listener : nextItem.getActionListeners()) {
+            listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
+        }
+        verify(presentation, times(1)).nextSlide();
+    }
+
+    @Test
+    void testPrevMenuCallsPrevSlide() {
+        Menu navigateMenu = menuController.getMenu(NAVIGATE_MENU_INDEX); // index 2
+        MenuItem prevItem = navigateMenu.getItem(1);
+        assertEquals("Prev", prevItem.getLabel());
+
+        for (ActionListener listener : prevItem.getActionListeners()) {
+            listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
+        }
+        verify(presentation, times(1)).prevSlide();
+    }
+
+    @Test
+    void testSaveFileHandlesIOException() throws IOException {
         doThrow(new IOException("Save error")).when(presentation).save(anyString());
 
         Menu fileMenu = menuController.getMenu(FILE_MENU_INDEX);
-        MenuItem saveItem = fileMenu.getItem(1);
+        MenuItem saveItem = fileMenu.getItem(2); // Save is third item
         ActionListener[] listeners = saveItem.getActionListeners();
 
         assertDoesNotThrow(() -> listeners[0].actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null)));
     }
 
     @Test
-    @DisplayName("Open menu item handles IOException gracefully")
-    void testLoadFileIOExceptionHandling() throws IOException {
+    void testOpenFileHandlesIOException() throws IOException {
         doThrow(new IOException("Load error")).when(presentation).load(anyString());
 
         Menu fileMenu = menuController.getMenu(FILE_MENU_INDEX);
-        MenuItem openItem = fileMenu.getItem(0);
+        MenuItem openItem = fileMenu.getItem(1); // Open is second item
         ActionListener[] listeners = openItem.getActionListeners();
 
         assertDoesNotThrow(() -> listeners[0].actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null)));
     }
-
 }
