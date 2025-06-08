@@ -5,33 +5,87 @@ import javax.swing.JPanel;
 
 /**
  * The SlideViewerComponent displays the current slide and observes
- * Presentation.
+ * Presentation updates.
  */
 public class SlideViewerComponent extends JPanel implements Observer {
-	private static final long serialVersionUID = 227L;
-	private final Presentation presentation;
 
-<span class="fc" id="L14">	public SlideViewerComponent(Presentation presentation) {</span>
-<span class="fc" id="L15">		this.presentation = presentation;</span>
-<span class="fc" id="L16">		this.presentation.addObserver(this);</span>
-<span class="fc" id="L17">	}</span>
+    private static final long serialVersionUID = 227L;
 
-	public Presentation getPresentation() {
-<span class="fc" id="L20">		return presentation;</span>
-	}
+    /** The Presentation this component observes and displays. */
+    private final Presentation presentationRef;
 
-	@Override
-	public void update() {
-<span class="fc" id="L25">		repaint();</span>
-<span class="fc" id="L26">	}</span>
+    /**
+     * Constructs a SlideViewerComponent.
+     *
+     * @param presentation the Presentation to observe and display
+     */
+<span class="fc" id="L22">    public SlideViewerComponent(final Presentation presentation) {</span>
+<span class="fc" id="L23">        this.presentationRef = presentation;</span>
+<span class="fc" id="L24">        this.presentationRef.addObserver(this);</span>
+<span class="fc" id="L25">    }</span>
 
-	@Override
-	protected void paintComponent(Graphics g) {
-<span class="fc" id="L30">		super.paintComponent(g);</span>
-<span class="fc bfc" id="L31" title="All 2 branches covered.">		if (presentation.getCurrentSlide() != null) {</span>
-<span class="fc" id="L32">			presentation.getCurrentSlide().draw(g, this, 0, 0, 1.0f);</span>
-		}
-<span class="fc" id="L34">	}</span>
+    /**
+     * Returns the Presentation associated with this component.
+     *
+     * @return the Presentation
+     */
+    public Presentation getPresentation() {
+<span class="fc" id="L33">        return presentationRef;</span>
+    }
 
+    /**
+     * Called when the observed Presentation updates.
+     * Always repaints on update to ensure UI reflects all changes.
+     */
+    @Override
+    public void update() {
+<span class="fc" id="L42">        repaint();</span>
+<span class="fc" id="L43">    }</span>
+
+    /**
+     * Paints the current slide.
+     *
+     * @param g the Graphics context
+     */
+    @Override
+    protected void paintComponent(final Graphics g) {
+<span class="fc" id="L52">        super.paintComponent(g);</span>
+
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (presentationRef.getCurrentSlide() != null) {</span>
+<span class="fc" id="L55">            presentationRef.getCurrentSlide().draw(</span>
+                    g,
+                    this,
+                    0,
+                    10,
+                    1.0f);
+        }
+
+<span class="fc" id="L63">        int slideNumber = presentationRef.getSlideNumber();</span>
+<span class="fc" id="L64">        int totalSlides = presentationRef.getSize();</span>
+
+<span class="fc" id="L66">        String slideNumText = &quot;Slide &quot; + (slideNumber + 1) + &quot; / &quot; + totalSlides;</span>
+
+        // Padding from edges
+<span class="fc" id="L69">        int padding = 0;</span>
+
+        // Get font metrics to calculate text size
+<span class="fc" id="L72">        int textWidth = g.getFontMetrics().stringWidth(slideNumText);</span>
+<span class="fc" id="L73">        int textHeight = g.getFontMetrics().getHeight();</span>
+
+        // Calculate x and y so text appears in bottom-right corner
+<span class="fc" id="L76">        int x = getWidth() - textWidth - padding;</span>
+<span class="fc" id="L77">        int y = getHeight() - padding;</span>
+
+        // Draw translucent background rectangle behind text
+<span class="fc" id="L80">        g.setColor(new java.awt.Color(0, 0, 0, 150)); // semi-transparent black</span>
+<span class="fc" id="L81">        g.fillRect(x - padding / 2,</span>
+<span class="fc" id="L82">                y - g.getFontMetrics().getAscent(),</span>
+                textWidth + padding,
+                textHeight + padding / 2);
+
+        // Draw the slide number text in white
+<span class="fc" id="L87">        g.setColor(java.awt.Color.WHITE);</span>
+<span class="fc" id="L88">        g.drawString(slideNumText, x, y);</span>
+<span class="fc" id="L89">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

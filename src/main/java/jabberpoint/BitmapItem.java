@@ -10,7 +10,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /** Represents an image item on a slide. */
-public class BitmapItem extends SlideItem {
+public final class BitmapItem extends SlideItem {
 
     /** Width of error rectangle drawn when image fails to load. */
     private static final int ERROR_RECT_WIDTH = 100;
@@ -116,4 +116,10 @@ public class BitmapItem extends SlideItem {
         }
         return new Rectangle(0, 0, 0, 0);
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
+
 }
