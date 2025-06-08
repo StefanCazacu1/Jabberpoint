@@ -17,7 +17,7 @@ public class SlideViewerComponent extends JPanel implements Observer {
     /** Padding in pixels for slide Y coordinate when drawing. */
     private static final int SLIDE_Y_OFFSET = 10;
 
-    /** Transparency value for translucent background behind slide number */
+    /** Transparency value for translucent background behind slide number. */
     private static final int BG_ALPHA = 150;
 
     /**
@@ -84,7 +84,7 @@ public class SlideViewerComponent extends JPanel implements Observer {
         int y = getHeight() - padding;
 
         // Draw translucent background rectangle behind text
-        g.setColor(new java.awt.Color(0, 0, 0, BG_ALPHA)); // semi-transparent black
+        g.setColor(new java.awt.Color(0, 0, 0, BG_ALPHA));
         g.fillRect(x - padding / 2,
                 y - g.getFontMetrics().getAscent(),
                 textWidth + padding,
