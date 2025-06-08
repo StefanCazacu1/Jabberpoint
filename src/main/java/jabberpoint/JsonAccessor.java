@@ -9,9 +9,17 @@ import java.io.IOException;
 
 /**
  * Accessor for loading and saving Presentation data in JSON format.
+ * This class is final and not designed for extension.
  */
-public class JsonAccessor implements AccessorStrategy {
+public final class JsonAccessor implements AccessorStrategy {
 
+    /**
+     * Loads a Presentation from a JSON file.
+     *
+     * @param presentation the Presentation to populate
+     * @param filename the JSON filename
+     * @throws IOException if an error occurs while reading
+     */
     @Override
     public void loadFile(final Presentation presentation, final String filename)
             throws IOException {
@@ -49,6 +57,13 @@ public class JsonAccessor implements AccessorStrategy {
         }
     }
 
+    /**
+     * Saves a Presentation to a JSON file.
+     *
+     * @param presentation the Presentation to save
+     * @param filename the JSON filename
+     * @throws IOException if an error occurs while writing
+     */
     @Override
     public void saveFile(final Presentation presentation, final String filename)
             throws IOException {

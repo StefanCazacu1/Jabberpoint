@@ -22,19 +22,40 @@ public class MenuController extends MenuBar {
     /** Menu item to show About information. */
     private final MenuItem aboutItem;
 
-    /** Labels for menu items. */
+    /** Label for the Open menu item. */
     public static final String OPEN = "Open";
+
+    /** Label for the New Presentation menu item. */
     public static final String NEW = "New Presentation";
+
+    /** Label for the Save menu item. */
     public static final String SAVE = "Save";
+
+    /** Label for the Exit menu item. */
     public static final String EXIT = "Exit";
+
+    /** Label for the Next menu item. */
     public static final String NEXT = "Next";
+
+    /** Label for the Previous menu item. */
     public static final String PREV = "Prev";
+
+    /** Label for the About menu item. */
     public static final String ABOUT = "About";
 
+    /** Label for the Add Slide menu item. */
     public static final String ADD_SLIDE = "Add Slide";
+
+    /** Label for the Remove Slide menu item. */
     public static final String REMOVE_SLIDE = "Remove Slide";
+
+    /** Label for the Add Text Item menu item. */
     public static final String ADD_TEXT_ITEM = "Add Text Item";
+
+    /** Label for the Add Image Item menu item. */
     public static final String ADD_IMAGE_ITEM = "Add Image Item";
+
+    /** Label for the Remove Slide Item menu item. */
     public static final String REMOVE_SLIDE_ITEM = "Remove Slide Item";
 
     /**

@@ -14,6 +14,12 @@ public class SlideViewerComponent extends JPanel implements Observer {
     /** The Presentation this component observes and displays. */
     private final Presentation presentationRef;
 
+    // Padding for slide Y coordinate
+    private static final int SLIDE_Y_OFFSET = 10;
+
+    // Alpha value for translucent background behind slide number
+    private static final int BG_ALPHA = 150;
+
     /**
      * Constructs a SlideViewerComponent.
      *
@@ -56,14 +62,15 @@ public class SlideViewerComponent extends JPanel implements Observer {
                     g,
                     this,
                     0,
-                    10,
+                    SLIDE_Y_OFFSET,
                     1.0f);
         }
 
         int slideNumber = presentationRef.getSlideNumber();
         int totalSlides = presentationRef.getSize();
 
-        String slideNumText = "Slide " + (slideNumber + 1) + " / " + totalSlides;
+        String slideNumText = "Slide " + (slideNumber + 1) + " / "
+                + totalSlides;
 
         // Padding from edges
         int padding = 0;
@@ -77,7 +84,7 @@ public class SlideViewerComponent extends JPanel implements Observer {
         int y = getHeight() - padding;
 
         // Draw translucent background rectangle behind text
-        g.setColor(new java.awt.Color(0, 0, 0, 150)); // semi-transparent black
+        g.setColor(new java.awt.Color(0, 0, 0, BG_ALPHA)); // semi-transparent black
         g.fillRect(x - padding / 2,
                 y - g.getFontMetrics().getAscent(),
                 textWidth + padding,

@@ -25,7 +25,8 @@ public final class XMLAccessor implements AccessorStrategy {
             final String filename) throws IOException {
         try {
             presentation.clear();
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory factory =
+                    DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(new File(filename));
             Element root = document.getDocumentElement();
@@ -49,9 +50,11 @@ public final class XMLAccessor implements AccessorStrategy {
                     String content = item.getTextContent();
 
                     if ("text".equals(kind)) {
-                        slide.addItem(new TextItem(level, content != null ? content : ""));
+                        slide.addItem(new TextItem(level,
+                                content != null ? content : ""));
                     } else if ("image".equals(kind)) {
-                        slide.addItem(new BitmapItem(level, content != null ? content : ""));
+                        slide.addItem(new BitmapItem(level,
+                                content != null ? content : ""));
                     }
                 }
                 presentation.addSlide(slide);
@@ -65,27 +68,32 @@ public final class XMLAccessor implements AccessorStrategy {
     public void saveFile(final Presentation presentation,
             final String filename) throws IOException {
         try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory factory =
+                    DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.newDocument();
 
             Element root = document.createElement("presentation");
-            root.setAttribute("title", presentation.getTitle() != null ? presentation.getTitle() : "");
+            root.setAttribute("title", presentation.getTitle() !=
+                    null ? presentation.getTitle() : "");
             document.appendChild(root);
 
             for (Slide slide : presentation.getSlides()) {
                 Element slideElement = document.createElement("slide");
-                slideElement.setAttribute("title", slide.getTitle() != null ? slide.getTitle() : "");
+                slideElement.setAttribute("title", slide.getTitle() !=
+                        null ? slide.getTitle() : "");
                 root.appendChild(slideElement);
 
                 for (SlideItem item : slide.getSlideItems()) {
                     Element itemElement = document.createElement("item");
-                    itemElement.setAttribute("level", String.valueOf(item.getLevel()));
+                    itemElement.setAttribute("level",
+                            String.valueOf(item.getLevel()));
 
                     if (item instanceof TextItem) {
                         itemElement.setAttribute("kind", "text");
                         String textContent = ((TextItem) item).getText();
-                        itemElement.setTextContent(textContent != null ? textContent : "");
+                        itemElement.setTextContent(textContent !=
+                                null ? textContent : "");
                     } else if (item instanceof BitmapItem) {
                         itemElement.setAttribute("kind", "image");
                         String name = ((BitmapItem) item).getName();
@@ -98,7 +106,8 @@ public final class XMLAccessor implements AccessorStrategy {
             TransformerFactory tf = TransformerFactory.newInstance();
             Transformer transformer = tf.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+            transformer.setOutputProperty(
+                    "{http://xml.apache.org/xslt}indent-amount", "2");
 
             DOMSource source = new DOMSource(document);
             FileOutputStream fos = new FileOutputStream(filename);

@@ -52,7 +52,9 @@ public class Presentation {
      * @param observer the observer to add
      */
     public synchronized void addObserver(final Observer observer) {
-        if (observer == null) throw new NullPointerException();
+        if (observer == null) {
+            throw new NullPointerException();
+        }
         if (!observers.contains(observer)) {
             observers.add(observer);
         }
@@ -94,7 +96,9 @@ public class Presentation {
     private void notifyObservers() {
         List<Observer> observersLocal;
         synchronized (this) {
-            if (!hasChanged()) return;
+            if (!hasChanged()) {
+                return;
+            }
             observersLocal = new ArrayList<>(observers);
             clearChanged();
         }
@@ -134,7 +138,9 @@ public class Presentation {
      */
     public void setTitle(final String newTitle) {
         String titleToSet = newTitle;
-        if (titleToSet == null) titleToSet = "";
+        if (titleToSet == null) {
+            titleToSet = "";
+        }
         if (!titleToSet.equals(this.title)) {
             this.title = titleToSet;
             setChanged();
